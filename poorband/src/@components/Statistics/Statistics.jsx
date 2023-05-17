@@ -1,7 +1,7 @@
 import React from "react";
 import ConsumptionCalendar from "./ConsumptionCalendar";
-import ConsumptionList from "../ConsumptionList";
-import ConsumptionGraph from "../ConsumptionGraph";
+import ConsumptionList from "./ConsumptionList";
+import ConsumptionGraph from "./ConsumptionGraph";
 
 export default function Statistics() {
   return (
