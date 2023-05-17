@@ -1,7 +1,7 @@
 import React from "react";
 import SideChallengeCard from "./SideChallengeCard";
-import HotPostCard from "./HotPostCard";
-import SearchBar from "./SearchBar";
+import HotPostCard from "../../HotPostCard";
+import SearchBar from "../../SearchBar";
 
 export default function SideBar() {
   return (
