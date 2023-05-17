@@ -43,8 +43,9 @@ const ServiceWrapper = styled.div`
 const MenuBarWrapper = styled.nav`
   background-color: blue;
   width: 20.6rem;
-  height: 108rem;
+  height: 100vh;
   position: sticky;
+  top: 0;
 `;
 
 const CenterWrapper = styled.section`
@@ -55,6 +56,7 @@ const CenterWrapper = styled.section`
 const SideBarWrapper = styled.aside`
   background-color: purple;
   width: 28.2rem;
-  height: 108rem;
+  height: 100vh;
   position: sticky;
+  top: 0;
 `;
