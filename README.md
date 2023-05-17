@@ -5,7 +5,6 @@
 ```
 cd poorband
 yarn
-yarn add styled-components
 ```
 
 실행
