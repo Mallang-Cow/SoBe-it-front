@@ -10,11 +10,10 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <Login />
-        <Register />
+        {/* <Login />
+        <Register /> */}
         <Service />
       </ThemeProvider>
     </>
   );
 }
-
