@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import Home from "../@components/Home/Home";
 import MenuBar from "../@components/MenuBar";
 import SideBar from "../@components/SideBar/SideBar";
@@ -7,8 +7,10 @@ import Statistics from "../@components/Statistics/Statistics";
 import Profile from "../@components/Profile/Profile";
 import Notifications from "../@components/Notifications/Notifications";
 import SearchResults from "../@components/Search/SearchResults";
+import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
 
 export default function Service() {
+  const [articleSeq, setArticleSeq] = useState(0);
   return (
     <>
       <ServiceWrapper>
@@ -19,11 +21,12 @@ export default function Service() {
         {/* menu 값에 따라 가운데 내용 바뀌기 */}
 
         <CenterWrapper>
-          <Home />
+          {/* <Home />
           <Statistics />
           <Notifications />
           <Profile />
-          <SearchResults />
+          <SearchResults /> */}
+          <ArticleDetail articleSeq={articleSeq} />
         </CenterWrapper>
 
         <SideBarWrapper>
