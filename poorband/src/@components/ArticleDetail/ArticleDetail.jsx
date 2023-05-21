@@ -1,9 +1,15 @@
 import React from "react";
-import ArticleCard from "../ArticleCard";
+import ArticleCard from "../common/ArticleCard";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
+import { getArticleDetailData } from "../../../api/getArticleDetailData";
+import { useQuery } from "react-query";
+import { styled } from "styled-components";
 
-export default function ArticleDetail() {
+export default function ArticleDetail(props) {
+  const { articleSeq } = props;
+  const { data } = useQuery(["articleData"], getArticleDetailData, {});
+
   return (
     <>
       <div>ArticleDetail</div>
