@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import React, { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../@components/Home/Home";
 import MenuBar from "../@components/MenuBar";
 import SideBar from "../@components/SideBar/SideBar";
@@ -15,7 +16,14 @@ export default function Service() {
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <MenuBar />
+          <BrowserRouter>
+            <MenuBar></MenuBar>
+            <Routes>
+              <Route path="/" exact component={Home} />
+              <Route path="/statistics" component={Statistics} />
+              <Route path="/notifications" component={Notifications} />
+            </Routes>
+          </BrowserRouter>
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}

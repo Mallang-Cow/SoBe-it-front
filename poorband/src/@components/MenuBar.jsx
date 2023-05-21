@@ -1,10 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export default function MenuBar() {
+import MenubarItem from "./MenubarItem";
+
+function MenuBar() {
+  const menus = [
+    { name: "Home", path: "/" },
+    { name: "Statistics", path: "/statistics" },
+    { name: "Notifications", path: "/notifications" },
+    { name: "Settings", path: "/settings" },
+  ];
+
   return (
-    <>
-      <div>MenuBar</div>
-      {/* 홈, 통계, 알림, 세팅, 마이프로필 */}
-    </>
+    <div className="menubar">
+      {menus.map((menu, index) => {
+        return (
+          <Link to={menu.path} key={index}>
+            <MenubarItem menu={menu} />
+          </Link>
+        );
+      })}
+    </div>
   );
 }
+
+export default MenuBar;
