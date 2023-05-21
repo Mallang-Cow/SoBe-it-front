@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
 import React, { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../@components/Home/Home";
 import MenuBar from "../@components/MenuBar";
 import SideBar from "../@components/SideBar/SideBar";
@@ -11,30 +10,35 @@ import SearchResults from "../@components/Search/SearchResults";
 import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
 
 export default function Service() {
+  const [centerContent, setCenterContent] = useState("home");
+  const [userSeq, setUserSeq] = useState(0);
   const [articleSeq, setArticleSeq] = useState(0);
   return (
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <BrowserRouter>
-            <MenuBar></MenuBar>
-            <Routes>
-              <Route path="/" exact component={Home} />
-              <Route path="/statistics" component={Statistics} />
-              <Route path="/notifications" component={Notifications} />
-            </Routes>
-          </BrowserRouter>
+          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} setUserSeq={setUserSeq} />
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}
 
         <CenterWrapper>
-          {/* <Home />
-          <Statistics />
-          <Notifications />
-          <Profile />
-          <SearchResults /> */}
-          <ArticleDetail articleSeq={articleSeq} />
+          {centerContent === "home" && (
+            <Home setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={articleSeq} />
+          )}
+          {centerContent === "statistics" && (
+            <Statistics setCenterContent={setCenterContent} setArticleSeq={articleSeq} />
+          )}
+          {centerContent === "notifications" && (
+            <Notifications setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={articleSeq} />
+          )}
+          {centerContent === "profile" && <Profile setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
+          {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
+          {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
+          {centerContent === "search" && (
+            <SearchResults setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={articleSeq} />
+          )}
+          {centerContent === "detail" && <ArticleDetail setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
         </CenterWrapper>
 
         <SideBarWrapper>
