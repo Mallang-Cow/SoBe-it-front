@@ -4,12 +4,6 @@ import { styled } from "styled-components";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserSeq } = props;
-  // const menus = [
-  //   { name: "Home", path: "home" },
-  //   { name: "Statistics", path: "statistics" },
-  //   { name: "Notifications", path: "notifications" },
-  //   { name: "Settings", path: "settings" },
-  // ];
   return (
     <Wrapper>
       <MenuWrapper>
@@ -50,7 +44,11 @@ export default function MenuBar(props) {
           setCenterContent("profile");
           //setUserSeq(현재유저번호);
         }}>
-        <img src="" alt="프로필사진" />
+        <img
+          id="profile-image"
+          src="https://item.kakaocdn.net/do/1d495862f49c38232ca8b6cc6a9679a0effd194bae87d73dd00522794070855d"
+          alt="프로필사진"
+        />
         <span>닉네임</span>
         <span>아이디</span>
         <span>더보기</span>
@@ -59,6 +57,11 @@ export default function MenuBar(props) {
   );
 }
 const Wrapper = styled.li`
+  margin: '-291.31 -434.56',
+
+  width: 12.88,
+  height: 67.5,
+
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -66,7 +69,8 @@ const Wrapper = styled.li`
 `;
 const MenuWrapper = styled.div`
   :hover {
-    background-color: red;
+    background-color: green;
+    color: white;
   }
 `;
 
@@ -75,6 +79,12 @@ const ProfileWrapper = styled.div`
     background-color: grey;
   }
   background-color: white;
+
+  #profile-image {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+  }
 `;
 
 const MenuBarItem = styled.ul`
