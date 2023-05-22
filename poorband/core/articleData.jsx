@@ -18,7 +18,7 @@ export const ARTICLE_DETAIL = {
   expenditureCategory: 1,
   amount: 13333,
   articleText: "불금 글",
-  articleType: 1,
+  articleType: 2,
   consumptionDate: "2023-05-19",
   writtenDate: "2023-05-21T18:07:48.104892",
   isAllowed: "false",
