@@ -54,6 +54,9 @@ const Body = styled.div`
 `;
 const HeaderWrapper = styled.header`
   background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 
   ${({ theme }) => theme.fonts.bold};
   color: ${({ theme }) => theme.colors.black};
@@ -79,6 +82,7 @@ const Menu = styled.div`
   font-family: "Spoqa Han Sans Neo";
   font-size: 1.6rem;
   color: ${({ theme }) => theme.colors.lightgrey_2};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 `;
 const MenuWrapper = styled.menu`
   display: flex;
