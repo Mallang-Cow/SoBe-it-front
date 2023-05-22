@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./@pages/Login";
-import Home from "./@components/Home/Home";
+import Service from "./@pages/Service";
 import Register from "./@pages/Register";
 
 export default function Router() {
@@ -10,7 +10,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home" element={<Service />} />
       </Routes>
     </BrowserRouter>
   );
