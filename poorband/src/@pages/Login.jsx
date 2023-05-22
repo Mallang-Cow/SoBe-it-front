@@ -16,6 +16,11 @@ export default function Login() {
         navigate("/home");
       }
     },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("로그인 정보를 다시 확인해 주세요.");
+      }
+    },
   });
 
   const login = async () => {
