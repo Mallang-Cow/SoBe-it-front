@@ -52,6 +52,11 @@ export const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+  button{
+    -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  }
 
   /* 위에가 styled-reset 내용 */
 
@@ -100,4 +105,5 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: normal;
     font-style: normal;
 }
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 `;
