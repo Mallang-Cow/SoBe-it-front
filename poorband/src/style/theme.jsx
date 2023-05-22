@@ -19,25 +19,25 @@ const fonts = {
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;
     font-weight: 700;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.03em;
   `,
   medium: css`
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;
     font-weight: 500;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.03em;
   `,
   regular: css`
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;
     font-weight: 400;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.03em;
   `,
   light: css`
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;
     font-weight: 300;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.03em;
   `,
 };
 
