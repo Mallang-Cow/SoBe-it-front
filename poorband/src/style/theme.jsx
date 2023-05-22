@@ -6,7 +6,7 @@ const colors = {
   lightgrey_2: "#C4C4C4",
   grey: "",
   darkgrey_1: "#828282",
-  darkgrey_2: "",
+  darkgrey_2: "#696969",
   darkgrey_3: "",
   lightpurple: "#F1EBFA",
   darkpurple: "#F5F4F6",

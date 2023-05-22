@@ -1,19 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { graphData } from "../../../core/graphData";
 import { styled } from "styled-components";
 import { ResponsivePie } from "@nivo/pie";
-import { ResponsiveBar } from "@nivo/bar";
+import ProgressBar from "../common/ProgressBar";
+import { CATEGORY } from "../../../core/expenditureCategory";
 
 export default function ConsumptionGraph() {
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth());
+
+  function increaseMonth() {
+    if (month < 11) {
+      setMonth(month + 1);
+    } else {
+      setMonth(0);
+      setYear(year + 1);
+    }
+  }
+  function decreaseMonth() {
+    if (month > 0) {
+      setMonth(month - 1);
+    } else {
+      setMonth(11);
+      setYear(year - 1);
+    }
+  }
   return (
     <Body>
       <Year>
-        <p>2023년</p>
+        <p>{year}년</p>
       </Year>
       <Month>
-        <span class="material-symbols-outlined">arrow_back_ios</span>
-        <p>5월</p>
-        <span class="material-symbols-outlined">arrow_forward_ios</span>
+        <span
+          className="material-symbols-outlined"
+          onClick={() => {
+            decreaseMonth();
+          }}>
+          arrow_back_ios
+        </span>
+        <p>{month + 1}월</p>
+        <span
+          className="material-symbols-outlined"
+          onClick={() => {
+            increaseMonth();
+          }}>
+          arrow_forward_ios
+        </span>
       </Month>
       <Amount>
         <p className="small">이번 달 지출 금액 </p>
@@ -57,7 +89,17 @@ export default function ConsumptionGraph() {
           ]}
         />
       </GraphWrapper>
-      <BarWrapper></BarWrapper>
+      <BarWrapper>
+        {CATEGORY.map((c) => (
+          <ProgressBarWrapper>
+            <ProgressBarContainer>
+              <p>{c.value}</p>
+              <ProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={20}></ProgressBar>
+            </ProgressBarContainer>
+            <p>10,000원</p>
+          </ProgressBarWrapper>
+        ))}
+      </BarWrapper>
     </Body>
   );
 }
@@ -84,7 +126,13 @@ const Month = styled.div`
   justify-content: space-around;
   padding: 1.5rem;
   ${({ theme }) => theme.fonts.medium};
+  span {
+    color: ${({ theme }) => theme.colors.darkgrey_1};
+  }
   font-size: 1.8rem;
+  span:hover {
+    color: ${({ theme }) => theme.colors.black};
+  }
 `;
 
 const Amount = styled.div`
@@ -110,4 +158,32 @@ const GraphWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const BarWrapper = styled.div``;
+const BarWrapper = styled.div`
+  height: 50rem;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+const ProgressBarWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+
+  p {
+    ${({ theme }) => theme.fonts.bold};
+    color: ${({ theme }) => theme.colors.darkgrey_2};
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    width: 12rem;
+  }
+`;
+const ProgressBarContainer = styled.div`
+  width: 100%;
+  margin: 1.5rem 2rem;
+  align-items: center;
+  p {
+    ${({ theme }) => theme.fonts.regular};
+    color: ${({ theme }) => theme.colors.black};
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+`;
