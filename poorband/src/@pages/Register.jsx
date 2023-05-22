@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { signup } from "../../api/user";
+import { smsAuthRequest } from "../../api/smsAPI";
 
 export default function Register() {
   const userIdRef = useRef(null);
@@ -12,6 +13,7 @@ export default function Register() {
   const nicknameRef = useRef(null);
   const userEmailRef = useRef(null);
   const userPhoneNumberRef = useRef(null);
+  const authenticationNumberRef = useRef(null);
   const navigate = useNavigate();
 
   const { mutate: registerUser } = useMutation(signup, {
@@ -38,6 +40,25 @@ export default function Register() {
     };
 
     registerUser(userDTO);
+  };
+
+  const { mutate: userSmsAuthRequest } = useMutation(smsAuthRequest, {
+    onSuccess: (response) => {
+      // 전화번호 인증 요청 성공 시 처리할 로직 작성
+      // 커서가 자동으로 인증 번호 입력으로 넘어가도록 작성하기
+      alert("전화번호 인증 요청 성공");
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("전화번호를 다시 확인해 주세요.");
+      }      
+    },
+  });
+
+  const smsRequest = () => {
+    const tel = userPhoneNumberRef.current.value;
+
+    userSmsAuthRequest(Number(tel));
   };
 
   return (
@@ -70,7 +91,10 @@ export default function Register() {
         <br />
         <div>전화번호</div>
         <input type="text" ref={ userPhoneNumberRef }/>
-        <button>인증 요청</button>
+        <button onClick={ smsRequest }>인증 요청</button>
+        <div>인증 번호</div>
+        <input type="text" ref={ authenticationNumberRef }/>
+        <button>인증 확인</button>
       </FormContainer>
       <ButtonContainer>
         <button onClick={ register }>Register</button>
