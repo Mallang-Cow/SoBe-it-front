@@ -36,6 +36,10 @@ export default function Login() {
     navigate("/find-id");
   };
 
+  const navigateToFindPassword = () => {
+    navigate("/find-password");
+  };
+
   return (
     <LoginWrapper>
       <LogoContainer>
@@ -52,7 +56,7 @@ export default function Login() {
       <ButtonContainer>
         <button>회원가입</button>
         <button onClick={ navigateToFindId }>아이디 찾기</button>
-        <button>비밀번호 찾기</button>
+        <button onClick={ navigateToFindPassword }>비밀번호 찾기</button>
       </ButtonContainer>
     </LoginWrapper>
   );
