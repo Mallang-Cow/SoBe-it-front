@@ -12,6 +12,7 @@ export default function SideChallengeCard(props) {
           <h3>하루 만원 챌린지🔥🔥🔥</h3>
           <hr></hr>
           <div id="progress-box"></div>
+
           <BarWrapper>
             <ProgressBarWrapper>
               <ProgressBarContainer>
