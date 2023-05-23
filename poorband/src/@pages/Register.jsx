@@ -46,7 +46,11 @@ export default function Register() {
     onSuccess: (response) => {
       // 전화번호 인증 요청 성공 시 처리할 로직 작성
       // 커서가 자동으로 인증 번호 입력으로 넘어가도록 작성하기
+      if (response.data === false) {
+        alert("전화번호 인증 요청 실패");
+      } else {
         alert("전화번호 인증 요청 성공");
+      }
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
