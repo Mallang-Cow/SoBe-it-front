@@ -57,7 +57,7 @@ const SideChallengeContainer = styled.div`
   }
 
   #progress-box {
-    width:10rem,
+    width: 10rem;
     height: 5rem;
     color: blue;
   }

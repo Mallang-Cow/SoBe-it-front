@@ -85,14 +85,13 @@ const Wrapper = styled.li`
 
   background-color: white;
 
-  margin: '-291.31 -434.56',
+  margin: "-291.31 -434.56";
 
-  width: 12.88,
-  height: 67.5,
+  width: 12.88;
+  height: 67.5;
 
   display: flex;
   justify-content: space-between;
-
 `;
 
 const HeaderWrapper = styled.li`

@@ -50,28 +50,30 @@ export default function Service() {
 }
 
 const ServiceWrapper = styled.div`
-  background-color: skyblue;
+  background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   justify-content: center;
 `;
 
 const MenuBarWrapper = styled.nav`
-  background-color: blue;
+  background-color: ${({ theme }) => theme.colors.white};
   width: 20.6rem;
   height: 100vh;
   position: sticky;
   top: 0;
+  border-right: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 `;
 
 const CenterWrapper = styled.section`
   width: 69.9rem;
-  background-color: pink;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const SideBarWrapper = styled.aside`
-  background-color: purple;
+  background-color: ${({ theme }) => theme.colors.white};
   width: 28.2rem;
   height: 100vh;
+  border-left: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
   position: sticky;
   top: 0;
 `;
