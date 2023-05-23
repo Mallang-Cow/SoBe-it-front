@@ -468,7 +468,7 @@ const AmountInput = styled.input`
   border: 1px solid #ddd;
   border-radius: 0.4rem;
   text-align: center;
-  font-size: 15px;
+  font-size: 1.2rem;
   margin-top: 1.24rem;
   margin-left: 28.5rem;
   color: #845EC2;
