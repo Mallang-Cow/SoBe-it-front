@@ -1,9 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { getStatList } from "../../../api/getStatList";
+import { useMutation } from "react-query";
+import { CATEGORY } from "../../../core/expenditureCategory";
 
 export default function ConsumptionList() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
+  const [data, setData] = useState([]);
+
+  const { mutate: loadList } = useMutation(getStatList, {
+    onSuccess: (response) => {
+      setData(response);
+    },
+    onError: () => {
+      console.log("안돼");
+    },
+  });
+  const [date, setDate] = useState({ year: year, month: month + 1 });
+
+  useEffect(() => {
+    {
+      date && loadList(date);
+    }
+  }, []);
 
   function increaseMonth() {
     if (month < 11) {
@@ -21,6 +41,7 @@ export default function ConsumptionList() {
       setYear(year - 1);
     }
   }
+
   return (
     <>
       <Year>
@@ -46,59 +67,33 @@ export default function ConsumptionList() {
         </Month>
         <Amount>
           <p className="small">이번 달 지출 금액 </p>
-          <p className="big">10,000원</p>
+          <p className="big">{data.monthAmount?.toLocaleString("en-US")}원</p>
         </Amount>
       </HeaderWrapper>
       <Body>
-        {/* 여기부터 반복 */}
-        <Contents>
-          <Head>
-            <p className="date">23-05-11</p>
-            <p className="price">23,000원</p>
-          </Head>
-          <Content>
-            <Wrap>
-              <Category>식비</Category>
-              <Context>마라탕</Context>
-            </Wrap>
-            <Price>10,000원</Price>
-          </Content>
-          <Content>
-            <Wrap>
-              <Category>패션/미용</Category>
-              <Context>아이라이너</Context>
-            </Wrap>
-            <Price>13,000원</Price>
-          </Content>
-        </Contents>
-        {/* 여기까지 반복 */}
-        <Contents>
-          <Head>
-            <p className="date">23-05-11</p>
-            <p className="price">23,000원</p>
-          </Head>
-          <Content>
-            <Wrap>
-              <Category>식비</Category>
-              <Context>마라탕</Context>
-            </Wrap>
-            <Price>10,000원</Price>
-          </Content>
-          <Content>
-            <Wrap>
-              <Category>패션/미용</Category>
-              <Context>아이라이너</Context>
-            </Wrap>
-            <Price>13,000원</Price>
-          </Content>
-          <Content>
-            <Wrap>
-              <Category>패션/미용</Category>
-              <Context>아이라이너</Context>
-            </Wrap>
-            <Price>13,000원</Price>
-          </Content>
-        </Contents>
+        {/* 날짜 있는 만큼 반복 */}
+        <>
+          {data?.data?.map((x) => (
+            <Contents>
+              <Head>
+                <p className="date">{x.date}</p>
+                <p className="price">{x.amount?.toLocaleString("en-US")}원</p>
+              </Head>
+              {/* 지출 내역 있는 만큼 반복 */}
+              <>
+                {x.list.map((y) => (
+                  <Content>
+                    <Wrap>
+                      <Category>{CATEGORY.filter(({ id }) => id === y.expenditureCategory)[0].value}</Category>
+                      <Context>{y.context}</Context>
+                    </Wrap>
+                    <Price>{y.amount?.toLocaleString("en-US")}원</Price>
+                  </Content>
+                ))}
+              </>
+            </Contents>
+          ))}
+        </>
       </Body>
     </>
   );

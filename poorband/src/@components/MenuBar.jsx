@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserSeq } = props;
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -22,6 +23,8 @@ export default function MenuBar(props) {
               onClick={() => {
                 setCenterContent("home");
               }}>
+              {" "}
+              <span class="material-symbols-outlined">home</span>
               Home
             </MenuBarItem>
           )}
@@ -35,6 +38,8 @@ export default function MenuBar(props) {
               onClick={() => {
                 setCenterContent("statistics");
               }}>
+              {" "}
+              <span class="material-symbols-outlined">pie_chart</span>
               Statistics
             </MenuBarItem>
           )}
@@ -47,6 +52,7 @@ export default function MenuBar(props) {
               onClick={() => {
                 setCenterContent("notifications");
               }}>
+              <span class="material-symbols-outlined">notifications</span>
               Notifications
             </MenuBarItem>
           )}
@@ -61,14 +67,28 @@ export default function MenuBar(props) {
             setCenterContent("profile");
             //setUserSeq(현재유저번호);
           }}>
-          <img
-            id="profile-image"
-            src="https://item.kakaocdn.net/do/1d495862f49c38232ca8b6cc6a9679a0effd194bae87d73dd00522794070855d"
-            alt="프로필사진"
-          />
-          <span>닉네임</span>
-          <span>아이디</span>
-          <span>더보기</span>
+          <div>
+            <table>
+              <tr>
+                <td rowSpan={2}>
+                  <img
+                    id="profile-image"
+                    src="https://item.kakaocdn.net/do/1d495862f49c38232ca8b6cc6a9679a0effd194bae87d73dd00522794070855d"
+                    alt="프로필사진"
+                  />
+                </td>
+                <td>닉네임</td>
+                <td rowSpan={2}>
+                  <button>
+                    <span class="material-symbols-outlined">more_vert</span>
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>아이디</td>
+              </tr>
+            </table>
+          </div>
         </ProfileWrapper>
         <span class="material-symbols-outlined">logout</span>
         <button>로그아웃</button>
@@ -85,13 +105,8 @@ const Wrapper = styled.li`
 
   background-color: white;
 
-  margin: "-291.31 -434.56";
+  ${({ theme }) => theme.fonts.bold};
 
-  width: 12.88;
-  height: 67.5;
-
-  display: flex;
-  justify-content: space-between;
 `;
 
 const HeaderWrapper = styled.li`
@@ -99,27 +114,34 @@ const HeaderWrapper = styled.li`
 `;
 const BottomWrapper = styled.li`
   margin: 1rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
 `;
 const MenuWrapper = styled.div`
   :hover {
     background-color: #845ec2;
     color: white;
   }
+
+  span {
+    margin: 1rem;
+  }
 `;
 
 const ProfileWrapper = styled.div`
-  :hover {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  img:hover {
     background-color: #845ec2;
   }
   background-color: white;
 
   #profile-image {
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 1rem;
   }
-  font-size: 2rem;
 `;
 
 const MenuBarItem = styled.ul`
