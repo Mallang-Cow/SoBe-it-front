@@ -10,10 +10,10 @@ export default function HotPostCard(props) {
   };
 
   let content = null;
-  if (like === "liked") {
-    content = <span class="material-symbols-outlined">favorite</span>;
+  if (like === true) {
+    content = <span className="material-symbols-outlined">favorite</span>;
   } else {
-    content = <span class="material-symbols-outlined">favorite</span>;
+    content = <span className="material-symbols-outlined">favorite</span>;
   }
   return (
     <Wrapper>
@@ -30,14 +30,16 @@ export default function HotPostCard(props) {
         </div>
         <div className="likeIcon" onClick={handleLike}>
           {like ? (
-            <span class="material-symbols-outlined">favorite</span>
+            <span id="filledIcon" className="material-symbols-outlined">
+              favorite
+            </span>
           ) : (
-            <span class="material-symbols-outlined">chat_bubble</span>
+            <span className="material-symbols-outlined">favorite</span>
           )}
         </div>
         <span>{SIDEBAR_DETAIL.likeCnt}</span>
         <div>
-          <span class="material-symbols-outlined">chat_bubble</span>
+          <span className="material-symbols-outlined">chat_bubble</span>
         </div>
         <span>{SIDEBAR_DETAIL.commentCnt}</span>
       </ReceiptContainer>
@@ -82,7 +84,8 @@ const ReceiptContainer = styled.div`
     justify-content: flex-end;
   }
 
-  .filledIcon {
-    font-variation-settings: "FILL" 0, "GRAD" 0;
+  #filledIcon {
+    fill: 1;
+    color: red;
   }
 `;

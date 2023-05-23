@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserSeq } = props;
@@ -15,7 +16,7 @@ export default function MenuBar(props) {
         <MenuWrapper>
           {centerContent === "home" ? (
             <ActiveMenuBarItem>
-              <span class="material-symbols-outlined">home</span>
+              <span className="material-symbols-outlined">home</span>
               Home
             </ActiveMenuBarItem>
           ) : (
@@ -24,13 +25,13 @@ export default function MenuBar(props) {
                 setCenterContent("home");
               }}>
               {" "}
-              <span class="material-symbols-outlined">home</span>
+              <span className="material-symbols-outlined">home</span>
               Home
             </MenuBarItem>
           )}
           {centerContent === "statistics" ? (
             <ActiveMenuBarItem>
-              <span class="material-symbols-outlined">pie_chart</span>
+              <span className="material-symbols-outlined">pie_chart</span>
               Statistics
             </ActiveMenuBarItem>
           ) : (
@@ -39,25 +40,25 @@ export default function MenuBar(props) {
                 setCenterContent("statistics");
               }}>
               {" "}
-              <span class="material-symbols-outlined">pie_chart</span>
+              <span className="material-symbols-outlined">pie_chart</span>
               Statistics
             </MenuBarItem>
           )}
           {centerContent === "notifications" ? (
             <ActiveMenuBarItem>
-              <span class="material-symbols-outlined">notifications</span>Notifications
+              <span className="material-symbols-outlined">notifications</span>Notifications
             </ActiveMenuBarItem>
           ) : (
             <MenuBarItem
               onClick={() => {
                 setCenterContent("notifications");
               }}>
-              <span class="material-symbols-outlined">notifications</span>
+              <span className="material-symbols-outlined">notifications</span>
               Notifications
             </MenuBarItem>
           )}
           <MenuBarItem>
-            <span class="material-symbols-outlined">settings</span>Settings
+            <span className="material-symbols-outlined">settings</span>Settings
           </MenuBarItem>
         </MenuWrapper>
       </HeaderWrapper>
@@ -67,31 +68,23 @@ export default function MenuBar(props) {
             setCenterContent("profile");
             //setUserSeq(현재유저번호);
           }}>
-          <div>
-            <table>
-              <tr>
-                <td rowSpan={2}>
-                  <img
-                    id="profile-image"
-                    src="https://item.kakaocdn.net/do/1d495862f49c38232ca8b6cc6a9679a0effd194bae87d73dd00522794070855d"
-                    alt="프로필사진"
-                  />
-                </td>
-                <td>닉네임</td>
-                <td rowSpan={2}>
-                  <button>
-                    <span class="material-symbols-outlined">more_vert</span>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td>아이디</td>
-              </tr>
-            </table>
-          </div>
+          <ProfileImgWrapper>
+            <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
+          </ProfileImgWrapper>
+          <ProfileInfoWrapper>
+            <p>{SIDEBAR_DETAIL.user.nickname}</p>
+            <p id="username">{SIDEBAR_DETAIL.user.userName}</p>
+          </ProfileInfoWrapper>
+          <ProfileMenuWrapper>
+            <button>
+              <span className="material-symbols-outlined">more_vert</span>
+            </button>
+          </ProfileMenuWrapper>
         </ProfileWrapper>
-        <span class="material-symbols-outlined">logout</span>
-        <button>로그아웃</button>
+        <LogoutWrapper>
+          <span className="material-symbols-outlined">logout</span>
+          <button>로그아웃</button>
+        </LogoutWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -104,17 +97,16 @@ const Wrapper = styled.li`
   height: 100%;
 
   background-color: white;
-
-  ${({ theme }) => theme.fonts.bold};
-
 `;
 
 const HeaderWrapper = styled.li`
   margin: 1rem;
+  ${({ theme }) => theme.fonts.bold};
 `;
 const BottomWrapper = styled.li`
   margin: 1rem;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  ${({ theme }) => theme.fonts.regular};
 `;
 const MenuWrapper = styled.div`
   :hover {
@@ -153,3 +145,21 @@ const ActiveMenuBarItem = styled.ul`
   background-color: white;
   font-size: 2rem;
 `;
+
+const LogoutWrapper = styled.ul`
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+
+  button {
+    padding: 0 2rem;
+  }
+`;
+
+const ProfileImgWrapper = styled.ul``;
+const ProfileInfoWrapper = styled.ul`
+  #username {
+    ${({ theme }) => theme.fonts.light};
+  }
+`;
+const ProfileMenuWrapper = styled.ul``;
