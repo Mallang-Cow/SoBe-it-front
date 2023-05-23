@@ -26,7 +26,7 @@ export default function FindId() {
       </FormContainer>
         
       <ButtonContainer>
-        <button onClick={ findId }>아이디 찾기</button>
+        <button>아이디 찾기</button>
       </ButtonContainer>
     </FindIdWrapper>
   );
