@@ -9,13 +9,12 @@ export default function WriteForm() {
   const [isConsumeWrite, setIsConsumeWrite] = useState(1); 
   const [isButton1Clicked, setIsButton1Clicked] = useState(true);
 
-
   const [category, setCategory] = useState('');
   const [consumeText, setconsumeText] = useState("");
   const [consumeDate, setconsumeDate] = useState(new Date());
   const [financialText, setfinancialText] = useState("");
   const [status, setStatus] = useState(1);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
 
   const [newData, setnewData] = useState({
     "status":status,
@@ -132,7 +131,7 @@ export default function WriteForm() {
               <TopWrapper>
                 <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
                 <StyledSelect1 value={category} onChange={handleCategoryChange}>
-                  <option value="">카테고리 ↓</option>
+                  <option value="">카테고리 ⬇️</option>
                   <option value="1">식비</option>
                   <option value="2">패션/미용</option>
                   <option value="3">생활용품</option>
@@ -176,7 +175,7 @@ export default function WriteForm() {
                     image
                   </span>
                 </FileLabel>  
-                <input type="file" accept="image/*" onChange={handleFileUpload} style={{display: 'none'}}/>
+                <input type="file" name="file" id="file" accept="image/*" onChange={handleFileUpload} style={{display: 'none'}}/>
                 <PermissionBottomDiv></PermissionBottomDiv>
                 <AmountInput type="text" placeholder="금액 입력" onChange={(e) => handleAmountChange(e)} value={addComma(amount) || ""}/>
               </BottomWrapper>
@@ -185,7 +184,7 @@ export default function WriteForm() {
         )}
         <SubmitAndPrivacySet>
           <StyledSelect2 value={status} onChange={handleStatusChage}>
-            <option value="">공개여부 ↓</option>
+            <option value="">공개여부 ⬇️</option>
             <option value="1">전체공개</option>
             <option value="2">맞팔공개</option>
             <option value="3">비공개</option>
@@ -201,17 +200,22 @@ const WriteFormWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-
+// 카테고리 셀렉트
 const StyledSelect1 = styled.select`
   option {
     color : #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
+  
   width: 9rem;
   height: 100%;
   border-radius: 3rem;
   background-color: #845EC2;
   ${({ theme }) => theme.fonts.regular};
-  font-style: normal;
+  font-size: 12px;
   color: white;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
   text-align: center;
@@ -219,25 +223,30 @@ const StyledSelect1 = styled.select`
   justify-content: center;
 `;
 
+// 공개여부 셀렉트
 const StyledSelect2 = styled.select`
 option {
     color : #845EC2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
   width: 9.4rem;
   height: 2.65rem;
-
-  padding: 5px 5px;
+  /* padding: 5px 5px; */
   border-radius: 3rem;
   border: 1px solid #845EC2;
   background-color: white;
   ${({ theme }) => theme.fonts.regular};
-  font-style: normal;
+  font-size: 12px;
   line-height: 18px;  
   color: #845EC2;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
   text-align: center;
   margin-left: auto;
-`
+  display: flex;
+`;
 
 const ConsumeFormWrapper=styled.section` 
 
@@ -410,7 +419,8 @@ const SubmitButton = styled.button`
   height: 2.65rem;
   border-radius: 3rem;
   background-color: #845EC2;
-  ${({ theme }) => theme.fonts.regular};
+  ${({ theme }) => theme.fonts.bold};
+  font-size: 12px;
   font-style: normal;
   color: white;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
