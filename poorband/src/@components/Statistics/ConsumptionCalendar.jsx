@@ -27,6 +27,7 @@ export default function ConsumptionCalendar() {
 
   const { mutate: loadCalendar } = useMutation(getStatCalendar, {
     onSuccess: (response) => {
+      console.log(response);
       setData(response);
     },
     onError: () => {
@@ -50,6 +51,7 @@ export default function ConsumptionCalendar() {
       setYear(year - 1);
     }
   }
+  console.log(data);
   return (
     <>
       <Year>
@@ -79,25 +81,26 @@ export default function ConsumptionCalendar() {
           <p className="big">{data.monthAmount ? data.monthAmount?.toLocaleString("en-US") : 0}원</p>
         </Amount>
         <CalendarWrapper>
-          {data && (
-            <Calendar
-              locale={"en"}
-              calendarType={"US"}
-              // formatDay={(locale, date) => moment(date).format("DD")}
-              formatShortWeekday={(locale, monthDate) => ["S", "M", "T", "W", "T", "F", "S"][monthDate.getDay()]}
-              activeStartDate={monthDate}
-              showNavigation={false}
-              showNeighboringMonth={false}
-              className="mx-auto w-full text-sm border-b"
-              tileContent={(monthDate) => {
-                const arr = JSON.stringify(moment(monthDate)._i.date);
-                const idx = Number(arr[9] + arr[10] - 1);
-                const price = data?.data[idx]?.amount;
-                console.log(data.data[0].amount);
-                return <>{<div className="price">{/* {price?.toLocaleString("en-US")} */}</div>}</>;
-              }}
-            />
-          )}
+          <Calendar
+            locale={"en"}
+            calendarType={"US"}
+            // formatDay={(locale, date) => moment(date).format("DD")}
+            formatShortWeekday={(locale, monthDate) => ["S", "M", "T", "W", "T", "F", "S"][monthDate.getDay()]}
+            activeStartDate={monthDate}
+            showNavigation={false}
+            showNeighboringMonth={false}
+            className="mx-auto w-full text-sm border-b"
+            tileContent={(monthDate) => {
+              const arr = moment(monthDate)._i.date.toString();
+              const idx = Number(arr[8] + arr[9]) - 1;
+              console.log(data);
+              const price = data && !data?.data[idx].amount ? data?.data[idx].amount : 0;
+
+              //console.log(arr[8] + arr[9]);
+              //console.log(arr);
+              return <>{<div className="price">{/* {price?.toLocaleString("en-US")} */}</div>}</>;
+            }}
+          />
         </CalendarWrapper>
       </Body>
     </>
