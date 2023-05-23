@@ -11,7 +11,7 @@ export default function SearchBar() {
               event.preventDefault();
               const content = event.target;
             }}></form>
-          <input type="text" name="search" placeholder="search" />
+          <input id="text" type="text" name="search" placeholder="search" />
           <input type="submit" value="검색"></input>
         </article>
       </Container>
@@ -23,5 +23,12 @@ const Container = styled.li`
   padding: 2rem;
 
   input {
-    background-color: ${({ theme }) => theme.colors.lightgrey_1}
+    height: 3rem;
+    border: 1px #cccccc solid;
+  }
+
+  input:focus {
+    border-color: #0982f0;
+    outline: none;
+  }
 `;
