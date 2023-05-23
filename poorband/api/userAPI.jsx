@@ -11,3 +11,7 @@ export function signup(userDTO) {
 export function findId(findIdDTO) {
   return call("/auth/findid", "POST", findIdDTO);
 }
+
+export function findPassword(findPasswordDTO) {
+  return call("/auth/findpassword", "POST", findPasswordDTO);
+}
