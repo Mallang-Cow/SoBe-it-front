@@ -15,7 +15,6 @@ export default function ArticleCard(props) {
   const [img, setImg] = useState(ARTICLE_DETAIL.imageUrl);
   const [isLiked, setIsLiked] = useState(ARTICLE_DETAIL.liked);
   const [isVoted, setIsVoted] = useState(ARTICLE_DETAIL.voted);
-  console.log(TIER[ARTICLE_DETAIL.user.userTier]);
   return (
     <Wrapper>
       <ProfileContainer>
