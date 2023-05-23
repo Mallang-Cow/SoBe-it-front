@@ -32,6 +32,10 @@ export default function Login() {
     loginUser(loginData);
   };
 
+  const navigateToRegister = () => {
+    navigate("/register");
+  };
+
   const navigateToFindId = () => {
     navigate("/find-id");
   };
@@ -54,7 +58,7 @@ export default function Login() {
         <button onClick={ login }>Log in</button>
       </FormContainer>
       <ButtonContainer>
-        <button>회원가입</button>
+        <button onClick={ navigateToRegister }>회원가입</button>
         <button onClick={ navigateToFindId }>아이디 찾기</button>
         <button onClick={ navigateToFindPassword }>비밀번호 찾기</button>
       </ButtonContainer>
