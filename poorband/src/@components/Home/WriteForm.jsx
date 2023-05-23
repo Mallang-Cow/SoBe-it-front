@@ -9,7 +9,6 @@ export default function WriteForm() {
   const [isConsumeWrite, setIsConsumeWrite] = useState(1); 
   const [isButton1Clicked, setIsButton1Clicked] = useState(true);
 
-
   const [category, setCategory] = useState('');
   const [consumeText, setconsumeText] = useState("");
   const [consumeDate, setconsumeDate] = useState(new Date());
