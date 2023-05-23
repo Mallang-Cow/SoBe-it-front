@@ -4,8 +4,6 @@ import HotPostCard from "./HotPostCard";
 import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
 
-// import "bootstrap/dist/css/bootstrap.css";
-
 export default function SideBar() {
   return (
     <>
@@ -30,7 +28,8 @@ export default function SideBar() {
 }
 
 const Wrapper = styled.div`
-  background-color: #eee;
+  height: 100%;
+  background-color: white;
 `;
 
 const TitleContainer = styled.div`
