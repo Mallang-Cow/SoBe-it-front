@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ArticleCard from "../common/ArticleCard";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
@@ -9,20 +9,26 @@ import { styled } from "styled-components";
 
 export default function ArticleDetail(props) {
   const { articleSeq } = props;
+  console.log(articleSeq);
   const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
   return (
     <>
-      <HeaderContainer>{articleType === 1 ? <header>지출 내역</header> : <header>결재 내역</header>}</HeaderContainer>
-      <ArticleCard />
+      <HeaderContainer>
+        <span class="material-symbols-rounded">arrow_back</span>
+        {articleType === 1 ? <header>지출 내역</header> : <header>결재 내역</header>}
+      </HeaderContainer>
+      <ContentWrapper>
+        <ArticleWrapper>
+          <ArticleCard articleSeq={articleSeq} />
+        </ArticleWrapper>
 
-      {/* 댓글 폼 여기 있다가 없어지고 다른 답댓 달면 거기에 뜨게..? */}
-      <CommentForm />
+        <CommentForm />
 
-      {/* 댓글 리스트 (길어지면 컴포넌트 빼기) */}
-      <CommentCard />
-      <CommentCard />
-      <CommentCard />
+        <CommentCard />
+        <CommentCard />
+        <CommentCard />
+      </ContentWrapper>
     </>
   );
 }
@@ -31,6 +37,26 @@ const HeaderContainer = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
+  z-index: 1;
+  padding: 4rem 3rem 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: start;
+  align-items: center;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+
+  ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 2.4rem;
+
+  span {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
 `;
+
+const ArticleWrapper = styled.div`
+  /* border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1}; */
+  margin-bottom: 2.5rem;
+`;
+
+const ContentWrapper = styled.div``;

@@ -4,9 +4,31 @@ import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { CATEGORY } from "../../../core/expenditureCategory";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
+import { useQuery } from "react-query";
 
 export default function ArticleCard(props) {
+  const { articleSeq } = props;
   const nowTime = new Date();
+
+  // 글 정보 가져오기
+  const {
+    data: article,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
+    onSuccess: () => {
+      console.log("Success");
+      console.log(article);
+    },
+    onError: () => {
+      console.log("Error");
+    },
+  });
+
+  // 좋아요
+
+  // 투표하기
 
   const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
   const [status, setStatus] = useState(ARTICLE_DETAIL.status);
@@ -19,65 +41,67 @@ export default function ArticleCard(props) {
   return (
     <Wrapper>
       <ProfileContainer>
-        <img id="profile-img" src={ARTICLE_DETAIL.user.profileImageUrl} alt="프로필사진" />
+        <img id="profile-img" src={article?.user?.profileImageUrl} alt="프로필사진" />
         <div id="name-container">
-          <p className="bold">{ARTICLE_DETAIL.user.nickname}</p>
+          <p className="bold">{article?.user.nickname}</p>
           <p className="bold" id="userId">
-            @{ARTICLE_DETAIL.user.userId}
+            {article?.user?.userId}
           </p>
-          <img id="tier-img" src={TIER[ARTICLE_DETAIL.user.userTier]} alt="티어" />
-          <p className="grey">• {ARTICLE_DETAIL.writtenDate}</p>
+          <img id="tier-img" src={TIER[article?.user?.userTier]} alt="티어" />
+          <p className="grey">• {article?.writtenDate}</p>
         </div>
 
         {/* 현재 시간과 비교해서 보여주기 */}
-        {status === 1 && <p className="grey status">전체 공개</p>}
-        {status === 2 && <p className="grey status">맞팔 공개</p>}
-        {status === 3 && <p className="grey status">비공개</p>}
-        {isMine && <p className="material-symbols-outlined">more_vert</p>}
+        {article?.status === 1 && <p className="grey status">전체 공개</p>}
+        {article?.status === 2 && <p className="grey status">맞팔 공개</p>}
+        {article?.status === 3 && <p className="grey status">비공개</p>}
+        {article?.mine && <span class="material-symbols-outlined more">more_vert</span>}
         {/* 더보기 아이콘 넣기 */}
       </ProfileContainer>
 
-      <TitleContainer>{articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
+      <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
 
       {/* 지출 내역 - 날짜, 분류 */}
-      {articleType === 1 && (
+      {article?.articleType === 1 && (
+        <>
           <DateContiner>
             <p className="category">날짜</p>
-            <p>{ARTICLE_DETAIL.consumptionDate}</p>
+            <p>{article?.consumptionDate}</p>
           </DateContiner>
-        ) && (
+
           <CategoryContainer>
             <p className="category">분류</p>
             <p className="content">{CATEGORY[category]}</p>
           </CategoryContainer>
-        )}
+        </>
+      )}
 
       <ContextContainer>
         <p className="category">내용</p>
-        <p className="content">{ARTICLE_DETAIL.articleText}</p>
+        <p className="content">{article?.articleText}</p>
       </ContextContainer>
-      {img && (
+      {article?.imageUrl && (
         <ImageContainer>
-          <img src={img} alt="이미지"></img>
+          <img src={article?.imageUrl} alt="이미지"></img>
         </ImageContainer>
       )}
       <PriceContainer>
         <p className="category">금액</p>
-        <p className="content">{ARTICLE_DETAIL.amount}원</p>
+        <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
       </PriceContainer>
 
-      {articleType === 2 && (
+      {article?.articleType === 2 && (
         <VContatiner>
           {isVoted ? (
             <VoteResultContainer>
               <div className="container">
-                <p>허가 {ARTICLE_DETAIL.agree}</p>
-                <p>불허 {ARTICLE_DETAIL.disagree}</p>
+                <p>허가 {article?.agree}</p>
+                <p>불허 {article?.disagree}</p>
               </div>
 
               <div className="container">
-                <p>{ARTICLE_DETAIL.agreeRate}</p>
-                <p>{ARTICLE_DETAIL.disagreeRate}</p>
+                <p>{article?.agreeRate}</p>
+                <p>{article?.disagreeRate}</p>
               </div>
 
               {/* 그래프 */}
@@ -99,12 +123,12 @@ export default function ArticleCard(props) {
           ) : (
             <p class="material-symbols-rounded">favorite</p>
           )}
-          <p>{ARTICLE_DETAIL.likeCnt}</p>
+          <p>{article?.likeCnt}</p>
         </Like>
 
         <Comment>
           <span class="material-symbols-rounded">comment</span>
-          <p>{ARTICLE_DETAIL.commentCnt}</p>
+          <p>{article?.commentCnt}</p>
         </Comment>
       </FooterContainer>
     </Wrapper>
@@ -113,6 +137,7 @@ export default function ArticleCard(props) {
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   padding: 3rem;
+  ${({ theme }) => theme.shadows.card};
   p.category {
     font: ${({ theme }) => theme.fonts.medium};
     font-size: 1.6rem;
@@ -168,6 +193,11 @@ const ProfileContainer = styled.div`
 
     color: ${({ theme }) => theme.colors.darkgrey_1};
     text-align: right;
+  }
+
+  .more {
+    font-size: 2rem;
+    margin: 0 1rem;
   }
 
   #tier-img {
@@ -276,7 +306,7 @@ const VoteResultContainer = styled.div`
 `;
 
 const FooterContainer = styled.div`
-  margin: 0.5rem 0;
+  margin: 1rem 0;
   display: flex;
   p {
     font-size: 1.6rem;
