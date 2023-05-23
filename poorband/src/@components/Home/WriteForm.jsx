@@ -15,7 +15,7 @@ export default function WriteForm() {
   const [consumeDate, setconsumeDate] = useState(new Date());
   const [financialText, setfinancialText] = useState("");
   const [status, setStatus] = useState(1);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(null);
 
   const [newData, setnewData] = useState({
     "status":status,
@@ -410,7 +410,8 @@ const SubmitButton = styled.button`
   height: 2.65rem;
   border-radius: 3rem;
   background-color: #845EC2;
-  ${({ theme }) => theme.fonts.regular};
+  ${({ theme }) => theme.fonts.bold};
+  font-size: 12px;
   font-style: normal;
   color: white;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
