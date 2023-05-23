@@ -8,6 +8,7 @@ export default function SideChallengeCard(props) {
         <div>
           <h3>하루 만원 챌린지🔥🔥🔥</h3>
           <div id="progress-box"></div>
+
           <BarWrapper>
             <ProgressBarWrapper>
               <ProgressBarContainer>
@@ -54,7 +55,7 @@ const SideChallengeContainer = styled.div`
   }
 
   #progress-box {
-    width:10rem,
+    width: 10rem;
     height: 5rem;
     color: blue;
   }

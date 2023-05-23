@@ -26,7 +26,7 @@ const HomeTag = styled.h2`
   width: 639px;
   height: 30px;
 
-  margin-bottom: 1vh;
+  margin-bottom: 1.5rem;
   margin-left: 1.875rem;
   margin-top: 3vh;
 

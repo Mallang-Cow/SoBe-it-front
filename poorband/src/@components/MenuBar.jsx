@@ -106,6 +106,7 @@ const Wrapper = styled.li`
   background-color: white;
 
   ${({ theme }) => theme.fonts.bold};
+
 `;
 
 const HeaderWrapper = styled.li`

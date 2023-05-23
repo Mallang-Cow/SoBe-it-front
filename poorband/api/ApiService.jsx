@@ -8,7 +8,8 @@ const apiInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json"
-  }
+  },
+  withCredentials: true
 });
 
 // 인터셉터 추가
@@ -34,7 +35,7 @@ export function call(api, method, request) {
     data: request ? JSON.stringify(request) : undefined
   })
     .then((response) => {
-      if (!response.data) {
+      if (response.data !== false && !response.data) {
         return Promise.reject(response);
       }
 
