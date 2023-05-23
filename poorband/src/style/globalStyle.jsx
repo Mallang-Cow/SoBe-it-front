@@ -57,6 +57,9 @@ export const GlobalStyle = createGlobalStyle`
   -moz-appearance: none;
   appearance: none;
   }
+  ::-webkit-scrollbar {
+  display: none;
+}
 
   /* 위에가 styled-reset 내용 */
 
@@ -66,6 +69,7 @@ export const GlobalStyle = createGlobalStyle`
   html {
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+    -ms-overflow-style: none;
 
     scroll-behavior: smooth;
 
