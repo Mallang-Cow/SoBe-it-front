@@ -1,9 +1,31 @@
 import React, { useRef } from "react";
 import { styled } from "styled-components";
+import { useMutation } from "react-query";
+import { findPassword } from "../../api/userAPI";
 
 export default function FindPassword() {
   const userNameRef = useRef(null);
   const userPhoneNumberRef = useRef(null);
+
+  const { mutate: findUserPassword } = useMutation(findPassword, {
+    onSuccess: (response) => {
+      alert(response);
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("회원 정보를 다시 확인해 주세요.");
+      }
+    },
+  });
+
+  const handleFindPassword = async () => {
+    const findPasswordDTO = {
+      userName: userNameRef.current.value,
+      phoneNumber: userPhoneNumberRef.current.value
+    };
+
+    findUserPassword(findPasswordDTO);
+  }
 
   return (
     <FindPasswordWrapper>
@@ -26,7 +48,7 @@ export default function FindPassword() {
       </FormContainer>
         
       <ButtonContainer>
-        <button>비밀번호 찾기</button>
+        <button onClick={ handleFindPassword }>비밀번호 찾기</button>
       </ButtonContainer>
     </FindPasswordWrapper>
   );
