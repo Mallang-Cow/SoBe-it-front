@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { signin } from "../../api/user";
+import { signin } from "../../api/userAPI";
 
 export default function Login() {
   const idRef = useRef(null);
@@ -32,6 +32,10 @@ export default function Login() {
     loginUser(loginData);
   };
 
+  const navigateToFindId = () => {
+    navigate("/find-id");
+  };
+
   return (
     <LoginWrapper>
       <LogoContainer>
@@ -41,14 +45,14 @@ export default function Login() {
         <span>Log in</span>
       </TitleContainer>
       <FormContainer>
-        <input type="text" ref={idRef} />
-        <input type="password" ref={passwordRef} />
-        <button onClick={login}>Log in</button>
+        <input type="text" ref={ idRef } />
+        <input type="password" ref={ passwordRef } />
+        <button onClick={ login }>Log in</button>
       </FormContainer>
       <ButtonContainer>
-        <span>회원가입</span>
-        <span>아이디 찾기</span>
-        <span>비밀번호 찾기</span>
+        <button>회원가입</button>
+        <button onClick={ navigateToFindId }>아이디 찾기</button>
+        <button>비밀번호 찾기</button>
       </ButtonContainer>
     </LoginWrapper>
   );

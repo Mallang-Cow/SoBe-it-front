@@ -5,35 +5,23 @@ export default function SearchBar() {
   return (
     <>
       <Container>
-        <div className="header">
-          <input type="text" className="iptSearch" />
-          <button type="button" className="search">
-            <span>검색</span>
-          </button>
-        </div>
+        <article>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              const content = event.target;
+            }}></form>
+          <input type="text" name="search" placeholder="search" />
+          <input type="submit" value="검색"></input>
+        </article>
       </Container>
     </>
   );
 }
 
-const Container = styled.div`
-  .header {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
-    background-color: white;
-  }
-  .iptSearch {
-    width: 100%;
-    border: 0.5rem solid #eee;
-    line-height: 2rem;
-    padding: 0px 1rem;
-    margin-right: 1rem;
-  }
-  button.search {
-    width: 100%;
-    background-color: #eee;
-    padding: 1rem 5rem;
-  }
+const Container = styled.li`
+  padding: 2rem;
+
+  input {
+    background-color: ${({ theme }) => theme.colors.lightgrey_1}
 `;
