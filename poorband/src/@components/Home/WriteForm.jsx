@@ -166,7 +166,7 @@ export default function WriteForm() {
         alert("금액을 입력해주세요.");
         return;
       }
-      
+
       if (newData.articleText&&newData.amount&&newData.status){
         // API 호출
         newData.consumptionDate = formatDate(consumeDate);
@@ -296,7 +296,7 @@ const StyledSelect1 = styled.select`
   border-radius: 3rem;
   background-color: #845EC2;
   ${({ theme }) => theme.fonts.regular};
-  font-size: 12px;
+  font-size: 1.1rem;
   color: white;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
   text-align: center;
@@ -315,13 +315,11 @@ option {
   }
   width: 9.4rem;
   height: 2.65rem;
-  /* padding: 5px 5px; */
   border-radius: 3rem;
   border: 1px solid #845EC2;
   background-color: white;
   ${({ theme }) => theme.fonts.regular};
-  font-size: 12px;
-  line-height: 18px;  
+  font-size: 1.1rem;
   color: #845EC2;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
   text-align: center;
@@ -339,22 +337,22 @@ const ConsumeFormWrapper=styled.section`
   }
   .react-datepicker__input-container input {
     width: 10rem;
-    height: 27px;
+    height: 2.3rem;
     border: 1px solid #ddd;
-    font-size: 13px;
+    font-size: 1.1rem;
     text-align: center;
     color: #707070;
   }
   
   display: flex;
-  width: 699px;
+  width: 100%;
   text-align: center;
   flex-wrap: wrap;
 `;
 
 const PermissionFormWrapper = styled.section`
   display: flex;
-  width: 699px;
+  width: 100%;
   text-align: center;
   flex-wrap: wrap;
 `;
@@ -366,7 +364,7 @@ const Button1=styled.button`
   font-family: 'Spoqa Han Sans Neo';
   font-style: normal;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1.7rem;
   line-height: 1.25rem;
   /* identical to box height */
 
@@ -388,7 +386,7 @@ const Button2=styled.button`
   font-family: 'Spoqa Han Sans Neo';
   font-style: normal;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1.7rem;
   line-height: 1.25rem;
   /* identical to box height */
 
@@ -420,7 +418,7 @@ const BottomWrapper = styled.section`
 
 const TopWrapper = styled.section`
   display: flex;
-  height: 27px;
+  height: 2.3rem;
 `
 
 const Image=styled.img`
@@ -441,7 +439,7 @@ const FileLabel = styled.label`
   height: 5rem;
 
   & > span {
-    font-size: 30px;
+    font-size: 3rem;
   }
 `
 const FinancialTextWrapper = styled.div`
@@ -456,7 +454,7 @@ const FinancialText = styled.input`
   border: 1px solid #ddd;
   border-radius: 0.4rem;
   text-align: center;
-  font-size: 14px;
+  font-size: 1.25rem;
   /* margin-top: 1.24rem; */
 `;
 
@@ -478,7 +476,7 @@ const AmountInput = styled.input`
 
 const InputText = styled.textarea`
   width: 640px;
-  height: 68px;
+  height: 6.7rem;
   border: 1px solid #ddd;
   text-align: left;
   margin-left: 1.5rem;
@@ -501,7 +499,7 @@ const SubmitButton = styled.button`
   border-radius: 3rem;
   background-color: #845EC2;
   ${({ theme }) => theme.fonts.bold};
-  font-size: 12px;
+  font-size: 1.1rem;
   font-style: normal;
   color: white;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
