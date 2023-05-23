@@ -29,6 +29,6 @@ export const ARTICLE_DETAIL = {
   agreeRate: 0,
   disagreeRate: 0,
   mine: true,
-  liked: false,
+  liked: true,
   voted: false,
 };

@@ -12,6 +12,7 @@ const colors = {
   darkpurple: "#F5F4F6",
   mainpurple: "#845EC2",
   black: "#000000",
+  red: "#ED2727",
 };
 
 const fonts = {
