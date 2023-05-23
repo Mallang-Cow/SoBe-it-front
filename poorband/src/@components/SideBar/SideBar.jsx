@@ -4,8 +4,6 @@ import HotPostCard from "./HotPostCard";
 import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
 
-import "bootstrap/dist/css/bootstrap.css";
-
 export default function SideBar() {
   return (
     <>
