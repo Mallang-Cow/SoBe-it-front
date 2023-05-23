@@ -22,12 +22,13 @@ const Wrapper = styled.div`
   padding: 2rem;
   ${({ theme }) => theme.shadows.card};
   background-color: ${({ theme }) => theme.colors.white};
+  margin-bottom: 2rem;
 
   textarea {
     width: 100%;
     height: 7rem;
     border: none;
-    padding: 1rem;
+    padding: 1.5rem 0.5rem;
     resize: none;
     ${({ theme }) => theme.fonts.medium};
     font-size: 1.6rem;

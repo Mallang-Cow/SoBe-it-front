@@ -121,7 +121,7 @@ export default function ArticleCard(props) {
           {isLiked ? (
             <span class="material-symbols-rounded active">favorite</span>
           ) : (
-            <p class="material-symbols-rounded">favorite</p>
+            <span class="material-symbols-rounded">favorite</span>
           )}
           <p>{article?.likeCnt}</p>
         </Like>

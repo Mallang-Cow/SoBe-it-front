@@ -27,7 +27,10 @@ export default function ArticleDetail(props) {
 
         <CommentCard />
         <CommentCard />
-        <CommentCard />
+        <ReCommentWrapper>
+          <Temp></Temp>
+          <CommentCard />
+        </ReCommentWrapper>
       </ContentWrapper>
     </>
   );
@@ -60,3 +63,13 @@ const ArticleWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div``;
+
+const ReCommentWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+const Temp = styled.div`
+  width: 10rem;
+`;
