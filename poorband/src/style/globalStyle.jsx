@@ -57,6 +57,9 @@ export const GlobalStyle = createGlobalStyle`
   -moz-appearance: none;
   appearance: none;
   }
+  ::-webkit-scrollbar {
+  display: none;
+}
 
   /* 위에가 styled-reset 내용 */
 
@@ -66,6 +69,7 @@ export const GlobalStyle = createGlobalStyle`
   html {
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+    -ms-overflow-style: none;
 
     scroll-behavior: smooth;
 
@@ -99,11 +103,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  @font-face {
-    font-family: 'KOTRAHOPE';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/KOTRAHOPE.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+ 
+  
 `;
