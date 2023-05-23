@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "styled-components";
-import ProgressBar from "react-bootstrap/ProgressBar";
+// import ProgressBar from "react-bootstrap/ProgressBar";
 export default function SideChallengeCard(props) {
   const now = 60;
 
@@ -12,7 +12,7 @@ export default function SideChallengeCard(props) {
           <h3>하루 만원 챌린지🔥🔥🔥</h3>
           <hr></hr>
           <div id="progress-box"></div>
-          <ProgressBar now={now} label={`${now}%`} />
+          {/* <ProgressBar now={now} label={`${now}%`} /> */}
           {/* React Bootstrap 적용 안 됨,, */}
           <div id="remain-container">
             <span className="bold">지출</span>
