@@ -5,8 +5,8 @@ export default function ProgressBar(props) {
   const { basecolor, barcolor, percentage } = props;
   return (
     <>
-      <BaseBar baseColor={basecolor}>
-        <ColorBar barColor={barcolor} percentage={percentage}></ColorBar>
+      <BaseBar basecolor={basecolor}>
+        <ColorBar barcolor={barcolor} percentage={percentage}></ColorBar>
       </BaseBar>
     </>
   );

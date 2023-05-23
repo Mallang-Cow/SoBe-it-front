@@ -85,7 +85,7 @@ export default function ConsumptionList() {
                 {x.list.map((y) => (
                   <Content>
                     <Wrap>
-                      <Category>{CATEGORY.filter(({ id }) => id === y.expenditureCategory)[0].value}</Category>
+                      <Category>{CATEGORY[y.expenditureCategory]}</Category>
                       <Context>{y.context}</Context>
                     </Wrap>
                     <Price>{y.amount?.toLocaleString("en-US")}원</Price>
@@ -106,6 +106,7 @@ const HeaderWrapper = styled.div`
 `;
 const Year = styled.div`
   width: 100%;
+  padding: 0.5rem 0;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   justify-content: center;
@@ -113,7 +114,7 @@ const Year = styled.div`
   p {
     color: ${({ theme }) => theme.colors.black};
     ${({ theme }) => theme.fonts.medium};
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin: 1.5rem 0;
   }
 `;
@@ -121,7 +122,7 @@ const Year = styled.div`
 const Month = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 1.5rem;
+  padding: 2rem;
   ${({ theme }) => theme.fonts.medium};
   span {
     color: ${({ theme }) => theme.colors.darkgrey_1};

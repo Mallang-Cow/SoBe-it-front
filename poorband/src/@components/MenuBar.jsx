@@ -14,7 +14,7 @@ export default function MenuBar(props) {
         <MenuWrapper>
           {centerContent === "home" ? (
             <ActiveMenuBarItem>
-              <span class="material-symbols-outlined">home</span>
+              <span className="material-symbols-outlined">home</span>
               Home
             </ActiveMenuBarItem>
           ) : (
@@ -27,7 +27,7 @@ export default function MenuBar(props) {
           )}
           {centerContent === "statistics" ? (
             <ActiveMenuBarItem>
-              <span class="material-symbols-outlined">pie_chart</span>
+              <span className="material-symbols-outlined">pie_chart</span>
               Statistics
             </ActiveMenuBarItem>
           ) : (
@@ -40,7 +40,7 @@ export default function MenuBar(props) {
           )}
           {centerContent === "notifications" ? (
             <ActiveMenuBarItem>
-              <span class="material-symbols-outlined">notifications</span>Notifications
+              <span className="material-symbols-outlined">notifications</span>Notifications
             </ActiveMenuBarItem>
           ) : (
             <MenuBarItem
@@ -51,7 +51,7 @@ export default function MenuBar(props) {
             </MenuBarItem>
           )}
           <MenuBarItem>
-            <span class="material-symbols-outlined">settings</span>Settings
+            <span className="material-symbols-outlined">settings</span>Settings
           </MenuBarItem>
         </MenuWrapper>
       </HeaderWrapper>
@@ -70,7 +70,7 @@ export default function MenuBar(props) {
           <span>아이디</span>
           <span>더보기</span>
         </ProfileWrapper>
-        <span class="material-symbols-outlined">logout</span>
+        <span className="material-symbols-outlined">logout</span>
         <button>로그아웃</button>
       </BottomWrapper>
     </Wrapper>
