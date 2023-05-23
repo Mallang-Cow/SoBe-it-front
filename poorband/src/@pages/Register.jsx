@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { signup } from "../../api/user";
+import { signup } from "../../api/userAPI";
 import { smsAuthOk, smsAuthRequest } from "../../api/smsAPI";
 
 export default function Register() {

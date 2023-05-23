@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { signin } from "../../api/user";
+import { signin } from "../../api/userAPI";
 
 export default function Login() {
   const idRef = useRef(null);
