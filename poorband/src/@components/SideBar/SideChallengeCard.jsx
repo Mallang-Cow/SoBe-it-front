@@ -2,15 +2,11 @@ import React from "react";
 import { styled } from "styled-components";
 import ChallengeProgressBar from "./ChallengeProgressBar";
 export default function SideChallengeCard(props) {
-  const now = 60;
-
   return (
     <Wrapper>
       <SideChallengeContainer>
         <div>
-          <hr></hr>
           <h3>하루 만원 챌린지🔥🔥🔥</h3>
-          <hr></hr>
           <div id="progress-box"></div>
 
           <BarWrapper>
@@ -36,10 +32,11 @@ export default function SideChallengeCard(props) {
 
 const Wrapper = styled.div`
   background-color: #eee;
-  padding: 1rem;
+  padding: 2rem 1rem;
   * {
     margin: 0.5rem;
   }
+  ${({ theme }) => theme.fonts.regular};
 `;
 
 const SideChallengeContainer = styled.div`
@@ -87,7 +84,6 @@ const ProgressBarWrapper = styled.div`
 `;
 const ProgressBarContainer = styled.div`
   width: 100%;
-  margin: 1.5rem 2rem;
   align-items: center;
   p {
     ${({ theme }) => theme.fonts.regular};

@@ -1,39 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
+import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 
 export default function HotPostCard(props) {
-  const now = 60;
+  const [like, setLike] = useState(false);
 
+  const handleLike = () => {
+    setLike(!like);
+  };
+
+  let content = null;
+  if (like === "liked") {
+    content = <span class="material-symbols-outlined">favorite</span>;
+  } else {
+    content = <span class="material-symbols-outlined">favorite</span>;
+  }
   return (
     <Wrapper>
       <ProfileWrapper>
-        <img
-          id="profile-image"
-          src="https://item.kakaocdn.net/do/1d495862f49c38232ca8b6cc6a9679a0effd194bae87d73dd00522794070855d"
-          alt="프로필사진"
-        />
-        <span>닉네임</span>
+        <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
+        <span>{SIDEBAR_DETAIL.user.nickname}</span>
       </ProfileWrapper>
       <ReceiptContainer>
-        <h1>바쁘다바빠현대사회속단비같은쾌락추구</h1>
+        <h1>{SIDEBAR_DETAIL.articleText}</h1>
         <hr></hr>
         <div id="price">
           <span>금액</span>
-          <span>1200원</span>
+          <span>{SIDEBAR_DETAIL.amount}원</span>
         </div>
-        <span>❤️ 하트</span>
-        <span>🗨️ 댓글</span>
+        <div className="likeIcon" onClick={handleLike}>
+          {like ? (
+            <span class="material-symbols-outlined">favorite</span>
+          ) : (
+            <span class="material-symbols-outlined">chat_bubble</span>
+          )}
+        </div>
+        <span>{SIDEBAR_DETAIL.likeCnt}</span>
+        <div>
+          <span class="material-symbols-outlined">chat_bubble</span>
+        </div>
+        <span>{SIDEBAR_DETAIL.commentCnt}</span>
       </ReceiptContainer>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  background-color: #eee;
-  padding: 1rem;
+  padding: 2rem 1rem;
   * {
     margin: 0.5rem;
   }
+  ${({ theme }) => theme.fonts.regular};
+  font-size: 1.2rem;
 `;
 
 const ProfileWrapper = styled.div`
@@ -62,5 +80,9 @@ const ReceiptContainer = styled.div`
   #price {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .filledIcon {
+    font-variation-settings: "FILL" 0, "GRAD" 0;
   }
 `;
