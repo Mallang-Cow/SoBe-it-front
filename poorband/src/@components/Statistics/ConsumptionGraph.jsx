@@ -1,13 +1,43 @@
-import React, { useState } from "react";
-import { graphData } from "../../../core/graphData";
+import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { ResponsivePie } from "@nivo/pie";
 import ProgressBar from "../common/ProgressBar";
 import { CATEGORY } from "../../../core/expenditureCategory";
+import { useMutation } from "react-query";
+import { getStatGraph } from "../../../api/getStatGraph";
 
 export default function ConsumptionGraph() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
+  const [data, setData] = useState([]);
+  const [date, setDate] = useState({ year: year, month: month + 1 });
+  const color = ["#6B53AE", "#845EC2", "#B393E8", "#C09EEC", "#D3AFF8", "#E4D3FF"];
+  const [graphData, setGraphData] = useState([
+    { id: 1, label: CATEGORY[1], value: 20 },
+    { id: 2, label: CATEGORY[2], value: 20 },
+    { id: 3, label: CATEGORY[3], value: 20 },
+    { id: 4, label: CATEGORY[4], value: 20 },
+    { id: 5, label: CATEGORY[5], value: 20 },
+    { id: 6, label: CATEGORY[6], value: 20 },
+  ]);
+  useEffect(() => {
+    setDate({ year: year, month: month + 1 });
+  }, [month]);
+
+  useEffect(() => {
+    date && loadGraph(date);
+  }, [date]);
+
+  useEffect(() => {}, [data]);
+
+  const { mutate: loadGraph } = useMutation(getStatGraph, {
+    onSuccess: (response) => {
+      setData(response);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   function increaseMonth() {
     if (month < 11) {
@@ -25,6 +55,7 @@ export default function ConsumptionGraph() {
       setYear(year - 1);
     }
   }
+
   return (
     <>
       <Year>
@@ -51,7 +82,7 @@ export default function ConsumptionGraph() {
         </Month>
         <Amount>
           <p className="small">이번 달 지출 금액 </p>
-          <p className="big">10,000원</p>
+          <p className="big">{data.monthAmount ? data.monthAmount?.toLocaleString("en-US") : 0}원</p>
         </Amount>
         <GraphWrapper>
           <ResponsivePie
@@ -61,7 +92,7 @@ export default function ConsumptionGraph() {
             padAngle={0.7}
             cornerRadius={3}
             activeOuterRadiusOffset={8}
-            colors={["#6B53AE", "#845EC2", "#B393E8", "#C09EEC", "#D3AFF8", "#E4D3FF"]}
+            colors={color}
             borderWidth={1}
             borderColor={{
               from: "color",
@@ -69,7 +100,7 @@ export default function ConsumptionGraph() {
             }}
             enableArcLinkLabels={false}
             arcLabel={(d) => `${d.value}%`}
-            arcLabelsTextColor={"#333333"}
+            arcLabelsTextColor={"#000000"}
             arcLabelsSkipAngle={10}
             tooltip={() => <></>}
             legends={[
@@ -80,25 +111,28 @@ export default function ConsumptionGraph() {
                 translateX: 0,
                 translateY: 70,
                 itemsSpacing: 0,
-                itemWidth: 100,
-                itemHeight: 18,
-                itemTextColor: "#333333",
+                itemWidth: 90,
+                itemHeight: 20,
+                itemTextColor: "#000000",
                 itemDirection: "left-to-right",
                 itemOpacity: 1,
-                symbolSize: 18,
+                symbolSize: 20,
                 symbolShape: "circle",
               },
             ]}
           />
         </GraphWrapper>
         <BarWrapper>
-          {CATEGORY.map((c) => (
+          {data?.data?.map((d) => (
             <ProgressBarWrapper>
               <ProgressBarContainer>
-                <p>{c.value}</p>
-                <ProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={20}></ProgressBar>
+                <p>{CATEGORY[d.id]}</p>
+                <ProgressBar
+                  basecolor={"#E7E7E7"}
+                  barcolor={color[d.id]}
+                  percentage={(d.amount / data.monthAmount) * 100}></ProgressBar>
               </ProgressBarContainer>
-              <p>10,000원</p>
+              <p>{d.amount ? d.amount?.toLocaleString("en-US") : 0}원</p>
             </ProgressBarWrapper>
           ))}
         </BarWrapper>
@@ -113,6 +147,7 @@ const Body = styled.div`
 `;
 const Year = styled.div`
   width: 100%;
+  padding: 0.5rem 0;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   justify-content: center;
@@ -120,7 +155,7 @@ const Year = styled.div`
   p {
     color: ${({ theme }) => theme.colors.black};
     ${({ theme }) => theme.fonts.medium};
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin: 1.5rem 0;
   }
 `;
@@ -128,7 +163,7 @@ const Year = styled.div`
 const Month = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 1.5rem;
+  padding: 2rem;
   ${({ theme }) => theme.fonts.medium};
   span {
     color: ${({ theme }) => theme.colors.darkgrey_1};
@@ -177,6 +212,8 @@ const ProgressBarWrapper = styled.div`
     color: ${({ theme }) => theme.colors.darkgrey_2};
     font-size: 1.8rem;
     display: flex;
+    justify-content: end;
+    width: 100%;
     align-items: center;
     width: 12rem;
   }
@@ -190,5 +227,7 @@ const ProgressBarContainer = styled.div`
     color: ${({ theme }) => theme.colors.black};
     font-size: 1.6rem;
     margin-bottom: 1rem;
+    display: flex;
+    justify-content: start;
   }
 `;
