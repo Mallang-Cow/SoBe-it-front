@@ -28,7 +28,8 @@ export default function SideBar() {
 }
 
 const Wrapper = styled.div`
-  background-color: #eee;
+  height: 100%;
+  background-color: white;
 `;
 
 const TitleContainer = styled.div`
