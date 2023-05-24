@@ -139,6 +139,7 @@ export default function ConsumptionGraph() {
               <ProgressBarContainer>
                 <p>{CATEGORY[d.id]}</p>
                 <ProgressBar
+                  reverse={0}
                   basecolor={"#E7E7E7"}
                   barcolor={color[d.id]}
                   percentage={(d.amount / monthAmount) * 100}></ProgressBar>

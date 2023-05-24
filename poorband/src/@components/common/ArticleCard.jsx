@@ -7,6 +7,7 @@ import { TIER } from "../../../core/tierImage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { likeArticle } from "../../../api/likeArticle";
 import { voteArticle } from "../../../api/vote";
+import ProgressBar from "./ProgressBar";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
@@ -133,19 +134,30 @@ export default function ArticleCard(props) {
       {article?.articleType === 2 && (
         <VContatiner>
           {article?.voted ? (
-            <VoteResultContainer>
+            <VoteResultContainer result={article?.agreeRate >= article?.disagreeRate}>
               <div className="container">
-                <p>허가 {article?.agree}</p>
-                <p>불허 {article?.disagree}</p>
+                <p className="allow label">허가</p>
+                <p className="notAllow label">불허 </p>
               </div>
-
               <div className="container">
-                <p>{article?.agreeRate}</p>
-                <p>{article?.disagreeRate}</p>
+                <p className="allow value">
+                  {article?.agreeRate}%({article?.agree}표)
+                </p>
+                <p className="notAllow value">
+                  {article?.disagreeRate}%({article?.disagree}표)
+                </p>
               </div>
-
               {/* 그래프 */}
-              <p>그래프</p>
+              {article?.agreeRate >= article?.disagreeRate ? (
+                <ProgressBar reverse={0} basecolor={"#C4C4C4"} barcolor={"#845EC2"} percentage={article?.agreeRate} />
+              ) : (
+                <ProgressBar
+                  reverse={1}
+                  basecolor={"#C4C4C4"}
+                  barcolor={"#845EC2"}
+                  percentage={article?.disagreeRate}
+                />
+              )}
             </VoteResultContainer>
           ) : (
             <VoteContainer>
@@ -363,13 +375,36 @@ const VoteResultContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.lightpurple};
+  ${({ theme }) => theme.fonts.bold};
+  padding: 1.5rem;
   border-radius: 1.5rem;
   margin: 0.5rem;
   .container {
-    margin: 0;
+    margin: 0.5rem 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
+  }
+  .reverse {
+    rotate: 180deg;
+  }
+  .allow {
+    color: ${({ result, theme }) => result && theme.colors.mainpurple};
+  }
+  .notAllow {
+    color: ${({ result, theme }) => result || theme.colors.mainpurple};
+  }
+  .allow.label {
+    font-size: ${({ result }) => (result ? "1.6rem" : "1.4rem")};
+  }
+  .allow.value {
+    font-size: 1.2rem;
+  }
+  .notAllow.label {
+    font-size: ${({ result }) => (!result ? "1.6rem" : "1.4rem")};
+  }
+  .notAllow.value {
+    font-size: 1.2rem;
   }
 `;
 
