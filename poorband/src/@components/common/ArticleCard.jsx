@@ -9,14 +9,13 @@ import { useQuery } from "react-query";
 export default function ArticleCard(props) {
   const { articleSeq } = props;
   const nowTime = new Date();
-
   // 글 정보 가져오기
   const {
     data: article,
     isLoading,
     isError,
     error,
-  } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
+  } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
       console.log("Success");
     },
