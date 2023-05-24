@@ -28,7 +28,7 @@ export default function ConsumptionGraph() {
   useEffect(() => {
     date && loadGraph(date);
   }, [date]);
-  console.log(data[0]);
+
   useEffect(() => {
     setGraphData([
       { id: 1, label: CATEGORY[1], value: Math.round((data[0]?.amount / monthAmount) * 100) },
