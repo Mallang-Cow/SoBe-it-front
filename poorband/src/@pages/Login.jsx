@@ -86,9 +86,13 @@ const TitleContainer = styled(Container) ({
 });
 
 const TitleTypography = styled(Typography) ({
+  fontSize: '4.2rem',
   fontFamily: [
-    theme.fonts.bold,
+    'Spoqa Han Sans Neo',
   ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
 });
 
 const FormContainer = styled(Container) ({
@@ -96,8 +100,17 @@ const FormContainer = styled(Container) ({
 });
 
 const InputTextField = styled(TextField) ({
-  paddingBottom: '1.6rem',
+  marginBottom: '2rem',
+  '& input': {
+    height: '1.8rem',
+    fontSize: '1.6rem',
+  },
+  '& label': {
+    fontSize: '1.6rem',
+    color: theme.colors.lightgrey_2, // 기본 label 색상
+  },
   '& label.Mui-focused': {
+    fontSize: '1.6rem',
     color: theme.colors.darkgrey_1,
   },
   '& .MuiInput-underline:after': {
@@ -119,16 +132,20 @@ const InputTextField = styled(TextField) ({
 const LoginButton = styled(Button) ({
   color: theme.colors.white,
   height: '4.6rem',
+  marginTop: '1rem',
   marginBottom: '1.8rem',
   textTransform: 'none',
-  fontSize: '1.2rem',
+  fontSize: '1.8rem',
   fontFamily: [
-    theme.fonts.bold,
+    'Spoqa Han Sans Neo',
   ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
   backgroundColor: theme.colors.mainpurple,
   borderColor: theme.colors.lightgrey_2,
   '&:hover': {
-    backgroundColor: '#6B53AE', // theme.colors.darkpurple_2
+    backgroundColor: theme.colors.darkpurple_2
   },
   '&:active': {
     boxShadow: 'none',
@@ -152,6 +169,13 @@ const ButtonGroupTheme = createTheme ({
 
 const GroupButton = styled(Button) ({
   color: theme.colors.mainpurple,
+  fontSize: '1.6rem',
+  fontFamily: [
+    'Spoqa Han Sans Neo',
+  ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 400,
+  letterSpacing: '0.03em',  
   textTransform: 'none',
   '&:focus': {
     boxShadow: '0 0 0 0.04rem #EDEDED',
