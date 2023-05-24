@@ -18,6 +18,9 @@ export default function Register() {
   const [userEmail, setUserEmail] = useState("");
   const [userPhoneNumber, setUserPhoneNumber] = useState("");
   const [authenticationNumber, setAuthenticationNumber] = useState("");
+  const [isIdVerified, setIsIdVerified] = useState(false); // 아이디 중복 확인 체크 변수
+  const [isPhoneRequested, setIsPhoneRequested] = useState(false); // 전화번호 인증 요청 체크 변수
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // 전화번호 인증 완료 체크 변수
   const navigate = useNavigate();
 
   const { mutate: registerUser } = useMutation(signup, {
@@ -46,6 +49,57 @@ export default function Register() {
     registerUser(userDTO);
   };
 
+  const handleRegister = () => {
+    if (userId && isIdVerified 
+        && password && passwordCheck
+        && password === passwordCheck
+        && userName && nickname && userEmail
+        && userPhoneNumber && authenticationNumber
+        && isPhoneRequested
+        && isAuthenticated) {
+          register();
+    }
+    else {
+      if (!userId) {
+        alert("아이디를 입력해 주세요.");
+      }
+      else if (!isIdVerified) {
+        alert("아이디 중복을 확인해 주세요.");
+      }
+      else if (!password) {
+        alert("비밀번호를 입력해 주세요.");
+      }
+      else if (!passwordCheck) {
+        alert("비밀번호를 확인해 주세요.");
+      }
+      else if (password !== passwordCheck) {
+        alert("비밀번호가 다릅니다.");
+      }
+      else if (!userName || !nickname || !userEmail) {
+        alert("가입 정보를 전부 입력해 주세요.");
+      }
+      else if (!userPhoneNumber) {
+        alert("전화번호 입력 후 인증해 주세요.");
+      }
+      else if (!isPhoneRequested) {
+        alert("전화번호 인증을 해 주세요.");
+      }
+      else if (!authenticationNumber) {
+        alert("인증 번호를 입력해 주세요.");
+      }
+      else if (!isAuthenticated) {
+        alert("인증 번호를 확인해 주세요.");
+      }
+      else {
+        alert("가입 정보를 확인해 주세요.");
+      }
+    }
+  }
+
+  const checkId = () => { // 아이디 중복 체크 API 연결 필요
+    setIsIdVerified(true); // 아이디 중복되지 않음으로 체크
+  }
+
   const { mutate: userSmsAuthRequest } = useMutation(smsAuthRequest, {
     onSuccess: (response) => {
       // 전화번호 인증 요청 성공 시 처리할 로직 작성
@@ -55,6 +109,7 @@ export default function Register() {
       } 
       else {
         alert("전화번호 인증 요청 성공");
+        setIsPhoneRequested(true); // 전화번호 인증 요청 성공으로 체크
       }
     },
     onError: (error) => {
@@ -76,6 +131,7 @@ export default function Register() {
         alert("전화번호 인증 확인 실패");
       } else {
         alert("전화번호 인증 확인 성공")
+        setIsAuthenticated(true); // 전화번호 인증 확인 성공으로 체크
       }
     },
     onError: (error) => {
@@ -93,7 +149,6 @@ export default function Register() {
 
   const handleChange = (event, setter) => {
     setter(event.target.value);
-    console.log(event.target.value);
   };
 
   return (
@@ -114,7 +169,7 @@ export default function Register() {
                             value={ userId } onChange={ (e) => handleChange(e, setUserId) } />
           </div>
           <div style={{ width: "9.4rem" }}>
-           <CheckButton fullWidth>중복 확인</CheckButton>
+           <CheckButton fullWidth onClick={ checkId }>중복 확인</CheckButton>
           </div>
         </div>
 
@@ -149,13 +204,13 @@ export default function Register() {
                             value={ authenticationNumber } onChange={ (e) => handleChange(e, setAuthenticationNumber) }/>
           </div>
           <div style={{ width: "9.4rem" }}>
-            <CheckButton fullWidth onClick={ smsOk }>인증 확인</CheckButton>
+            <CheckButton fullWidth onClick={ smsOk } disabled={ !isPhoneRequested }>인증 확인</CheckButton>
           </div>
         </div>
       </RegisterFormContainer>
 
       <ButtonContainer>
-        <RegisterButton variant="contained" fullWidth onClick={ register }>Register</RegisterButton>
+        <RegisterButton variant="contained" fullWidth onClick={ handleRegister } disabled={ !isAuthenticated }>Register</RegisterButton>
       </ButtonContainer>
     </Container>
     </div>
