@@ -9,7 +9,6 @@ import { styled } from "styled-components";
 
 export default function ArticleDetail(props) {
   const { articleSeq } = props;
-  console.log(articleSeq);
   const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
   return (
