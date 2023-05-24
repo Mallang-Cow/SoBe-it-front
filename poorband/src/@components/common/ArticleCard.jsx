@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { likeArticle } from "../../../api/likeArticle";
+import { voteArticle } from "../../../api/vote";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
@@ -41,11 +42,10 @@ export default function ArticleCard(props) {
   // 좋아요
   function clickLike() {
     like({ articleSeq: Number(articleSeq) });
-    // 화면 갱신
   }
 
   const queryClient = useQueryClient();
-  // 좋아요 Post 전송
+  // 좋아요 정보 Post 전송
   const { mutate: like } = useMutation(likeArticle, {
     onSuccess: (response) => {
       console.log(response);
@@ -57,6 +57,21 @@ export default function ArticleCard(props) {
   });
 
   // 투표하기
+  function clickVote(voteType) {
+    console.log(voteType);
+    vote({ articleSeq: Number(articleSeq), voteType: Number(voteType) });
+  }
+
+  // 투표 정보 Post 전송
+  const { mutate: vote } = useMutation(voteArticle, {
+    onSuccess: (response) => {
+      console.log(response);
+      queryClient.invalidateQueries("articleDetail");
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   return (
     <Wrapper>
@@ -117,7 +132,7 @@ export default function ArticleCard(props) {
 
       {article?.articleType === 2 && (
         <VContatiner>
-          {article?.isVoted ? (
+          {article?.voted ? (
             <VoteResultContainer>
               <div className="container">
                 <p>허가 {article?.agree}</p>
@@ -134,8 +149,20 @@ export default function ArticleCard(props) {
             </VoteResultContainer>
           ) : (
             <VoteContainer>
-              <button className="left">허가</button>
-              <button className="right">불허</button>
+              <button
+                className="left"
+                onClick={() => {
+                  clickVote(1);
+                }}>
+                허가
+              </button>
+              <button
+                className="right"
+                onClick={() => {
+                  clickVote(2);
+                }}>
+                불허
+              </button>
             </VoteContainer>
           )}
         </VContatiner>
