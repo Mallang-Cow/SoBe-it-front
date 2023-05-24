@@ -8,6 +8,10 @@ export function signup(userDTO) {
   return call("/auth/signup", "POST", userDTO);
 }
 
+export function checkId(userDTO) {
+  return call("/auth/checkid", "POST", userDTO);
+}
+
 export function findId(findIdDTO) {
   return call("/auth/findid", "POST", findIdDTO);
 }

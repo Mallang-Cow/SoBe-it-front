@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
-import { signup } from "../../api/userAPI";
+import { checkId, signup } from "../../api/userAPI";
 import { smsAuthOk, smsAuthRequest } from "../../api/smsAPI";
 import { Button, Container, TextField, Typography } from '@mui/material';
 import { createTheme, styled } from '@mui/material/styles';
@@ -96,8 +96,37 @@ export default function Register() {
     }
   }
 
-  const checkId = () => { // 아이디 중복 체크 API 연결 필요
-    setIsIdVerified(true); // 아이디 중복되지 않음으로 체크
+  const { mutate: checkUserId } = useMutation(checkId, { // 아이디 중복 체크 API 연결
+    onSuccess: (response) => {
+      console.log(response);
+      if (response.is_id_verified) {
+        alert("아이디가 중복되지 않습니다.");
+        setIsIdVerified(true); // 아이디 중복되지 않음으로 체크
+      }
+      else {
+        alert("중복된 아이디입니다.");
+        setIsIdVerified(false);
+      }
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("아이디를 다시 확인해 주세요.");
+        setIsIdVerified(false);
+      }
+    },
+  });
+
+  const checkIdVerified = () => {
+    if (userId === "") {
+      alert("아이디를 입력해 주세요.");
+    }
+    else {
+      const userDTO = {
+        user_id: userId,
+      };
+
+      checkUserId(userDTO);
+    }
   }
 
   const { mutate: userSmsAuthRequest } = useMutation(smsAuthRequest, {
@@ -166,10 +195,10 @@ export default function Register() {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ width: "33.2rem" }}>
             <InputTextField label="아이디" variant="standard" type="text" fullWidth 
-                            value={ userId } onChange={ (e) => handleChange(e, setUserId) } />
+                            value={ userId } disabled={ isIdVerified } onChange={ (e) => handleChange(e, setUserId) } />
           </div>
           <div style={{ width: "9.4rem" }}>
-           <CheckButton fullWidth onClick={ checkId }>중복 확인</CheckButton>
+           <CheckButton fullWidth disabled={ isIdVerified } onClick={ checkIdVerified }>중복 확인</CheckButton>
           </div>
         </div>
 
