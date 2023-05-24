@@ -11,7 +11,7 @@ import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
 import ArticleEditForm from "../@components/common/ArticleEditForm";
 
 export default function Service() {
-  const [centerContent, setCenterContent] = useState("edit");
+  const [centerContent, setCenterContent] = useState("home");
   const [userSeq, setUserSeq] = useState(0);
   const [articleSeq, setArticleSeq] = useState(0);
   return (
