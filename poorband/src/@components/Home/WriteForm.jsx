@@ -124,9 +124,6 @@ export default function WriteForm() {
    * 입력 폼 제출
    */
   function submitNewData() {
-    
-    
-
     if (isConsumeWrite === 1) {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
