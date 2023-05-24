@@ -4,11 +4,27 @@ import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { CATEGORY } from "../../../core/expenditureCategory";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { likeArticle } from "../../../api/likeArticle";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
   const nowTime = new Date();
+  // 글 정보 가져오기
+  const {
+    data: article,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
+    onSuccess: () => {
+      setArticleType(article?.articleType);
+      console.log("Load Success");
+    },
+    onError: () => {
+      console.log("Error");
+    },
+  });
 
   // 상세 페이지로 이동
   function goToArticleDetail(articleSeq) {
@@ -19,25 +35,23 @@ export default function ArticleCard(props) {
     }
   }
 
-  // 글 정보 가져오기
-  const {
-    data: article,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
-    onSuccess: () => {
-      setArticleType(article?.articleType);
-      console.log("Success");
+  // 좋아요
+  function clickLike() {
+    like({ articleSeq: Number(articleSeq) });
+  }
+
+  // 좋아요 Post 전송
+  const { mutate: like } = useMutation(likeArticle, {
+    onSuccess: (response) => {
+      console.log(response);
     },
     onError: () => {
-      console.log("Error");
+      console.log("error");
     },
   });
 
-  // 좋아요
-
   // 투표하기
+  console.log(article);
 
   return (
     <Wrapper>
@@ -124,10 +138,22 @@ export default function ArticleCard(props) {
 
       <FooterContainer>
         <Like>
-          {article?.isLiked ? (
-            <span class="material-symbols-rounded active">favorite</span>
+          {article?.liked ? (
+            <span
+              class="material-symbols-rounded active"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           ) : (
-            <span class="material-symbols-rounded">favorite</span>
+            <span
+              class="material-symbols-rounded"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           )}
           <p>{article?.likeCnt}</p>
         </Like>
@@ -325,7 +351,11 @@ const FooterContainer = styled.div`
   }
   span.material-symbols-rounded {
     font-size: 3rem;
+    cursor: pointer;
     color: ${({ theme }) => theme.colors.darkgrey_1};
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
   }
   span.active.material-symbols-rounded {
     color: ${({ theme }) => theme.colors.red};
@@ -335,6 +365,7 @@ const Like = styled.div`
   display: flex;
   margin: 0 2rem 0 0;
   align-items: center;
+
   p {
     font-size: 1.6rem;
     margin-left: 1rem;

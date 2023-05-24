@@ -12,29 +12,11 @@ export default function Feed(props) {
       {/* ArticleCard 가져와서 무한스크롤~ */}
       <ArticleWrapper>
         <ArticleCard
-          articleSeq={3}
+          articleSeq={141}
           setCenterContent={setCenterContent}
           setArticleSeq={setArticleSeq}
           setUserSeq={setUserSeq}
           setArticleType={setArticleType}
-          clickActive={true}
-        />
-      </ArticleWrapper>
-      <ArticleWrapper>
-        <ArticleCard
-          articleSeq={13}
-          setCenterContent={setCenterContent}
-          setArticleSeq={setArticleSeq}
-          setUserSeq={setUserSeq}
-          clickActive={true}
-        />
-      </ArticleWrapper>
-      <ArticleWrapper>
-        <ArticleCard
-          articleSeq={21}
-          setCenterContent={setCenterContent}
-          setArticleSeq={setArticleSeq}
-          setUserSeq={setUserSeq}
           clickActive={true}
         />
       </ArticleWrapper>

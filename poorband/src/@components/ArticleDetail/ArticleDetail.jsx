@@ -15,7 +15,7 @@ export default function ArticleDetail(props) {
   return (
     <>
       <HeaderContainer>
-        <span class="material-symbols-rounded">arrow_back</span>
+        <span className="material-symbols-rounded">arrow_back</span>
         {articleType === 1 ? <header>지출 내역</header> : <header>결재 내역</header>}
       </HeaderContainer>
       <ContentWrapper>
