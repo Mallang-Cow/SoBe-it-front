@@ -1,6 +1,7 @@
 import React from "react";
 import ArticleCard from "../common/ArticleCard";
 import { styled } from "styled-components";
+import { useInView } from 'react-intersection-observer';
 
 export default function Feed(props) {
   const { setCenterContent, setArticleSeq } = props;
@@ -14,21 +15,21 @@ export default function Feed(props) {
       {/* ArticleCard 가져와서 무한스크롤~ */}
       <ArticleWrapper
         onClick={() => {
-          goToArticleDetail(142);
+          goToArticleDetail(3);
         }}>
-        <ArticleCard articleSeq={142} />
+        <ArticleCard articleSeq={3} />
       </ArticleWrapper>
       <ArticleWrapper
         onClick={() => {
-          goToArticleDetail(145);
+          goToArticleDetail(13);
         }}>
-        <ArticleCard articleSeq={145} />
+        <ArticleCard articleSeq={13} />
       </ArticleWrapper>
       <ArticleWrapper
         onClick={() => {
-          goToArticleDetail(145);
+          goToArticleDetail(21);
         }}>
-        <ArticleCard articleSeq={145} />
+        <ArticleCard articleSeq={21} />
       </ArticleWrapper>
 
       {/* <ArticleCard /> */}
