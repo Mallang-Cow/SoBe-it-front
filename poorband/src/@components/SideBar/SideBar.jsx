@@ -19,9 +19,9 @@ export default function SideBar() {
         <TitleContainer>
           <h2>Hot Posts</h2>
         </TitleContainer>
-        <HotPostCard />
-        <HotPostCard />
-        <HotPostCard />
+        <HotPostCard idx="0" />
+        <HotPostCard idx="1" />
+        <HotPostCard idx="2" />
       </Wrapper>
     </>
   );
