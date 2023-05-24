@@ -75,7 +75,7 @@ export default function ArticleCard(props) {
         {article?.status === 1 && <p className="grey status">전체 공개</p>}
         {article?.status === 2 && <p className="grey status">맞팔 공개</p>}
         {article?.status === 3 && <p className="grey status">비공개</p>}
-        {article?.mine && <span class="material-symbols-outlined more">more_vert</span>}
+        {article?.mine && <span className="material-symbols-outlined more">more_vert</span>}
         {/* 더보기 아이콘 넣기 */}
       </ProfileContainer>
       <Body
@@ -145,7 +145,7 @@ export default function ArticleCard(props) {
         <Like>
           {article?.liked ? (
             <span
-              class="material-symbols-rounded active"
+              className="material-symbols-rounded active"
               onClick={() => {
                 clickLike();
               }}>
@@ -153,7 +153,7 @@ export default function ArticleCard(props) {
             </span>
           ) : (
             <span
-              class="material-symbols-rounded"
+              className="material-symbols-rounded"
               onClick={() => {
                 clickLike();
               }}>
@@ -164,7 +164,7 @@ export default function ArticleCard(props) {
         </Like>
 
         <Comment>
-          <span class="material-symbols-rounded">comment</span>
+          <span className="material-symbols-rounded">comment</span>
           <p>{article?.commentCnt}</p>
         </Comment>
       </FooterContainer>
