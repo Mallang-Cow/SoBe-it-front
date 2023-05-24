@@ -5,21 +5,25 @@ import { useMutation } from "react-query";
 import { getHotPost } from "../../../api/getHotPost";
 export default function HotPostCard(props) {
   const [data, setData] = useState([]);
+  // const [idx, setIdx] = useState(0);
   const newData = {
     userId: "test1",
   };
 
   useEffect(() => {
     hotPosts(newData);
+    // setIdx(props.idx);
+    console.log(props.idx);
   }, []);
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
       // 인기 게시물 세 개
-      for (let i = 0; i < 3; i++) {
-        console.log(response.data[response.data.length - 1 - i]);
-      }
-      setData(response.data[0]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+      // for (let i = response.data.length - 1; i > 0; i--) {
+      //   console.log(response.data[i]);
+      // }
+      setData(response.data[props.idx]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+      console.log(response.data[props.idx]);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
