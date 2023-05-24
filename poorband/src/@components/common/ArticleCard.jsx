@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { CATEGORY } from "../../../core/expenditureCategory";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { likeArticle } from "../../../api/likeArticle";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
+  const [thisSeq, setThisSeq] = useState();
   const nowTime = new Date();
   // 글 정보 가져오기
   const {
@@ -18,13 +19,15 @@ export default function ArticleCard(props) {
     error,
   } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
-      setArticleType(article?.articleType);
-      console.log("Load Success");
+      setThisSeq(article?.articleSeq);
     },
     onError: () => {
       console.log("Error");
     },
   });
+  useEffect(() => {
+    setArticleType(article?.articleType);
+  }, [articleSeq]);
 
   // 상세 페이지로 이동
   function goToArticleDetail(articleSeq) {
@@ -38,12 +41,15 @@ export default function ArticleCard(props) {
   // 좋아요
   function clickLike() {
     like({ articleSeq: Number(articleSeq) });
+    // 화면 갱신
   }
 
+  const queryClient = useQueryClient();
   // 좋아요 Post 전송
   const { mutate: like } = useMutation(likeArticle, {
     onSuccess: (response) => {
       console.log(response);
+      queryClient.invalidateQueries("articleDetail");
     },
     onError: () => {
       console.log("error");
@@ -51,7 +57,6 @@ export default function ArticleCard(props) {
   });
 
   // 투표하기
-  console.log(article);
 
   return (
     <Wrapper>
