@@ -2,19 +2,38 @@ import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { styled } from "styled-components";
-import { CAL_DATA, DATA } from "../../../core/calendar";
 import moment from "moment";
+import { getStatCalendar } from "../../../api/getStatCalendar";
+import { useMutation } from "react-query";
 
 export default function ConsumptionCalendar() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
-  const [date, setdate] = useState(new Date());
-  const [price, setPrice] = useState(0);
-  console.log(CAL_DATA.data[18]);
+  const [data, setData] = useState([]);
+  const [date, setDate] = useState({ year: year, month: month + 1 });
+  const [monthDate, setmonthDate] = useState(new Date());
 
   useEffect(() => {
-    setdate(new Date(year, month, 1));
+    date && loadCalendar(date);
+  }, [date]);
+
+  useEffect(() => {
+    setDate({ year: year, month: month + 1 });
+  }, [monthDate]);
+
+  useEffect(() => {
+    setmonthDate(new Date(year, month, 1));
   }, [month]);
+
+  const { mutate: loadCalendar } = useMutation(getStatCalendar, {
+    onSuccess: (response) => {
+      console.log(response);
+      setData(response);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   function increaseMonth() {
     if (month < 11) {
@@ -32,6 +51,7 @@ export default function ConsumptionCalendar() {
       setYear(year - 1);
     }
   }
+  console.log(data);
   return (
     <>
       <Year>
@@ -58,22 +78,27 @@ export default function ConsumptionCalendar() {
         </Month>
         <Amount>
           <p className="small">이번 달 지출 금액 </p>
-          <p className="big">10,000원</p>
+          <p className="big">{data.monthAmount ? data.monthAmount?.toLocaleString("en-US") : 0}원</p>
         </Amount>
         <CalendarWrapper>
           <Calendar
             locale={"en"}
             calendarType={"US"}
             // formatDay={(locale, date) => moment(date).format("DD")}
-            formatShortWeekday={(locale, date) => ["S", "M", "T", "W", "T", "F", "S"][date.getDay()]}
-            activeStartDate={date}
+            formatShortWeekday={(locale, monthDate) => ["S", "M", "T", "W", "T", "F", "S"][monthDate.getDay()]}
+            activeStartDate={monthDate}
             showNavigation={false}
             showNeighboringMonth={false}
             className="mx-auto w-full text-sm border-b"
-            tileContent={(date) => {
-              const arr = JSON.stringify(moment(date)._i.date);
-              const day = Number(arr[9] + arr[10]);
-              return <>{<div className="price">{DATA?.data[day]?.price}</div>}</>;
+            tileContent={(monthDate) => {
+              const arr = moment(monthDate)._i.date.toString();
+              const idx = Number(arr[8] + arr[9]) - 1;
+              console.log(data);
+              const price = data && !data?.data[idx].amount ? data?.data[idx].amount : 0;
+
+              //console.log(arr[8] + arr[9]);
+              //console.log(arr);
+              return <>{<div className="price">{/* {price?.toLocaleString("en-US")} */}</div>}</>;
             }}
           />
         </CalendarWrapper>
@@ -84,6 +109,7 @@ export default function ConsumptionCalendar() {
 
 const Year = styled.div`
   width: 100%;
+  padding: 0.5rem 0;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   justify-content: center;
@@ -91,7 +117,7 @@ const Year = styled.div`
   p {
     color: ${({ theme }) => theme.colors.black};
     ${({ theme }) => theme.fonts.medium};
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin: 1.5rem 0;
   }
 `;
@@ -99,7 +125,7 @@ const Year = styled.div`
 const Month = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 1.5rem;
+  padding: 2rem;
   ${({ theme }) => theme.fonts.medium};
   span {
     color: ${({ theme }) => theme.colors.darkgrey_1};

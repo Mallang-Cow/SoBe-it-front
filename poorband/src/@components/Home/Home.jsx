@@ -3,13 +3,14 @@ import WriteForm from "./WriteForm";
 import Feed from "./Feed";
 import { styled } from "styled-components";
 
-export default function Home() {
+export default function Home(props) {
+  const { setCenterContent, setArticleSeq } = props;
   return (
     <>
       <HomeWrapper>
         <HomeTag>Home</HomeTag>
         <WriteForm />
-        <Feed />
+        <Feed setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} />
       </HomeWrapper>
     </>
   );
@@ -30,10 +31,10 @@ const HomeTag = styled.h2`
   margin-left: 1.875rem;
   margin-top: 3vh;
 
-  font-family: 'Spoqa Han Sans Neo';
+  font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
   line-height: 30px;
   color: #000000;
-  `;
+`;
