@@ -179,6 +179,7 @@ export default function WriteForm() {
     onSuccess: (response) => {
       console.log(response);
       // 글쓰기 성공하면 바로 피드랑 입력폼 새로고침 해주기.
+      // 성공하면 따로 alert를 줄건지?
       setconsumeText("");
       setCategory('');
       setfinancialText("");
@@ -294,6 +295,7 @@ const StyledSelect1 = styled.select`
   width: 9rem;
   height: 100%;
   border-radius: 3rem;
+  border: 1px solid #845EC2;
   background-color: #845EC2;
   ${({ theme }) => theme.fonts.regular};
   font-size: 1.1rem;
@@ -483,6 +485,8 @@ const InputText = styled.textarea`
   margin-right: 3.5rem;
   margin-top: 1.3rem;
   border-radius: 0.5rem;
+  ${({ theme }) => theme.fonts.regular};
+
 `;
 
 const SubmitAndPrivacySet = styled.section`
