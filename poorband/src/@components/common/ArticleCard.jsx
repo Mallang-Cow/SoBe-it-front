@@ -7,8 +7,18 @@ import { TIER } from "../../../core/tierImage";
 import { useQuery } from "react-query";
 
 export default function ArticleCard(props) {
-  const { articleSeq } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
   const nowTime = new Date();
+
+  // 상세 페이지로 이동
+  function goToArticleDetail(articleSeq) {
+    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
+    if (clickActive) {
+      setArticleSeq(articleSeq);
+      setCenterContent("detail");
+    }
+  }
+
   // 글 정보 가져오기
   const {
     data: article,
@@ -17,6 +27,7 @@ export default function ArticleCard(props) {
     error,
   } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
+      setArticleType(article?.articleType);
       console.log("Success");
     },
     onError: () => {
@@ -27,14 +38,6 @@ export default function ArticleCard(props) {
   // 좋아요
 
   // 투표하기
-
-  const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
-  const [status, setStatus] = useState(ARTICLE_DETAIL.status);
-  const [isMine, setIsMine] = useState(ARTICLE_DETAIL.isMine);
-  const [category, setCategory] = useState(ARTICLE_DETAIL.expenditureCategory);
-  const [img, setImg] = useState(ARTICLE_DETAIL.imageUrl);
-  const [isLiked, setIsLiked] = useState(ARTICLE_DETAIL.liked);
-  const [isVoted, setIsVoted] = useState(ARTICLE_DETAIL.voted);
 
   return (
     <Wrapper>
@@ -56,41 +59,46 @@ export default function ArticleCard(props) {
         {article?.mine && <span class="material-symbols-outlined more">more_vert</span>}
         {/* 더보기 아이콘 넣기 */}
       </ProfileContainer>
+      <Body
+        clickActive={clickActive}
+        onClick={() => {
+          goToArticleDetail(article?.articleSeq);
+        }}>
+        <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
 
-      <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
+        {/* 지출 내역 - 날짜, 분류 */}
+        {article?.articleType === 1 && (
+          <>
+            <DateContiner>
+              <p className="category">날짜</p>
+              <p>{article?.consumptionDate}</p>
+            </DateContiner>
 
-      {/* 지출 내역 - 날짜, 분류 */}
-      {article?.articleType === 1 && (
-        <>
-          <DateContiner>
-            <p className="category">날짜</p>
-            <p>{article?.consumptionDate}</p>
-          </DateContiner>
+            <CategoryContainer>
+              <p className="category">분류</p>
+              <p className="content">{CATEGORY[article ? article.category : 0]}</p>
+            </CategoryContainer>
+          </>
+        )}
 
-          <CategoryContainer>
-            <p className="category">분류</p>
-            <p className="content">{CATEGORY[category]}</p>
-          </CategoryContainer>
-        </>
-      )}
-
-      <ContextContainer>
-        <p className="category">내용</p>
-        <p className="content">{article?.articleText}</p>
-      </ContextContainer>
-      {article?.imageUrl && (
-        <ImageContainer>
-          <img src={article?.imageUrl} alt="이미지"></img>
-        </ImageContainer>
-      )}
-      <PriceContainer>
-        <p className="category">금액</p>
-        <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
-      </PriceContainer>
+        <ContextContainer>
+          <p className="category">내용</p>
+          <p className="content">{article?.articleText}</p>
+        </ContextContainer>
+        {article?.imageUrl && (
+          <ImageContainer>
+            <img src={article?.imageUrl} alt="이미지"></img>
+          </ImageContainer>
+        )}
+        <PriceContainer>
+          <p className="category">금액</p>
+          <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
+        </PriceContainer>
+      </Body>
 
       {article?.articleType === 2 && (
         <VContatiner>
-          {isVoted ? (
+          {article?.isVoted ? (
             <VoteResultContainer>
               <div className="container">
                 <p>허가 {article?.agree}</p>
@@ -116,7 +124,7 @@ export default function ArticleCard(props) {
 
       <FooterContainer>
         <Like>
-          {isLiked ? (
+          {article?.isLiked ? (
             <span class="material-symbols-rounded active">favorite</span>
           ) : (
             <span class="material-symbols-rounded">favorite</span>
@@ -233,6 +241,10 @@ const CategoryContainer = styled.div`
   font: ${({ theme }) => theme.fonts.bold};
   font-size: 1.6rem;
   color: ${({ theme }) => theme.colors.black};
+`;
+
+const Body = styled.div`
+  cursor: ${({ clickActive }) => clickActive && "pointer"};
 `;
 const ContextContainer = styled.div`
   display: flex;

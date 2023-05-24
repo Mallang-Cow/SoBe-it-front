@@ -3,14 +3,15 @@ import ArticleCard from "../common/ArticleCard";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
-import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { useQuery } from "react-query";
 import { styled } from "styled-components";
 
 export default function ArticleDetail(props) {
-  const { articleSeq } = props;
+  const { articleSeq, setCenterContent, setArticleSeq, setUserSeq } = props;
   const { data } = useQuery(["articleData"], getArticleDetailData, {});
-  const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
+  const [articleType, setArticleType] = useState(1);
+  const [isMine, setIsMine] = useState(false);
+  const [clickActive, setClickActive] = useState(false);
   return (
     <>
       <HeaderContainer>
@@ -19,7 +20,21 @@ export default function ArticleDetail(props) {
       </HeaderContainer>
       <ContentWrapper>
         <ArticleWrapper>
-          <ArticleCard articleSeq={articleSeq} />
+          <ArticleCard
+            articleSeq={articleSeq}
+            setArticleType={setArticleType}
+            clickActive={clickActive}
+            setCenterContent={setCenterContent}
+            setArticleSeq={setArticleSeq}
+            setUserSeq={setUserSeq}
+          />
+          {/* 내 글이면 수정/삭제 버튼 생성 */}
+          {isMine && (
+            <ButtonContainer>
+              <Button>수정</Button>
+              <Button>삭제</Button>
+            </ButtonContainer>
+          )}
         </ArticleWrapper>
 
         <CommentForm />

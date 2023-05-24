@@ -1,35 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import ArticleCard from "../common/ArticleCard";
 import { styled } from "styled-components";
-import { useInView } from 'react-intersection-observer';
+import { useInView } from "react-intersection-observer";
 
 export default function Feed(props) {
-  const { setCenterContent, setArticleSeq } = props;
+  const { setCenterContent, setArticleSeq, setUserSeq } = props;
+  const [articleType, setArticleType] = useState();
 
-  function goToArticleDetail(articleSeq) {
-    setArticleSeq(articleSeq);
-    setCenterContent("detail");
-  }
   return (
     <FeedWrapper>
       {/* ArticleCard 가져와서 무한스크롤~ */}
-      <ArticleWrapper
-        onClick={() => {
-          goToArticleDetail(3);
-        }}>
-        <ArticleCard articleSeq={3} />
+      <ArticleWrapper>
+        <ArticleCard
+          articleSeq={3}
+          setCenterContent={setCenterContent}
+          setArticleSeq={setArticleSeq}
+          setUserSeq={setUserSeq}
+          setArticleType={setArticleType}
+          clickActive={true}
+        />
       </ArticleWrapper>
-      <ArticleWrapper
-        onClick={() => {
-          goToArticleDetail(13);
-        }}>
-        <ArticleCard articleSeq={13} />
+      <ArticleWrapper>
+        <ArticleCard
+          articleSeq={13}
+          setCenterContent={setCenterContent}
+          setArticleSeq={setArticleSeq}
+          setUserSeq={setUserSeq}
+          clickActive={true}
+        />
       </ArticleWrapper>
-      <ArticleWrapper
-        onClick={() => {
-          goToArticleDetail(21);
-        }}>
-        <ArticleCard articleSeq={21} />
+      <ArticleWrapper>
+        <ArticleCard
+          articleSeq={21}
+          setCenterContent={setCenterContent}
+          setArticleSeq={setArticleSeq}
+          setUserSeq={setUserSeq}
+          clickActive={true}
+        />
       </ArticleWrapper>
 
       {/* <ArticleCard /> */}
@@ -46,6 +53,5 @@ const FeedWrapper = styled.section`
 `;
 
 const ArticleWrapper = styled.div`
-  cursor: pointer;
   margin: 2.5rem 0;
 `;

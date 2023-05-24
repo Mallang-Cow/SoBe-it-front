@@ -39,7 +39,12 @@ export default function Service() {
             <SearchResults setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "detail" && (
-            <ArticleDetail setCenterContent={setCenterContent} setUserSeq={setUserSeq} articleSeq={articleSeq} />
+            <ArticleDetail
+              setCenterContent={setCenterContent}
+              setUserSeq={setUserSeq}
+              articleSeq={articleSeq}
+              setArticleSeq={setArticleSeq}
+            />
           )}
         </CenterWrapper>
 
