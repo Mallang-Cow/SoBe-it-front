@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { signup } from "../../api/userAPI";
@@ -10,14 +10,14 @@ import '../style/RootContainer.css';
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 
 export default function Register() {
-  const userIdRef = useRef(null);
-  const passwordRef = useRef(null);
-  const passwordCheckRef = useRef(null);
-  const userNameRef = useRef(null);
-  const nicknameRef = useRef(null);
-  const userEmailRef = useRef(null);
-  const userPhoneNumberRef = useRef(null);
-  const authenticationNumberRef = useRef(null);
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [userName, setUserName] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userPhoneNumber, setUserPhoneNumber] = useState("");
+  const [authenticationNumber, setAuthenticationNumber] = useState("");
   const navigate = useNavigate();
 
   const { mutate: registerUser } = useMutation(signup, {
@@ -35,12 +35,12 @@ export default function Register() {
 
   const register = () => {
     const userDTO = {
-      user_id: userIdRef.current.value,
-      password: passwordRef.current.value,
-      user_name: userNameRef.current.value,
-      nickname: nicknameRef.current.value,
-      email: userEmailRef.current.value,
-      phone_number: userPhoneNumberRef.current.value
+      user_id: userId,
+      password: password,
+      user_name: userName,
+      nickname: nickname,
+      email: userEmail,
+      phone_number: userPhoneNumber
     };
 
     registerUser(userDTO);
@@ -52,7 +52,8 @@ export default function Register() {
       // 커서가 자동으로 인증 번호 입력으로 넘어가도록 작성하기
       if (response === false) {
         alert("전화번호 인증 요청 실패");
-      } else {
+      } 
+      else {
         alert("전화번호 인증 요청 성공");
       }
     },
@@ -64,7 +65,7 @@ export default function Register() {
   });
 
   const smsRequest = () => {
-    const tel = userPhoneNumberRef.current.value;
+    const tel = userPhoneNumber;
 
     userSmsAuthRequest(Number(tel));
   };
@@ -85,10 +86,15 @@ export default function Register() {
   });
 
   const smsOk = () => {
-    const code = authenticationNumberRef.current.value;
+    const code = authenticationNumber;
 
     userSmsAuthOk(code);
-  }
+  };
+
+  const handleChange = (event, setter) => {
+    setter(event.target.value);
+    console.log(event.target.value);
+  };
 
   return (
     <div className="RootContainer">
@@ -104,26 +110,33 @@ export default function Register() {
       <RegisterFormContainer style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ width: "33.2rem" }}>
-            <InputTextField label="아이디" variant="standard" type="text" fullWidth inputRef={ userIdRef } />
+            <InputTextField label="아이디" variant="standard" type="text" fullWidth 
+                            value={ userId } onChange={ (e) => handleChange(e, setUserId) } />
           </div>
           <div style={{ width: "9.4rem" }}>
            <CheckButton fullWidth>중복 확인</CheckButton>
           </div>
         </div>
 
-        <InputTextField label="비밀번호" variant="standard" type="password" fullWidth inputRef={ passwordRef } />
+        <InputTextField label="비밀번호" variant="standard" type="password" fullWidth 
+                        value={ password } onChange={ (e) => handleChange(e, setPassword) } />
 
-        <InputTextField label="비밀번호 확인" variant="standard" type="password" fullWidth inputRef={ passwordCheckRef }/>
+        <InputTextField label="비밀번호 확인" variant="standard" type="password" fullWidth 
+                        value={ passwordCheck } onChange={ (e) => handleChange(e, setPasswordCheck) }/>
         
-        <InputTextField label="이름" variant="standard" type="text" fullWidth inputRef={ userNameRef }/>
+        <InputTextField label="이름" variant="standard" type="text" fullWidth 
+                        value={ userName } onChange={ (e) => handleChange(e, setUserName) }/>
 
-        <InputTextField label="닉네임" variant="standard" type="text" fullWidth inputRef={ nicknameRef }/>
+        <InputTextField label="닉네임" variant="standard" type="text" fullWidth 
+                        value={ nickname } onChange={ (e) => handleChange(e, setNickname) }/>
 
-        <InputTextField label="이메일" variant="standard" type="email" fullWidth inputRef={ userEmailRef }/>
+        <InputTextField label="이메일" variant="standard" type="email" fullWidth 
+                        value={ userEmail } onChange={ (e) => handleChange(e, setUserEmail) }/>
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ width: "33.2rem" }}>
-            <InputTextField label="전화번호" variant="standard" type="text" fullWidth inputRef={ userPhoneNumberRef }/>
+            <InputTextField label="전화번호" variant="standard" type="text" fullWidth 
+                            value={ userPhoneNumber } onChange={ (e) => handleChange(e, setUserPhoneNumber) }/>
           </div>
           <div style={{ width: "9.4rem" }}>
             <CheckButton fullWidth onClick={ smsRequest }>인증 요청</CheckButton>
@@ -132,7 +145,8 @@ export default function Register() {
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ width: "33.2rem" }}>
-            <InputTextField label="인증 번호" variant="standard" type="text" fullWidth inputRef={ authenticationNumberRef }/>
+            <InputTextField label="인증 번호" variant="standard" type="text" fullWidth 
+                            value={ authenticationNumber } onChange={ (e) => handleChange(e, setAuthenticationNumber) }/>
           </div>
           <div style={{ width: "9.4rem" }}>
             <CheckButton fullWidth onClick={ smsOk }>인증 확인</CheckButton>
