@@ -12,9 +12,14 @@ export default function ConsumptionCalendar() {
   const [data, setData] = useState([]);
   const [date, setDate] = useState({ year: year, month: month + 1 });
   const [monthDate, setmonthDate] = useState(new Date());
+  const [monthAmount, setMonthAmount] = useState(0);
 
   useEffect(() => {
-    date && loadCalendar(date);
+    data && console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    date.year && date.month && loadCalendar(date);
   }, [date]);
 
   useEffect(() => {
@@ -27,8 +32,8 @@ export default function ConsumptionCalendar() {
 
   const { mutate: loadCalendar } = useMutation(getStatCalendar, {
     onSuccess: (response) => {
-      console.log(response);
-      setData(response);
+      setMonthAmount(response.monthAmount);
+      setData(response.data);
     },
     onError: () => {
       console.log("error");
@@ -78,7 +83,7 @@ export default function ConsumptionCalendar() {
         </Month>
         <Amount>
           <p className="small">이번 달 지출 금액 </p>
-          <p className="big">{data.monthAmount ? data.monthAmount?.toLocaleString("en-US") : 0}원</p>
+          <p className="big">{monthAmount ? monthAmount?.toLocaleString("en-US") : 0}원</p>
         </Amount>
         <CalendarWrapper>
           <Calendar
@@ -93,12 +98,9 @@ export default function ConsumptionCalendar() {
             tileContent={(monthDate) => {
               const arr = moment(monthDate)._i.date.toString();
               const idx = Number(arr[8] + arr[9]) - 1;
-              console.log(data);
-              const price = data && !data?.data[idx].amount ? data?.data[idx].amount : 0;
-
-              //console.log(arr[8] + arr[9]);
-              //console.log(arr);
-              return <>{<div className="price">{/* {price?.toLocaleString("en-US")} */}</div>}</>;
+              const amount = data[idx]?.amount;
+              const price = amount ? amount : 0;
+              return <>{<div className="price">{price?.toLocaleString("en-US")}</div>}</>;
             }}
           />
         </CalendarWrapper>
