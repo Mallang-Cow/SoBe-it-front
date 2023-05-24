@@ -12,6 +12,7 @@ import ProgressBar from "./ProgressBar";
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
   const [thisSeq, setThisSeq] = useState();
+  const [time, setTime] = useState([]);
   const nowTime = new Date();
   // 글 정보 가져오기
   const {
@@ -27,8 +28,23 @@ export default function ArticleCard(props) {
       console.log("Error");
     },
   });
+  // 글번호 & 글타입 & 날짜 구하기
   useEffect(() => {
     setArticleType(article?.articleType);
+
+    const artDate = new Date(article?.writtenDate);
+    console.log(artDate);
+    if (artDate.getFullYear() != nowTime.getFullYear())
+      setTime(["year", nowTime.getFullYear() - artDate.getFullYear()]); // 연도차이
+    if (artDate.getMonth() != nowTime.getMonth())
+      setTime(["month", nowTime.getMonth() - artDate.getMonth()]); // 달 차이
+    else if (artDate.getDate() != nowTime.getDate())
+      setTime(["date", nowTime.getDate() - artDate.getDate()]); // 일 차이
+    else if (artDate.getHours() != nowTime.getHours())
+      setTime(["hours", nowTime.getHours() - artDate.getHours()]); // 시간 차이
+    else if (artDate.getMinutes() != nowTime.getMinutes())
+      setTime(["minutes", nowTime.getMinutes() - artDate.getMinutes()]); // 분 차이
+    else setTime(["seconds", nowTime.getSeconds() - artDate.getSeconds()]); // 초 차이
   }, [articleSeq]);
 
   // 상세 페이지로 이동
@@ -84,7 +100,15 @@ export default function ArticleCard(props) {
             {article?.user?.userId}
           </p>
           <img id="tier-img" src={TIER[article?.user?.userTier]} alt="티어" />
-          <p className="grey">• {article?.writtenDate}</p>
+          <p className="grey">
+            • {time[1]}
+            {time[0] === "year" && "년"}
+            {time[0] === "month" && "월"}
+            {time[0] === "date" && "일"}
+            {time[0] === "hours" && "시간"}
+            {time[0] === "minutes" && "분"}
+            {time[0] === "secounds" && "초"} 전
+          </p>
         </div>
 
         {/* 현재 시간과 비교해서 보여주기 */}
@@ -417,15 +441,9 @@ const FooterContainer = styled.div`
     color: ${({ theme }) => theme.colors.darkgrey_1};
   }
   span.material-symbols-rounded {
-    font-size: 3rem;
+    font-size: 2.4rem;
     cursor: pointer;
     color: ${({ theme }) => theme.colors.darkgrey_1};
-  }
-  span.material-symbols-rounded:hover {
-    color: ${({ theme }) => theme.colors.red};
-  }
-  span.active.material-symbols-rounded {
-    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Like = styled.div`
@@ -434,15 +452,21 @@ const Like = styled.div`
   align-items: center;
 
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
+  }
+  span.active.material-symbols-rounded {
+    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Comment = styled.div`
   display: flex;
   align-items: center;
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
   }
 `;
