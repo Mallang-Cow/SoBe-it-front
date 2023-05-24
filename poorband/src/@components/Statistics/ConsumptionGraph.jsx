@@ -12,6 +12,7 @@ export default function ConsumptionGraph() {
   const [data, setData] = useState([]);
   const [date, setDate] = useState({ year: year, month: month + 1 });
   const color = ["#6B53AE", "#845EC2", "#B393E8", "#C09EEC", "#D3AFF8", "#E4D3FF"];
+  const [monthAmount, setMonthAmount] = useState(0);
   const [graphData, setGraphData] = useState([
     { id: 1, label: CATEGORY[1], value: 20 },
     { id: 2, label: CATEGORY[2], value: 20 },
@@ -27,12 +28,22 @@ export default function ConsumptionGraph() {
   useEffect(() => {
     date && loadGraph(date);
   }, [date]);
-
-  useEffect(() => {}, [data]);
+  console.log(data[0]);
+  useEffect(() => {
+    setGraphData([
+      { id: 1, label: CATEGORY[1], value: Math.round((data[0]?.amount / monthAmount) * 100) },
+      { id: 2, label: CATEGORY[2], value: Math.round((data[1]?.amount / monthAmount) * 100) },
+      { id: 3, label: CATEGORY[3], value: Math.round((data[2]?.amount / monthAmount) * 100) },
+      { id: 4, label: CATEGORY[4], value: Math.round((data[3]?.amount / monthAmount) * 100) },
+      { id: 5, label: CATEGORY[5], value: Math.round((data[4]?.amount / monthAmount) * 100) },
+      { id: 6, label: CATEGORY[6], value: Math.round((data[5]?.amount / monthAmount) * 100) },
+    ]);
+  }, [data]);
 
   const { mutate: loadGraph } = useMutation(getStatGraph, {
     onSuccess: (response) => {
-      setData(response);
+      setData(response.data);
+      setMonthAmount(response.monthAmount);
     },
     onError: () => {
       console.log("error");
@@ -82,7 +93,7 @@ export default function ConsumptionGraph() {
         </Month>
         <Amount>
           <p className="small">이번 달 지출 금액 </p>
-          <p className="big">{data.monthAmount ? data.monthAmount?.toLocaleString("en-US") : 0}원</p>
+          <p className="big">{monthAmount ? monthAmount?.toLocaleString("en-US") : 0}원</p>
         </Amount>
         <GraphWrapper>
           <ResponsivePie
@@ -123,14 +134,14 @@ export default function ConsumptionGraph() {
           />
         </GraphWrapper>
         <BarWrapper>
-          {data?.data?.map((d) => (
+          {data?.map((d) => (
             <ProgressBarWrapper>
               <ProgressBarContainer>
                 <p>{CATEGORY[d.id]}</p>
                 <ProgressBar
                   basecolor={"#E7E7E7"}
                   barcolor={color[d.id]}
-                  percentage={(d.amount / data.monthAmount) * 100}></ProgressBar>
+                  percentage={(d.amount / monthAmount) * 100}></ProgressBar>
               </ProgressBarContainer>
               <p>{d.amount ? d.amount?.toLocaleString("en-US") : 0}원</p>
             </ProgressBarWrapper>

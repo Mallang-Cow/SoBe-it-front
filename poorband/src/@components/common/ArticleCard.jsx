@@ -19,7 +19,6 @@ export default function ArticleCard(props) {
   } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
       console.log("Success");
-      console.log(article);
     },
     onError: () => {
       console.log("Error");
