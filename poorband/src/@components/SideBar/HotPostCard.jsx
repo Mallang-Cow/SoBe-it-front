@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
-
+import { useMutation } from "react-query";
+import { getHotPost } from "../../../api/getHotPost";
 export default function HotPostCard(props) {
+  const [data, setData] = useState([]);
+  const newData = {
+    userId: "test1",
+  };
+
+  useEffect(() => {
+    hotPosts(newData);
+  }, []);
+
+  const { mutate: hotPosts } = useMutation(getHotPost, {
+    onSuccess: (response) => {
+      // 인기 게시물 세 개
+      for (let i = 0; i < 3; i++) {
+        console.log(response.data[response.data.length - 1 - i]);
+      }
+      setData(response.data[0]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        console.log("인기 게시물 가져오기 실패");
+      }
+    },
+  });
+
   const [like, setLike] = useState(false);
 
   const handleLike = () => {
@@ -25,6 +50,7 @@ export default function HotPostCard(props) {
         <h1>{SIDEBAR_DETAIL.articleText}</h1>
         <hr></hr>
         <div id="price">
+          <span>{data.articleSeq}</span>
           <span>금액</span>
           <span>{SIDEBAR_DETAIL.amount}원</span>
         </div>
