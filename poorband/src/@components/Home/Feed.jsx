@@ -66,11 +66,7 @@ export default function Feed(props) {
       {articles.map((article, idx) => (
         <React.Fragment key={idx}>
           {articles.length - 1 === idx ? (
-            <ArticleWrapper
-              onClick={() => {
-                setArticleSeq(article.articleSeq);
-                setCenterContent("detail");
-              }}>
+            <ArticleWrapper>
               <ArticleCard
                 articleSeq={article.articleSeq}
                 setCenterContent={setCenterContent}
@@ -82,11 +78,7 @@ export default function Feed(props) {
               <div ref={ref}></div>
             </ArticleWrapper>
           ) : (
-            <ArticleWrapper
-              onClick={() => {
-                setArticleSeq(article.articleSeq);
-                setCenterContent("detail");
-              }}>
+            <ArticleWrapper>
               <ArticleCard
                 articleSeq={article.articleSeq}
                 setCenterContent={setCenterContent}
