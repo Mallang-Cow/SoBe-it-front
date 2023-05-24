@@ -8,22 +8,23 @@ export default function ConsumptionList() {
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
   const [data, setData] = useState([]);
+  const [date, setDate] = useState({ year: year, month: month + 1 });
+  useEffect(() => {
+    setDate({ year: year, month: month + 1 });
+  }, [month]);
+
+  useEffect(() => {
+    date && loadList(date);
+  }, [date]);
 
   const { mutate: loadList } = useMutation(getStatList, {
     onSuccess: (response) => {
       setData(response);
     },
     onError: () => {
-      console.log("안돼");
+      console.log("error");
     },
   });
-  const [date, setDate] = useState({ year: year, month: month + 1 });
-
-  useEffect(() => {
-    {
-      date && loadList(date);
-    }
-  }, []);
 
   function increaseMonth() {
     if (month < 11) {
@@ -67,7 +68,7 @@ export default function ConsumptionList() {
         </Month>
         <Amount>
           <p className="small">이번 달 지출 금액 </p>
-          <p className="big">{data.monthAmount?.toLocaleString("en-US")}원</p>
+          <p className="big">{data.monthAmount ? data.monthAmount?.toLocaleString("en-US") : 0}원</p>
         </Amount>
       </HeaderWrapper>
       <Body>
@@ -84,7 +85,7 @@ export default function ConsumptionList() {
                 {x.list.map((y) => (
                   <Content>
                     <Wrap>
-                      <Category>{CATEGORY.filter(({ id }) => id === y.expenditureCategory)[0].value}</Category>
+                      <Category>{CATEGORY[y.expenditureCategory]}</Category>
                       <Context>{y.context}</Context>
                     </Wrap>
                     <Price>{y.amount?.toLocaleString("en-US")}원</Price>
@@ -105,6 +106,7 @@ const HeaderWrapper = styled.div`
 `;
 const Year = styled.div`
   width: 100%;
+  padding: 0.5rem 0;
   background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   justify-content: center;
@@ -112,7 +114,7 @@ const Year = styled.div`
   p {
     color: ${({ theme }) => theme.colors.black};
     ${({ theme }) => theme.fonts.medium};
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin: 1.5rem 0;
   }
 `;
@@ -120,7 +122,7 @@ const Year = styled.div`
 const Month = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 1.5rem;
+  padding: 2rem;
   ${({ theme }) => theme.fonts.medium};
   span {
     color: ${({ theme }) => theme.colors.darkgrey_1};
@@ -138,7 +140,7 @@ const Amount = styled.div`
   margin-top: 1rem;
   ${({ theme }) => theme.fonts.medium};
   p {
-    margin: 0.3rem;
+    margin: 0.6rem;
     color: ${({ theme }) => theme.colors.black};
   }
   .big {

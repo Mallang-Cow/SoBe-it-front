@@ -10,8 +10,10 @@ const colors = {
   darkgrey_3: "",
   lightpurple: "#F1EBFA",
   darkpurple: "#F5F4F6",
+  darkpurple_2: "#6B53AE",
   mainpurple: "#845EC2",
   black: "#000000",
+  red: "#ED2727",
 };
 
 const fonts = {
@@ -43,7 +45,7 @@ const fonts = {
 
 const shadows = {
   card: css`
-    box-shadow: 0 1.3rem 4rem rgba(170, 170, 170, 0.2);
+    box-shadow: 0 1.4rem 5rem rgba(170, 170, 170, 0.16);
   `,
 };
 

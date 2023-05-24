@@ -24,21 +24,23 @@ export default function Service() {
 
         <CenterWrapper>
           {centerContent === "home" && (
-            <Home setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={articleSeq} />
+            <Home setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "statistics" && (
-            <Statistics setCenterContent={setCenterContent} setArticleSeq={articleSeq} />
+            <Statistics setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "notifications" && (
-            <Notifications setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={articleSeq} />
+            <Notifications setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "profile" && <Profile setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
           {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
           {centerContent === "search" && (
-            <SearchResults setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={articleSeq} />
+            <SearchResults setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
           )}
-          {centerContent === "detail" && <ArticleDetail setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
+          {centerContent === "detail" && (
+            <ArticleDetail setCenterContent={setCenterContent} setUserSeq={setUserSeq} articleSeq={articleSeq} />
+          )}
         </CenterWrapper>
 
         <SideBarWrapper>
@@ -76,4 +78,5 @@ const SideBarWrapper = styled.aside`
   border-left: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
   position: sticky;
   top: 0;
+  overflow: hidden;
 `;
