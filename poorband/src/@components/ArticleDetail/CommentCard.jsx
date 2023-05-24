@@ -11,7 +11,7 @@ export default function CommentCard() {
           <p className="id">아이디</p>
           <img src="" alt="티어" className="tier-img" />
         </NameContainer>
-        <span class="material-symbols-outlined more">more_vert</span>
+        <span className="material-symbols-outlined more">more_vert</span>
       </ProfileContainer>
       <TextContainer>
         <p>댓글 내용</p>
@@ -19,11 +19,11 @@ export default function CommentCard() {
       <FooterContainer>
         <Like>
           {/* {isLiked ? (
-            <span class="material-symbols-rounded active">favorite</span>
+            <span className="material-symbols-rounded active">favorite</span>
           ) : (
-            <span class="material-symbols-rounded">favorite</span>
+            <span className="material-symbols-rounded">favorite</span>
           )} */}
-          <span class="material-symbols-rounded">favorite</span>
+          <span className="material-symbols-rounded">favorite</span>
           <p>
             {/* {likeCnt} */}
             30
@@ -31,7 +31,7 @@ export default function CommentCard() {
         </Like>
 
         <Comment>
-          <span class="material-symbols-rounded">comment</span>
+          <span className="material-symbols-rounded">comment</span>
           <p>
             {/* {article?.commentCnt} */}
             30

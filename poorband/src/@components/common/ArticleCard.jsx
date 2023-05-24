@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { CATEGORY } from "../../../core/expenditureCategory";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { likeArticle } from "../../../api/likeArticle";
 
 export default function ArticleCard(props) {
-  const { articleSeq } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
+  const [thisSeq, setThisSeq] = useState();
   const nowTime = new Date();
   // 글 정보 가져오기
   const {
@@ -17,24 +19,44 @@ export default function ArticleCard(props) {
     error,
   } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
-      console.log("Success");
+      setThisSeq(article?.articleSeq);
     },
     onError: () => {
       console.log("Error");
     },
   });
+  useEffect(() => {
+    setArticleType(article?.articleType);
+  }, [articleSeq]);
+
+  // 상세 페이지로 이동
+  function goToArticleDetail(articleSeq) {
+    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
+    if (clickActive) {
+      setArticleSeq(articleSeq);
+      setCenterContent("detail");
+    }
+  }
 
   // 좋아요
+  function clickLike() {
+    like({ articleSeq: Number(articleSeq) });
+    // 화면 갱신
+  }
+
+  const queryClient = useQueryClient();
+  // 좋아요 Post 전송
+  const { mutate: like } = useMutation(likeArticle, {
+    onSuccess: (response) => {
+      console.log(response);
+      queryClient.invalidateQueries("articleDetail");
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   // 투표하기
-
-  const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
-  const [status, setStatus] = useState(ARTICLE_DETAIL.status);
-  const [isMine, setIsMine] = useState(ARTICLE_DETAIL.isMine);
-  const [category, setCategory] = useState(ARTICLE_DETAIL.expenditureCategory);
-  const [img, setImg] = useState(ARTICLE_DETAIL.imageUrl);
-  const [isLiked, setIsLiked] = useState(ARTICLE_DETAIL.liked);
-  const [isVoted, setIsVoted] = useState(ARTICLE_DETAIL.voted);
 
   return (
     <Wrapper>
@@ -56,41 +78,46 @@ export default function ArticleCard(props) {
         {article?.mine && <span class="material-symbols-outlined more">more_vert</span>}
         {/* 더보기 아이콘 넣기 */}
       </ProfileContainer>
+      <Body
+        clickActive={clickActive}
+        onClick={() => {
+          goToArticleDetail(article?.articleSeq);
+        }}>
+        <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
 
-      <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
+        {/* 지출 내역 - 날짜, 분류 */}
+        {article?.articleType === 1 && (
+          <>
+            <DateContiner>
+              <p className="category">날짜</p>
+              <p>{article?.consumptionDate}</p>
+            </DateContiner>
 
-      {/* 지출 내역 - 날짜, 분류 */}
-      {article?.articleType === 1 && (
-        <>
-          <DateContiner>
-            <p className="category">날짜</p>
-            <p>{article?.consumptionDate}</p>
-          </DateContiner>
+            <CategoryContainer>
+              <p className="category">분류</p>
+              <p className="content">{CATEGORY[article ? article.category : 0]}</p>
+            </CategoryContainer>
+          </>
+        )}
 
-          <CategoryContainer>
-            <p className="category">분류</p>
-            <p className="content">{CATEGORY[category]}</p>
-          </CategoryContainer>
-        </>
-      )}
-
-      <ContextContainer>
-        <p className="category">내용</p>
-        <p className="content">{article?.articleText}</p>
-      </ContextContainer>
-      {article?.imageUrl && (
-        <ImageContainer>
-          <img src={article?.imageUrl} alt="이미지"></img>
-        </ImageContainer>
-      )}
-      <PriceContainer>
-        <p className="category">금액</p>
-        <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
-      </PriceContainer>
+        <ContextContainer>
+          <p className="category">내용</p>
+          <p className="content">{article?.articleText}</p>
+        </ContextContainer>
+        {article?.imageUrl && (
+          <ImageContainer>
+            <img src={article?.imageUrl} alt="이미지"></img>
+          </ImageContainer>
+        )}
+        <PriceContainer>
+          <p className="category">금액</p>
+          <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
+        </PriceContainer>
+      </Body>
 
       {article?.articleType === 2 && (
         <VContatiner>
-          {isVoted ? (
+          {article?.isVoted ? (
             <VoteResultContainer>
               <div className="container">
                 <p>허가 {article?.agree}</p>
@@ -116,10 +143,22 @@ export default function ArticleCard(props) {
 
       <FooterContainer>
         <Like>
-          {isLiked ? (
-            <span class="material-symbols-rounded active">favorite</span>
+          {article?.liked ? (
+            <span
+              class="material-symbols-rounded active"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           ) : (
-            <span class="material-symbols-rounded">favorite</span>
+            <span
+              class="material-symbols-rounded"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           )}
           <p>{article?.likeCnt}</p>
         </Like>
@@ -234,6 +273,10 @@ const CategoryContainer = styled.div`
   font-size: 1.6rem;
   color: ${({ theme }) => theme.colors.black};
 `;
+
+const Body = styled.div`
+  cursor: ${({ clickActive }) => clickActive && "pointer"};
+`;
 const ContextContainer = styled.div`
   display: flex;
   padding: 1.2rem 0;
@@ -313,7 +356,11 @@ const FooterContainer = styled.div`
   }
   span.material-symbols-rounded {
     font-size: 3rem;
+    cursor: pointer;
     color: ${({ theme }) => theme.colors.darkgrey_1};
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
   }
   span.active.material-symbols-rounded {
     color: ${({ theme }) => theme.colors.red};
@@ -323,6 +370,7 @@ const Like = styled.div`
   display: flex;
   margin: 0 2rem 0 0;
   align-items: center;
+
   p {
     font-size: 1.6rem;
     margin-left: 1rem;
