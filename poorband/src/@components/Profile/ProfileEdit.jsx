@@ -63,7 +63,7 @@ export default function ProfileEdit(props) {
     </ProfileEditWrapper>
   );
 }
-const ProfileEditWrapper = styled.div`
+const ProfileEditWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
   padding: 3rem;
   * {
