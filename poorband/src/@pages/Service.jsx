@@ -8,6 +8,7 @@ import Profile from "../@components/Profile/Profile";
 import Notifications from "../@components/Notifications/Notifications";
 import SearchResults from "../@components/Search/SearchResults";
 import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
+import ArticleEditForm from "../@components/common/ArticleEditForm";
 
 export default function Service() {
   const [centerContent, setCenterContent] = useState("home");
@@ -40,6 +41,9 @@ export default function Service() {
           )}
           {centerContent === "detail" && (
             <ArticleDetail setCenterContent={setCenterContent} setUserSeq={setUserSeq} articleSeq={articleSeq} />
+          )}
+          {centerContent === "edit" && (
+            <ArticleEditForm setCenterContent={setCenterContent} articleSeq={articleSeq}></ArticleEditForm>
           )}
         </CenterWrapper>
 
