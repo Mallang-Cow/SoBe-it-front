@@ -14,9 +14,9 @@ export default function Feed(props) {
       {/* ArticleCard 가져와서 무한스크롤~ */}
       <ArticleWrapper
         onClick={() => {
-          goToArticleDetail(145);
+          goToArticleDetail(142);
         }}>
-        <ArticleCard articleSeq={145} />
+        <ArticleCard articleSeq={142} />
       </ArticleWrapper>
       <ArticleWrapper
         onClick={() => {
