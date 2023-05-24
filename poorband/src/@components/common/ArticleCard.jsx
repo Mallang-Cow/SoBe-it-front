@@ -382,15 +382,9 @@ const FooterContainer = styled.div`
     color: ${({ theme }) => theme.colors.darkgrey_1};
   }
   span.material-symbols-rounded {
-    font-size: 3rem;
+    font-size: 2.4rem;
     cursor: pointer;
     color: ${({ theme }) => theme.colors.darkgrey_1};
-  }
-  span.material-symbols-rounded:hover {
-    color: ${({ theme }) => theme.colors.red};
-  }
-  span.active.material-symbols-rounded {
-    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Like = styled.div`
@@ -399,15 +393,21 @@ const Like = styled.div`
   align-items: center;
 
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
+  }
+  span.active.material-symbols-rounded {
+    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Comment = styled.div`
   display: flex;
   align-items: center;
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
   }
 `;
