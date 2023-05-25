@@ -21,10 +21,10 @@ export default function ReplyNotificationCard() {
         </ListItemAvatar>
         <div style={{ marginLeft: "2rem" }}>
           <div style={{ display: "flex", flexDirection: "row", marginBottom: '0.6rem', alignItems: 'center' }}>
-            <MainNotificationText primary="Single-line item" />
+            <MainNotificationText primary="Reply Content" />
             <TimeNotificationText primary="time" />
           </div>
-          <SubNotificationText secondary="Secondary text" />
+          <SubNotificationText secondary="Article Content" />
         </div>
       </ListItem>
     </NotificationCardButton>
