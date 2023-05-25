@@ -1,67 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import styled, { css } from "styled-components";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserId } = props;
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleMenuItemClick = (index) => {
+    setActiveIndex(index);
+    setCenterContent(sidebarNavItems[index].section);
+  };
 
   return (
     <Wrapper>
       <HeaderWrapper>
-        <img
-          src="https://ih1.redbubble.net/image.1819983922.6790/st,small,845x845-pad,1000x1000,f8f8f8.jpg"
-          alt="logo"
-          width="50rem"></img>
+        <LogoWrapper>
+          <img
+            src="https://ih1.redbubble.net/image.1819983922.6790/st,small,845x845-pad,1000x1000,f8f8f8.jpg"
+            alt="logo"
+            width="50rem"></img>
+        </LogoWrapper>
         <MenuWrapper>
-          {centerContent === "home" ? (
-            <ActiveMenuBarItem>
-              <span className="material-symbols-outlined">home</span>
-              Home
-            </ActiveMenuBarItem>
-          ) : (
-            <MenuBarItem
+          {sidebarNavItems.map((item, index) => (
+            <MenuItem
+              key={index}
+              active={activeIndex === index}
               onClick={() => {
-                setCenterContent("home");
+                // setCenterContent("profile");
+                handleMenuItemClick(index);
               }}>
-              {" "}
-              <span className="material-symbols-outlined">home</span>
-              Home
-            </MenuBarItem>
-          )}
-          {centerContent === "statistics" ? (
-            <ActiveMenuBarItem>
-              <span className="material-symbols-outlined">pie_chart</span>
-              Statistics
-            </ActiveMenuBarItem>
-          ) : (
-            <MenuBarItem
-              onClick={() => {
-                setCenterContent("statistics");
-              }}>
-              {" "}
-              <span className="material-symbols-outlined">pie_chart</span>
-              Statistics
-            </MenuBarItem>
-          )}
-          {centerContent === "notifications" ? (
-            <ActiveMenuBarItem>
-              <span className="material-symbols-outlined">notifications</span>Notifications
-            </ActiveMenuBarItem>
-          ) : (
-            <MenuBarItem
-              onClick={() => {
-                setCenterContent("notifications");
-              }}>
-              <span className="material-symbols-outlined">notifications</span>
-              Notifications
-            </MenuBarItem>
-          )}
-          <MenuBarItem>
-            <span className="material-symbols-outlined">settings</span>Settings
-          </MenuBarItem>
+              <IconWrapper>{item.icon}</IconWrapper>
+              <Text>{item.display}</Text>
+            </MenuItem>
+          ))}
         </MenuWrapper>
       </HeaderWrapper>
+
       <BottomWrapper>
         <ProfileWrapper
           onClick={() => {
@@ -89,33 +64,94 @@ export default function MenuBar(props) {
     </Wrapper>
   );
 }
+
 const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
 
+  padding: 2rem 0;
+
   background-color: white;
 `;
 
 const HeaderWrapper = styled.section`
-  margin: 1rem;
-  ${({ theme }) => theme.fonts.bold};
+  display: grid;
+  place-items: center;
+  height: 120px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Mochiy Pop P one", sans-serif;
 `;
+const ActiveMenuBarItem = styled.div``;
+const LogoWrapper = styled.div`
+  padding: 2rem 0;
+`;
+const MenuBarItem = styled.div``;
+const MenuWrapper = styled.section``;
+
+const MenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  place-content: flex-start;
+  padding: 1rem 3rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #555555;
+  transition: color 0.3s ease-in-out;
+  cursor: pointer;
+
+  ${({ active }) =>
+    active &&
+    css`
+      color: #fff;
+      background-color: #308efe;
+    `}
+`;
+
+const IconWrapper = styled.div`
+  margin-right: 1rem;
+
+  i {
+    font-size: 1.75rem;
+  }
+`;
+
+const Text = styled.div``;
+
+const sidebarNavItems = [
+  {
+    display: "Home",
+    icon: <span className="material-symbols-outlined">home</span>,
+    to: "/home",
+    section: "home",
+  },
+  {
+    display: "Statistics",
+    icon: <span className="material-symbols-outlined">pie_chart</span>,
+    to: "/statistics",
+    section: "statistics",
+  },
+  {
+    display: "Notifications",
+    icon: <span className="material-symbols-outlined">notifications</span>,
+    to: "/notifications",
+    section: "notifications",
+  },
+  {
+    display: "Settings",
+    icon: <span className="material-symbols-outlined">settings</span>,
+    to: "/settings",
+    section: "settings",
+  },
+];
+
 const BottomWrapper = styled.section`
+  align-self: flex-end;
   margin: 1rem;
   font-size: 1.6rem;
   ${({ theme }) => theme.fonts.regular};
-`;
-const MenuWrapper = styled.section`
-  :hover {
-    background-color: #845ec2;
-    color: white;
-  }
-
-  span {
-    margin: 1rem;
-  }
 `;
 
 const ProfileWrapper = styled.section`
@@ -133,16 +169,6 @@ const ProfileWrapper = styled.section`
     height: 3rem;
     border-radius: 1rem;
   }
-`;
-
-const MenuBarItem = styled.div`
-  background-color: white;
-  font-size: 2rem;
-  border: 1rem;
-`;
-const ActiveMenuBarItem = styled.div`
-  background-color: white;
-  font-size: 2rem;
 `;
 
 const LogoutWrapper = styled.section`
