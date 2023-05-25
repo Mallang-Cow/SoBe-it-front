@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NotificationCard from "./NotificationCard";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { List, Typography } from '@mui/material';
 import { theme } from '../../style/theme';
 import ReplyNotificationCard from "./ReplyNotificationCard";
+import { selectAllNotification } from "../../../api/notificationAPI";
 
 function generate(element) {
   return [0, 1, 2].map((value) =>
@@ -15,6 +16,22 @@ function generate(element) {
 }
 
 export default function Notifications() {
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await selectAllNotification();
+//      setNotifications(response); // API에서 받은 알림 데이터를 상태로 설정
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <HeaderContainer>
