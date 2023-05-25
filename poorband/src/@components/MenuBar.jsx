@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 
 export default function MenuBar(props) {
@@ -27,7 +27,6 @@ export default function MenuBar(props) {
               key={index}
               active={activeIndex === index}
               onClick={() => {
-                // setCenterContent("profile");
                 handleMenuItemClick(index);
               }}>
               <IconWrapper>{item.icon}</IconWrapper>
@@ -71,42 +70,59 @@ const Wrapper = styled.section`
   justify-content: space-between;
   height: 100%;
 
-  padding: 2rem 0;
+  padding: 3rem 2rem 0 0;
 
   background-color: white;
 `;
 
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const HeaderWrapper = styled.section`
   display: grid;
-  place-items: center;
-  height: 120px;
+
+  height: 10rem;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: "Mochiy Pop P one", sans-serif;
+  ${({ theme }) => theme.fonts.bold};
 `;
 const ActiveMenuBarItem = styled.div``;
 const LogoWrapper = styled.div`
   padding: 2rem 0;
 `;
 const MenuBarItem = styled.div``;
-const MenuWrapper = styled.section``;
+const MenuWrapper = styled.section`
+  background-color: white;
+  font-size: 2rem;
+
+  border-radius: 1px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 1px 0 rgba(0, 0, 0, 0.22);
+
+  animation: ${fadeInAnimation} 0.5s ease-in-out;
+`;
 
 const MenuItem = styled.div`
   display: flex;
   align-items: center;
   place-content: flex-start;
-  padding: 1rem 3rem;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: #555555;
+  padding: 2rem 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.black};
   transition: color 0.3s ease-in-out;
   cursor: pointer;
 
   ${({ active }) =>
-    active &&
+    active.toString() === "true" &&
     css`
-      color: #fff;
-      background-color: #308efe;
+      color: ${({ theme }) => theme.colors.mainpurple};
+      background-color: ${({ theme }) => theme.colors.lightpurple};
     `}
 `;
 
