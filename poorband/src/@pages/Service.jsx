@@ -53,7 +53,10 @@ export default function Service() {
             />
           )}
           {centerContent === "edit" && (
-            <ArticleEditForm setCenterContent={setCenterContent} articleSeq={articleSeq}></ArticleEditForm>
+            <ArticleEditForm
+              setCenterContent={setCenterContent}
+              articleSeq={articleSeq}
+              setArticleSeq={setArticleSeq}></ArticleEditForm>
           )}
         </CenterWrapper>
 

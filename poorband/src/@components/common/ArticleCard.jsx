@@ -100,8 +100,8 @@ export default function ArticleCard(props) {
 
   // 수정 폼으로 이동
   function goToEdit() {
-    setCenterContent("edit");
     setArticleSeq(thisArticleSeq);
+    setCenterContent("edit");
   }
 
   // 글 삭제
@@ -180,7 +180,7 @@ export default function ArticleCard(props) {
 
             <CategoryContainer>
               <p className="category">분류</p>
-              <p className="content">{CATEGORY[article ? article.category : 0]}</p>
+              <p className="content">{CATEGORY[article?.expenditureCategory]}</p>
             </CategoryContainer>
           </>
         )}
