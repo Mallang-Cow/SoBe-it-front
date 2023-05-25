@@ -34,7 +34,7 @@ export default function Service() {
             <Notifications setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "profile" && (
-            <Profile setCenterContent={setCenterContent} setUserId={setUserId} UserId={UserId} />
+            <Profile setCenterContent={setCenterContent} setUserId={setUserId} userId={userId} />
           )}
           {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
