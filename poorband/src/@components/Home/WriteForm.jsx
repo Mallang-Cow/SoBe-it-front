@@ -12,24 +12,13 @@ export default function WriteForm() {
   const [isConsumeWrite, setIsConsumeWrite] = useState(1); 
   const [isclicked, setisclicked] = useState(true);
 
+  const [file, setFile] = useState(null);
   const [category, setCategory] = useState('');
   const [consumeText, setconsumeText] = useState("");
   const [consumeDate, setconsumeDate] = useState(new Date());
   const [financialText, setfinancialText] = useState("");
   const [status, setStatus] = useState(''); // 공개여부
   const [amount, setAmount] = useState("");
-
-  const newData = {
-    status:status,
-    imageUrl:"url",
-    expenditureCategory:category,
-    amount:Number(amount),
-    financialText:financialText,
-    articleText:consumeText,
-    articleType:isConsumeWrite,
-    consumptionDate:consumeDate,
-    isAllowed:"false"
-  };
 
   /**
    * 지출입력 or 결재받기 버튼선택
@@ -83,6 +72,7 @@ export default function WriteForm() {
    */
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    setFile(file);
     console.log(file);
     // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
   };
@@ -125,6 +115,20 @@ export default function WriteForm() {
    * 입력 폼 제출
    */
   function submitNewData() {
+
+    const newData = {
+      articleDTO:{
+        status:status,
+        expenditureCategory:category,
+        amount:Number(amount),
+        financialText:financialText,
+        articleText:consumeText,
+        articleType:isConsumeWrite,
+        consumptionDate:formatDate(consumeDate),
+        isAllowed:"false"
+      }
+    };
+
     if (isConsumeWrite === 1) {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
@@ -146,14 +150,20 @@ export default function WriteForm() {
         return;
       }
 
-      if (newData.amount&&newData.articleText&&newData.articleType&&
-        newData.consumptionDate&&newData.expenditureCategory&&newData.status){
-        // API 호출
-        newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
-        
-        // console.log(newData);
-      }
+      const formData = new FormData();
+      const json = JSON.stringify(newData.articleDTO);
+      const blob = new Blob([json], { type: 'application/json' });
+
+      formData.append('file', file);
+      formData.append('articleDTO', blob);
+
+      console.log(formData);
+      console.log("file:" + file);
+      console.log(newData.articleDTO);
+      console.log(blob);
+      writeArticle(formData);
+
+
     } else {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
@@ -164,12 +174,13 @@ export default function WriteForm() {
         alert("금액을 입력해주세요.");
         return;
       }
+      
+      const formData = new FormData();
+      const blob = new Blob([newData.articleDTO], { type: "application/json" })
+      formData.append('file', file);
+      formData.append('articleDTO', blob);
 
-      if (newData.articleText&&newData.amount&&newData.status){
-        // API 호출
-        newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
-      }
+      writeArticle(formData);
     }
   }
 
@@ -186,9 +197,9 @@ export default function WriteForm() {
       setconsumeDate(new Date());
 
     },
-    onError:() => {
+    onError:(error) => {
       // 실패시 뭐하지
-      
+      console.log(error);
     },
   });
 
@@ -506,6 +517,12 @@ const FinancialText = styled.input`
   text-align: center;
   font-size: 1.25rem;
   /* margin-top: 1.24rem; */
+
+  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
+
+  &:focus {
+  border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+  }
 `;
 
 const PermissionBottomDiv = styled.section`
@@ -522,6 +539,12 @@ const AmountInput = styled.input`
   margin-top: 1.24rem;
   margin-left: 28.5rem;
   color: #845EC2;
+
+  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
+
+&:focus {
+  border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+  }
 `;
 
 const InputText = styled.textarea`
@@ -534,8 +557,15 @@ const InputText = styled.textarea`
   margin-top: 1.3rem;
   border-radius: 0.5rem;
   ${({ theme }) => theme.fonts.regular};
+  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
 
+  &:focus {
+    border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+  }
+  outline: none;
+  resize: none; /* 크기 조정 방지 */
 `;
+
 
 const SubmitAndPrivacySet = styled.section`
   display: flex;
