@@ -7,6 +7,7 @@ import axios from "axios";
 export default function Feed(props) {
   const { setCenterContent, setArticleSeq, setUserId } = props;
   const [articleType, setArticleType] = useState();
+  const [isMine, setIsMine] = useState(false);
 
   const [articles, setArticles] = useState([]);
   const [lastArticleId, setLastArticleId] = useState(null);
@@ -74,6 +75,7 @@ export default function Feed(props) {
                 setUserId={setUserId}
                 setArticleType={setArticleType}
                 clickActive={true}
+                setIsMine={setIsMine}
               />
               <div ref={ref}></div>
             </ArticleWrapper>
@@ -86,6 +88,7 @@ export default function Feed(props) {
                 setUserId={setUserId}
                 setArticleType={setArticleType}
                 clickActive={true}
+                setIsMine={setIsMine}
               />
               <div></div>
             </ArticleWrapper>

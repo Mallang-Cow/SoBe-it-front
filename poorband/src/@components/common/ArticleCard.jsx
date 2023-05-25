@@ -10,6 +10,7 @@ import { voteArticle } from "../../../api/vote";
 import ProgressBar from "./ProgressBar";
 import { userIdState } from "../../recoil/userId";
 import { useRecoilState } from "recoil";
+import { deleteArticle } from "../../../api/deleteArticle";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive } = props;
@@ -18,14 +19,13 @@ export default function ArticleCard(props) {
   const [time, setTime] = useState([]);
   const [userId, setUserId] = useRecoilState(userIdState);
   const nowTime = new Date();
-
   // 글 정보 가져오기
   const {
     data: article,
     isLoading,
     isError,
     error,
-  } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(Number(articleSeq)), {
+  } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
       setThisArticleSeq(Number(article?.articleSeq));
       setThisUserId(article?.user?.userId);
@@ -50,19 +50,19 @@ export default function ArticleCard(props) {
     else if (artDate.getMinutes() != nowTime.getMinutes())
       setTime(["minutes", nowTime.getMinutes() - artDate.getMinutes()]); // 분 차이
     else setTime(["seconds", nowTime.getSeconds() - artDate.getSeconds()]); // 초 차이
-  }, [articleSeq]);
+  }, [thisArticleSeq]);
 
   // 상세 페이지로 이동
-  function goToArticleDetail(articleSeq) {
+  function goToArticleDetail() {
     // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
     if (clickActive) {
-      setArticleSeq(articleSeq);
+      setArticleSeq(thisArticleSeq);
       setCenterContent("detail");
     }
   }
 
   // 글 작성자 프로필 페이지로 이동
-  function goToProfile(thisUserId) {
+  function goToProfile() {
     setUserId(thisUserId);
     setCenterContent("profile");
   }
@@ -98,13 +98,39 @@ export default function ArticleCard(props) {
     },
   });
 
+  // 수정 폼으로 이동
+  function goToEdit() {
+    setCenterContent("edit");
+    setArticleSeq(thisArticleSeq);
+  }
+
+  // 글 삭제
+  function delArticle() {
+    if (window.confirm("글을 삭제하시겠습니까?")) {
+      deleteArt({ articleSeq: thisArticleSeq });
+    }
+  }
+
+  // 삭제 POST
+  const { mutate: deleteArt } = useMutation(deleteArticle, {
+    onSuccess: (response) => {
+      console.log(response);
+      queryClient.invalidateQueries("articleDetail");
+      setCenterContent("home");
+    },
+    onError: (response) => {
+      console.log(response);
+      console.log("error");
+    },
+  });
+
   return (
     <Wrapper>
       <ProfileContainer>
         <div id="name-container">
           <LinkContainer
             onClick={() => {
-              goToProfile(thisUserId);
+              goToProfile();
             }}>
             <img id="profile-img" src={article?.user?.profileImageUrl} alt="프로필사진" />
 
@@ -117,15 +143,17 @@ export default function ArticleCard(props) {
           </LinkContainer>
 
           <img id="tier-img" src={TIER[article?.user?.userTier]} alt="티어" />
-          <p className="grey">
-            • {time[1]}
-            {time[0] === "year" && "년"}
-            {time[0] === "month" && "월"}
-            {time[0] === "date" && "일"}
-            {time[0] === "hours" && "시간"}
-            {time[0] === "minutes" && "분"}
-            {time[0] === "secounds" && "초"} 전
-          </p>
+          {time && (
+            <p className="grey">
+              • {time[1]}
+              {time[0] === "year" && "년"}
+              {time[0] === "month" && "월"}
+              {time[0] === "date" && "일"}
+              {time[0] === "hours" && "시간"}
+              {time[0] === "minutes" && "분"}
+              {time[0] === "secounds" && "초"} 전
+            </p>
+          )}
         </div>
 
         {/* 현재 시간과 비교해서 보여주기 */}
@@ -138,7 +166,7 @@ export default function ArticleCard(props) {
       <Body
         clickActive={clickActive}
         onClick={() => {
-          goToArticleDetail(thisArticleSeq);
+          goToArticleDetail();
         }}>
         <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
 
@@ -247,6 +275,26 @@ export default function ArticleCard(props) {
           <span className="material-symbols-rounded">comment</span>
           <p>{article?.commentCnt}</p>
         </Comment>
+
+        {/* 내 글이면 수정/삭제 버튼 생성 */}
+        {article?.mine && (
+          <ButtonContainer>
+            <Button
+              id="edit"
+              onClick={() => {
+                goToEdit();
+              }}>
+              수정
+            </Button>
+            <Button
+              id="del"
+              onClick={() => {
+                delArticle();
+              }}>
+              삭제
+            </Button>
+          </ButtonContainer>
+        )}
       </FooterContainer>
     </Wrapper>
   );
@@ -495,4 +543,27 @@ const Comment = styled.div`
     font-size: 1.4rem;
     margin-left: 1rem;
   }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+
+  #del {
+    background-color: ${({ theme }) => theme.colors.darkgrey_2};
+    margin-left: 1rem;
+  }
+  :focus {
+    outline: none;
+  }
+`;
+const Button = styled.button`
+  border-radius: 3rem;
+  height: 3rem;
+  width: 8rem;
+  ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.mainpurple};
+  font-size: 1.4rem;
 `;

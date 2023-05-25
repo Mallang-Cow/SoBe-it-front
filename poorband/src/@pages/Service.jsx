@@ -17,8 +17,6 @@ export default function Service() {
   const [userId, setUserId] = useRecoilState(userIdState);
   const [articleSeq, setArticleSeq] = useState(0);
 
-  console.log(userId);
-
   return (
     <>
       <ServiceWrapper>
