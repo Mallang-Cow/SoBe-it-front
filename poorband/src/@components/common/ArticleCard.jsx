@@ -8,15 +8,17 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { likeArticle } from "../../../api/likeArticle";
 import { voteArticle } from "../../../api/vote";
 import ProgressBar from "./ProgressBar";
+import { userIdState } from "../../recoil/userId";
+import { useRecoilState } from "recoil";
 
 export default function ArticleCard(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserId, clickActive } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
-  const [thisUserId, setThisUserId] = useState(0);
+  const [thisUserId, setThisUserId] = useState("");
   const [time, setTime] = useState([]);
+  const [userId, setUserId] = useRecoilState(userIdState);
   const nowTime = new Date();
 
-  console.log(thisArticleSeq, thisUserId);
   // 글 정보 가져오기
   const {
     data: article,
@@ -60,8 +62,8 @@ export default function ArticleCard(props) {
   }
 
   // 글 작성자 프로필 페이지로 이동
-  function goToProfileDetail(UserId) {
-    setUserId(userId);
+  function goToProfile(thisUserId) {
+    setUserId(thisUserId);
     setCenterContent("profile");
   }
 
@@ -74,7 +76,6 @@ export default function ArticleCard(props) {
   // 좋아요 정보 Post 전송
   const { mutate: like } = useMutation(likeArticle, {
     onSuccess: (response) => {
-      console.log(response);
       queryClient.invalidateQueries("articleDetail");
     },
     onError: () => {
@@ -84,14 +85,12 @@ export default function ArticleCard(props) {
 
   // 투표하기
   function clickVote(voteType) {
-    console.log(voteType);
     vote({ articleSeq: Number(articleSeq), voteType: Number(voteType) });
   }
 
   // 투표 정보 Post 전송
   const { mutate: vote } = useMutation(voteArticle, {
     onSuccess: (response) => {
-      console.log(response);
       queryClient.invalidateQueries("articleDetail");
     },
     onError: () => {
@@ -102,12 +101,21 @@ export default function ArticleCard(props) {
   return (
     <Wrapper>
       <ProfileContainer>
-        <img id="profile-img" src={article?.user?.profileImageUrl} alt="프로필사진" />
         <div id="name-container">
-          <p className="bold">{article?.user.nickname}</p>
-          <p className="bold" id="userId">
-            {article?.user?.userId}
-          </p>
+          <LinkContainer
+            onClick={() => {
+              goToProfile(thisUserId);
+            }}>
+            <img id="profile-img" src={article?.user?.profileImageUrl} alt="프로필사진" />
+
+            <p className="bold" id="nickname">
+              {article?.user.nickname}
+            </p>
+            <p className="bold" id="userId">
+              {article?.user?.userId}
+            </p>
+          </LinkContainer>
+
           <img id="tier-img" src={TIER[article?.user?.userTier]} alt="티어" />
           <p className="grey">
             • {time[1]}
@@ -277,7 +285,6 @@ const ProfileContainer = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
-    margin-left: 1rem;
   }
   p.bold {
     font: ${({ theme }) => theme.fonts.bold};
@@ -312,6 +319,16 @@ const ProfileContainer = styled.div`
   #tier-img {
     width: 2rem;
     height: 2rem;
+  }
+`;
+
+const LinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  #nickname {
+    margin-left: 1rem;
   }
 `;
 
