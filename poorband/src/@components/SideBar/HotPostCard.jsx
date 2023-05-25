@@ -10,7 +10,7 @@ export default function HotPostCard(props) {
   };
 
   useEffect(() => {
-    // hotPosts(newData);
+    hotPosts(newData);
   }, []);
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
