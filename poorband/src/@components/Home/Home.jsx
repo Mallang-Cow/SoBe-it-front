@@ -4,13 +4,13 @@ import Feed from "./Feed";
 import { styled } from "styled-components";
 
 export default function Home(props) {
-  const { setCenterContent, setArticleSeq } = props;
+  const { setCenterContent, setArticleSeq, setUserId } = props;
   return (
     <>
       <HomeWrapper>
         <HomeTag>Home</HomeTag>
         <WriteForm />
-        <Feed setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} />
+        <Feed setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} setUserId={setUserId} />
       </HomeWrapper>
     </>
   );

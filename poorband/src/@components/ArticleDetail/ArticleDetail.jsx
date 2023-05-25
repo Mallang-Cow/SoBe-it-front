@@ -10,8 +10,8 @@ export default function ArticleDetail(props) {
   const { articleSeq, setCenterContent, setArticleSeq, setUserId } = props;
   const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(1);
-  const [isMine, setIsMine] = useState(false);
   const [clickActive, setClickActive] = useState(false);
+
   return (
     <>
       <HeaderContainer>
@@ -28,13 +28,6 @@ export default function ArticleDetail(props) {
             setArticleSeq={setArticleSeq}
             setUserId={setUserId}
           />
-          {/* 내 글이면 수정/삭제 버튼 생성 */}
-          {isMine && (
-            <ButtonContainer>
-              <Button>수정</Button>
-              <Button>삭제</Button>
-            </ButtonContainer>
-          )}
         </ArticleWrapper>
 
         <CommentForm />
