@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { CATEGORY } from "../../../core/expenditureCategory";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { likeArticle } from "../../../api/likeArticle";
+import { voteArticle } from "../../../api/vote";
+import ProgressBar from "./ProgressBar";
 
 export default function ArticleCard(props) {
-  const { articleSeq } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
+  const [thisSeq, setThisSeq] = useState();
+  const [time, setTime] = useState([]);
   const nowTime = new Date();
   // 글 정보 가져오기
   const {
@@ -17,24 +22,73 @@ export default function ArticleCard(props) {
     error,
   } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
-      console.log("Success");
+      setThisSeq(article?.articleSeq);
     },
     onError: () => {
       console.log("Error");
     },
   });
+  // 글번호 & 글타입 & 날짜 구하기
+  useEffect(() => {
+    setArticleType(article?.articleType);
+
+    const artDate = new Date(article?.writtenDate);
+    console.log(artDate);
+    if (artDate.getFullYear() != nowTime.getFullYear())
+      setTime(["year", nowTime.getFullYear() - artDate.getFullYear()]); // 연도차이
+    if (artDate.getMonth() != nowTime.getMonth())
+      setTime(["month", nowTime.getMonth() - artDate.getMonth()]); // 달 차이
+    else if (artDate.getDate() != nowTime.getDate())
+      setTime(["date", nowTime.getDate() - artDate.getDate()]); // 일 차이
+    else if (artDate.getHours() != nowTime.getHours())
+      setTime(["hours", nowTime.getHours() - artDate.getHours()]); // 시간 차이
+    else if (artDate.getMinutes() != nowTime.getMinutes())
+      setTime(["minutes", nowTime.getMinutes() - artDate.getMinutes()]); // 분 차이
+    else setTime(["seconds", nowTime.getSeconds() - artDate.getSeconds()]); // 초 차이
+  }, [articleSeq]);
+
+  // 상세 페이지로 이동
+  function goToArticleDetail(articleSeq) {
+    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
+    if (clickActive) {
+      setArticleSeq(articleSeq);
+      setCenterContent("detail");
+    }
+  }
 
   // 좋아요
+  function clickLike() {
+    like({ articleSeq: Number(articleSeq) });
+  }
+
+  const queryClient = useQueryClient();
+  // 좋아요 정보 Post 전송
+  const { mutate: like } = useMutation(likeArticle, {
+    onSuccess: (response) => {
+      console.log(response);
+      queryClient.invalidateQueries("articleDetail");
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   // 투표하기
+  function clickVote(voteType) {
+    console.log(voteType);
+    vote({ articleSeq: Number(articleSeq), voteType: Number(voteType) });
+  }
 
-  const [articleType, setArticleType] = useState(ARTICLE_DETAIL.articleType);
-  const [status, setStatus] = useState(ARTICLE_DETAIL.status);
-  const [isMine, setIsMine] = useState(ARTICLE_DETAIL.isMine);
-  const [category, setCategory] = useState(ARTICLE_DETAIL.expenditureCategory);
-  const [img, setImg] = useState(ARTICLE_DETAIL.imageUrl);
-  const [isLiked, setIsLiked] = useState(ARTICLE_DETAIL.liked);
-  const [isVoted, setIsVoted] = useState(ARTICLE_DETAIL.voted);
+  // 투표 정보 Post 전송
+  const { mutate: vote } = useMutation(voteArticle, {
+    onSuccess: (response) => {
+      console.log(response);
+      queryClient.invalidateQueries("articleDetail");
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   return (
     <Wrapper>
@@ -46,69 +100,105 @@ export default function ArticleCard(props) {
             {article?.user?.userId}
           </p>
           <img id="tier-img" src={TIER[article?.user?.userTier]} alt="티어" />
-          <p className="grey">• {article?.writtenDate}</p>
+          <p className="grey">
+            • {time[1]}
+            {time[0] === "year" && "년"}
+            {time[0] === "month" && "월"}
+            {time[0] === "date" && "일"}
+            {time[0] === "hours" && "시간"}
+            {time[0] === "minutes" && "분"}
+            {time[0] === "secounds" && "초"} 전
+          </p>
         </div>
 
         {/* 현재 시간과 비교해서 보여주기 */}
         {article?.status === 1 && <p className="grey status">전체 공개</p>}
         {article?.status === 2 && <p className="grey status">맞팔 공개</p>}
         {article?.status === 3 && <p className="grey status">비공개</p>}
-        {article?.mine && <span class="material-symbols-outlined more">more_vert</span>}
+        {article?.mine && <span className="material-symbols-outlined more">more_vert</span>}
         {/* 더보기 아이콘 넣기 */}
       </ProfileContainer>
+      <Body
+        clickActive={clickActive}
+        onClick={() => {
+          goToArticleDetail(article?.articleSeq);
+        }}>
+        <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
 
-      <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
+        {/* 지출 내역 - 날짜, 분류 */}
+        {article?.articleType === 1 && (
+          <>
+            <DateContiner>
+              <p className="category">날짜</p>
+              <p>{article?.consumptionDate}</p>
+            </DateContiner>
 
-      {/* 지출 내역 - 날짜, 분류 */}
-      {article?.articleType === 1 && (
-        <>
-          <DateContiner>
-            <p className="category">날짜</p>
-            <p>{article?.consumptionDate}</p>
-          </DateContiner>
+            <CategoryContainer>
+              <p className="category">분류</p>
+              <p className="content">{CATEGORY[article ? article.category : 0]}</p>
+            </CategoryContainer>
+          </>
+        )}
 
-          <CategoryContainer>
-            <p className="category">분류</p>
-            <p className="content">{CATEGORY[category]}</p>
-          </CategoryContainer>
-        </>
-      )}
-
-      <ContextContainer>
-        <p className="category">내용</p>
-        <p className="content">{article?.articleText}</p>
-      </ContextContainer>
-      {article?.imageUrl && (
-        <ImageContainer>
-          <img src={article?.imageUrl} alt="이미지"></img>
-        </ImageContainer>
-      )}
-      <PriceContainer>
-        <p className="category">금액</p>
-        <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
-      </PriceContainer>
+        <ContextContainer>
+          <p className="category">내용</p>
+          <p className="content">{article?.articleText}</p>
+        </ContextContainer>
+        {article?.imageUrl && (
+          <ImageContainer>
+            <img src={article?.imageUrl} alt="이미지"></img>
+          </ImageContainer>
+        )}
+        <PriceContainer>
+          <p className="category">금액</p>
+          <p className="content">{article?.amount?.toLocaleString("en-US")}원</p>
+        </PriceContainer>
+      </Body>
 
       {article?.articleType === 2 && (
         <VContatiner>
-          {isVoted ? (
-            <VoteResultContainer>
+          {article?.voted ? (
+            <VoteResultContainer result={article?.agreeRate >= article?.disagreeRate}>
               <div className="container">
-                <p>허가 {article?.agree}</p>
-                <p>불허 {article?.disagree}</p>
+                <p className="allow label">허가</p>
+                <p className="notAllow label">불허 </p>
               </div>
-
               <div className="container">
-                <p>{article?.agreeRate}</p>
-                <p>{article?.disagreeRate}</p>
+                <p className="allow value">
+                  {article?.agreeRate}%({article?.agree}표)
+                </p>
+                <p className="notAllow value">
+                  {article?.disagreeRate}%({article?.disagree}표)
+                </p>
               </div>
-
               {/* 그래프 */}
-              <p>그래프</p>
+              {article?.agreeRate >= article?.disagreeRate ? (
+                <ProgressBar reverse={0} basecolor={"#C4C4C4"} barcolor={"#845EC2"} percentage={article?.agreeRate} />
+              ) : (
+                <ProgressBar
+                  reverse={1}
+                  basecolor={"#C4C4C4"}
+                  barcolor={"#845EC2"}
+                  percentage={article?.disagreeRate}
+                />
+              )}
             </VoteResultContainer>
           ) : (
             <VoteContainer>
-              <button className="left">허가</button>
-              <button className="right">불허</button>
+              <button
+                className="left"
+                onClick={() => {
+                  clickVote(1);
+                }}>
+                허가
+              </button>
+              <button
+                className="right"
+                onClick={() => {
+                  clickVote(2);
+                }}>
+                불허
+              </button>
             </VoteContainer>
           )}
         </VContatiner>
@@ -116,16 +206,28 @@ export default function ArticleCard(props) {
 
       <FooterContainer>
         <Like>
-          {isLiked ? (
-            <span class="material-symbols-rounded active">favorite</span>
+          {article?.liked ? (
+            <span
+              className="material-symbols-rounded active"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           ) : (
-            <span class="material-symbols-rounded">favorite</span>
+            <span
+              className="material-symbols-rounded"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           )}
           <p>{article?.likeCnt}</p>
         </Like>
 
         <Comment>
-          <span class="material-symbols-rounded">comment</span>
+          <span className="material-symbols-rounded">comment</span>
           <p>{article?.commentCnt}</p>
         </Comment>
       </FooterContainer>
@@ -234,6 +336,10 @@ const CategoryContainer = styled.div`
   font-size: 1.6rem;
   color: ${({ theme }) => theme.colors.black};
 `;
+
+const Body = styled.div`
+  cursor: ${({ clickActive }) => clickActive && "pointer"};
+`;
 const ContextContainer = styled.div`
   display: flex;
   padding: 1.2rem 0;
@@ -293,13 +399,36 @@ const VoteResultContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.lightpurple};
+  ${({ theme }) => theme.fonts.bold};
+  padding: 1.5rem;
   border-radius: 1.5rem;
   margin: 0.5rem;
   .container {
-    margin: 0;
+    margin: 0.5rem 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
+  }
+  .reverse {
+    rotate: 180deg;
+  }
+  .allow {
+    color: ${({ result, theme }) => result && theme.colors.mainpurple};
+  }
+  .notAllow {
+    color: ${({ result, theme }) => result || theme.colors.mainpurple};
+  }
+  .allow.label {
+    font-size: ${({ result }) => (result ? "1.6rem" : "1.4rem")};
+  }
+  .allow.value {
+    font-size: 1.2rem;
+  }
+  .notAllow.label {
+    font-size: ${({ result }) => (!result ? "1.6rem" : "1.4rem")};
+  }
+  .notAllow.value {
+    font-size: 1.2rem;
   }
 `;
 
@@ -312,27 +441,32 @@ const FooterContainer = styled.div`
     color: ${({ theme }) => theme.colors.darkgrey_1};
   }
   span.material-symbols-rounded {
-    font-size: 3rem;
+    font-size: 2.4rem;
+    cursor: pointer;
     color: ${({ theme }) => theme.colors.darkgrey_1};
-  }
-  span.active.material-symbols-rounded {
-    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Like = styled.div`
   display: flex;
   margin: 0 2rem 0 0;
   align-items: center;
+
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
+  }
+  span.active.material-symbols-rounded {
+    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Comment = styled.div`
   display: flex;
   align-items: center;
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
   }
 `;

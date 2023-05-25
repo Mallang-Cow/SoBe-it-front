@@ -12,7 +12,7 @@ export default function SearchBar() {
               const content = event.target;
             }}></form>
           <input id="text" type="text" name="search" placeholder="search" />
-          <input type="submit" value="검색"></input>
+          <input id="submit" type="submit" value="검색"></input>
         </article>
       </Container>
     </>
@@ -20,11 +20,19 @@ export default function SearchBar() {
 }
 
 const Container = styled.li`
-  padding: 2rem;
+  padding: 1.8rem;
 
   input {
     height: 3rem;
     border: 1px #cccccc solid;
+  }
+
+  #text {
+    width: 15rem;
+    margin-right: 1rem;
+  }
+
+  #submit {
   }
 
   input:focus {

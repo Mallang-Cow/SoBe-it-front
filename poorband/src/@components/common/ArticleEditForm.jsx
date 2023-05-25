@@ -1,0 +1,484 @@
+import React, { useState } from "react";
+import { styled } from "styled-components";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import { useMutation } from "react-query";
+import { articeWrite } from "../../../api/articleWriteApi";
+
+export default function ArticleEditForm(props) {
+  const { setCenterContent, articleSeq } = props;
+  const [articleType] = useState(1);
+  const [category, setCategory] = useState("dd");
+  const [imageUrl, setImageUrl] = useState();
+
+  const [isConsumeWrite, setIsConsumeWrite] = useState(1);
+  const [isclicked, setisclicked] = useState(true);
+
+  const [consumeText, setconsumeText] = useState("");
+  const [consumeDate, setconsumeDate] = useState(new Date());
+  const [financialText, setfinancialText] = useState("");
+  const [status, setStatus] = useState(1); // 공개여부
+  const [amount, setAmount] = useState("");
+  console.log(articleType);
+  /**
+   * 지출입력 or 결재받기 버튼선택
+   * @param {*} type
+   */
+  const handleClick = (type) => {
+    setIsConsumeWrite(type);
+  };
+
+  /**
+   * @param {*} event
+   * 소비 날짜 셋팅
+   */
+  const handleDateInput = (date) => {
+    setconsumeDate(date);
+  };
+
+  function formatDate(date) {
+    let d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+
+  /**
+   * 글 작성
+   * @param {*} event
+   */
+  const handleCousumeInput = (event) => {
+    setconsumeText(event.target.value);
+  };
+
+  /**
+   * 가계부 메모
+   * @param {*} event
+   */
+  const handleFinancialInput = (event) => {
+    setfinancialText(event.target.value);
+  };
+
+  /**
+   * 사진업로드
+   * @param {*} event
+   */
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+    // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
+  };
+
+  /**
+   * 카테고리
+   * @param {*} event
+   */
+  const handleCategoryChange = (event) => {
+    setCategory(Number(event.target.value));
+  };
+
+  /**
+   * 금액
+   * @param {*} e
+   */
+  const handleAmountChange = (event) => {
+    const value = event.target.value;
+    const formattedValue = value.replace(/[^0-9]/g, ""); // 숫자만 허용
+    setAmount(formattedValue);
+  };
+
+  /**
+   * 금액 입력할때 쉼표 붙여주
+   */
+  const formatWithCommas = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+  /**
+   * 공개여부
+   * @param {*} event
+   */
+  const handleStatusChage = (event) => {
+    setStatus(event.target.value);
+  };
+
+  /**
+   * 입력 폼 제출
+   */
+  function submitNewData() {
+    if (isConsumeWrite === 1) {
+      if (consumeText === "") {
+        alert("글을 입력해주세요.");
+        return;
+      }
+
+      if (category === "") {
+        alert("카테고리를 선택해주세요.");
+        return;
+      }
+
+      if (amount === "") {
+        alert("금액을 입력해주세요.");
+        return;
+      }
+
+      if (status === "") {
+        alert("공개여부를 선택해주세요.");
+        return;
+      }
+
+      if (
+        newData.amount &&
+        newData.articleText &&
+        newData.articleType &&
+        newData.consumptionDate &&
+        newData.expenditureCategory &&
+        newData.status
+      ) {
+        // API 호출
+        newData.consumptionDate = formatDate(consumeDate);
+        writeArticle(newData);
+
+        // console.log(newData);
+      }
+    } else {
+      if (consumeText === "") {
+        alert("글을 입력해주세요.");
+        return;
+      }
+
+      if (amount === "") {
+        alert("금액을 입력해주세요.");
+        return;
+      }
+
+      if (newData.articleText && newData.amount && newData.status) {
+        // API 호출
+        newData.consumptionDate = formatDate(consumeDate);
+        writeArticle(newData);
+      }
+    }
+  }
+
+  const { mutate: writeArticle } = useMutation(articeWrite, {
+    onSuccess: (response) => {
+      console.log(response);
+      // 글쓰기 성공하면 바로 피드랑 입력폼 새로고침 해주기.
+      // 성공하면 따로 alert를 줄건지?
+      setconsumeText("");
+      setCategory("");
+      setfinancialText("");
+      setAmount("");
+      setStatus("");
+      setconsumeDate(new Date());
+    },
+    onError: () => {
+      // 실패시 뭐하지
+    },
+  });
+
+  return (
+    <>
+      <HeaderContainer>
+        <span className="material-symbols-rounded">arrow_back</span>
+        {articleType === 1 ? <header>지출 내역 수정</header> : <header>결재 내역 수정</header>}
+      </HeaderContainer>
+
+      {/* isConsumeWrite에 따라 지출 받기 / 결재 받기 바뀌기 */}
+      <EditFormWrapper>
+        {articleType === 1 && (
+          <TopWrapper>
+            <StyledSelect1 value={category} onChange={handleCategoryChange}>
+              <option value="">카테고리</option>
+              <option value="1">식비</option>
+              <option value="2">패션/미용</option>
+              <option value="3">생활용품</option>
+              <option value="4">교육</option>
+              <option value="5">취미생활</option>
+              <option value="6">기타</option>
+            </StyledSelect1>
+            {/* <DatePicker
+              selected={consumeDate}
+              onChange={handleDateInput}
+              locale={ko}
+              dateFormat="yyyy-MM-dd"
+              wrapperClassName="w-full"
+            /> */}
+          </TopWrapper>
+        )}
+
+        <InputText
+          name="consumeInput"
+          value={consumeText}
+          placeholder="글을 작성하세요."
+          onChange={handleCousumeInput}
+        />
+
+        {imageUrl && (
+          <ImageContainer>
+            <img src={imageUrl} alt="이미지"></img>
+          </ImageContainer>
+        )}
+
+        <BottomWrapper>
+          <LeftWrapper>
+            <FileLabel htmlFor="file">
+              <span className="material-symbols-outlined">image</span>
+            </FileLabel>
+            <input
+              className="imgInput"
+              type="file"
+              name="file"
+              id="file"
+              accept="image/*"
+              onChange={handleFileUpload}
+              //style={{ display: "none" }}
+            />
+            <FinancialText
+              type="text"
+              value={financialText}
+              name="financialInput"
+              placeholder="가계부 메모를 작성하세요."
+              onChange={handleFinancialInput}
+            />
+          </LeftWrapper>
+
+          <AmountInput
+            type="text"
+            placeholder="금액 입력"
+            value={formatWithCommas(amount)}
+            onChange={handleAmountChange}
+          />
+        </BottomWrapper>
+
+        <SubmitAndPrivacySet>
+          <StyledSelect2 value={status} onChange={handleStatusChage}>
+            <option value="1">전체공개</option>
+            <option value="2">맞팔공개</option>
+            <option value="3">비공개</option>
+          </StyledSelect2>
+          <SubmitButton className="submit" onClick={submitNewData}>
+            수정하기
+          </SubmitButton>
+        </SubmitAndPrivacySet>
+      </EditFormWrapper>
+    </>
+  );
+}
+
+const HeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  padding: 4rem 3rem 2rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+
+  ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 2.4rem;
+
+  span {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
+`;
+const EditFormWrapper = styled.section`
+  width: 100%;
+  padding: 2rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  :focus,
+  :focus-visible,
+  :hover {
+    outline: none;
+  }
+  .react-datepicker-wrapper {
+    width: 10rem;
+    text-align: center;
+    margin-left: 40.1rem;
+    margin-right: 4rem;
+  }
+  .react-datepicker__input-container input {
+    width: 10rem;
+    height: 2.3rem;
+    border: 1px solid #ddd;
+    font-size: 1.1rem;
+    text-align: center;
+    color: #707070;
+  }
+`;
+
+// 카테고리 셀렉트
+const StyledSelect1 = styled.select`
+  font-size: 1.4rem;
+  ${({ theme }) => theme.fonts.medium};
+  background-color: ${({ theme }) => theme.colors.mainpurple};
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  appearance: none;
+
+  border-radius: 3rem;
+  height: 3rem;
+  width: 8rem;
+`;
+
+const TopWrapper = styled.section`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  .react-datepicker-wrapper {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+
+  .react-datepicker__input-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+  }
+  .react-datepicker__input-container input {
+    text-align: center;
+    width: fit-content;
+  }
+
+  /* .containerDatePicker,
+  .containerDatePicker > div.react-datepicker-wrapper,
+  .containerDatePicker
+    > div
+    > div.react-datepicker__input-container
+    .containerDatePicker
+    > div
+    > div.react-datepicker__input-container
+    input {
+    width: 100% !important;
+  }
+
+  .datePicker {
+    width: 100% !important;
+  } */
+`;
+
+const InputText = styled.textarea`
+  width: 100%;
+  height: 8rem;
+  padding: 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+  text-align: left;
+  border-radius: 0.5rem;
+  ${({ theme }) => theme.fonts.regular};
+  resize: none;
+`;
+
+const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem;
+  img {
+    width: 30rem;
+    height: 30rem;
+    border-radius: 1rem;
+  }
+`;
+
+const BottomWrapper = styled.section`
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0 1.5rem 0;
+  width: 100%;
+  .imgInput {
+    width: 7rem;
+  }
+`;
+
+const FileLabel = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.5rem;
+
+  & > span {
+    font-size: 3rem;
+  }
+`;
+const LeftWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const FinancialText = styled.input`
+  width: 18rem;
+  height: 3rem;
+  padding: 0 0.8rem;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+  border-radius: 0.4rem;
+  text-align: left;
+  font-size: 1.4rem;
+`;
+
+const AmountInput = styled.input`
+  width: 12rem;
+  height: 3rem;
+  padding: 0 0.8rem;
+  margin-left: 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+  border-radius: 0.4rem;
+  text-align: center;
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.mainpurple};
+`;
+
+const SubmitAndPrivacySet = styled.section`
+  display: flex;
+  justify-content: end;
+  :focus {
+    outline: none;
+  }
+  .submit:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
+`;
+
+// 공개여부 셀렉트
+const StyledSelect2 = styled.select`
+  option {
+    color: #845ec2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  border: 1px solid ${({ theme }) => theme.colors.mainpurple};
+  background-color: white;
+  ${({ theme }) => theme.fonts.regular};
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.colors.mainpurple};
+  appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
+  text-align: center;
+
+  border-radius: 3rem;
+  height: 3rem;
+  width: 8rem;
+`;
+
+const SubmitButton = styled.button`
+  margin-left: 1.5rem;
+  border-radius: 3rem;
+  height: 3rem;
+  width: 8rem;
+  ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.mainpurple};
+  font-size: 1.4rem;
+`;

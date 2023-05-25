@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { styled } from "styled-components";
 
 export default function ProgressBar(props) {
-  const { basecolor, barcolor, percentage } = props;
+  const { basecolor, barcolor, percentage, reverse } = props;
   return (
     <>
-      <BaseBar basecolor={basecolor}>
+      <BaseBar reverse={reverse} basecolor={basecolor}>
         <ColorBar barcolor={barcolor} percentage={percentage}></ColorBar>
       </BaseBar>
     </>
@@ -14,6 +14,8 @@ export default function ProgressBar(props) {
 const BaseBar = styled.div`
   border-radius: 5rem;
   background-color: ${({ basecolor }) => basecolor};
+  display: flex;
+  justify-content: ${({ reverse }) => (reverse === 0 ? "start" : "end")};
   height: 1.2rem;
   width: 100%;
 `;
