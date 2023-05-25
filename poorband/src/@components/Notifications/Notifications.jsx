@@ -7,6 +7,7 @@ import { theme } from '../../style/theme';
 import ReplyNotificationCard from "./ReplyNotificationCard";
 import { selectAllNotification } from "../../../api/notificationAPI";
 import ReplyLikeNotificationCard from "./ReplyLikeNotificationCard";
+import FollowNotificationCard from "./FollowNotificationCard";
 
 function generate(element) {
   return [0, 1, 2].map((value) =>
@@ -49,6 +50,7 @@ export default function Notifications() {
         )}
         <ReplyNotificationCard />
         <ReplyLikeNotificationCard />
+        <FollowNotificationCard />
       </List>
     </div>
   );
