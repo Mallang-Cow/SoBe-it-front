@@ -309,18 +309,20 @@ const EditFormWrapper = styled.section`
   }
   .react-datepicker__input-container input {
     width: 10rem;
-    height: 2.3rem;
-    border: 1px solid #ddd;
+    height: 100%;
+    border-radius: 0.3rem;
+    border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
     font-size: 1.1rem;
     text-align: center;
     color: #707070;
   }
 `;
 
-const DataPickerWrapper = styled.div`
+const DataPickerWrapper = styled.section`
   display: flex;
+  height: 3rem;
   .react-datepicker-popper {
-    transform: translate3d(995px, 137.5px, 0px) !important;
+    //transform: translate3d(995px, 137.5px, 0px) !important;
   }
 `;
 
@@ -351,13 +353,11 @@ const TopWrapper = styled.section`
     height: 100%;
     text-align: center;
   }
-  .react-datepicker__aria-live {
-    background-color: red;
-  }
   .react-datepicker__input-container {
     margin-left: 5rem;
     width: fit-content;
     display: flex;
+    height: 100%;
     justify-content: end;
   }
   .react-datepicker-ignore-onclickoutside {
@@ -365,24 +365,11 @@ const TopWrapper = styled.section`
   }
   .react-datepicker__input-container input {
     text-align: center;
+    padding: 1rem 0;
     width: fit-content;
+    ${({ theme }) => theme.fonts.medium};
+    font-size: 1.2rem;
   }
-
-  /* .containerDatePicker,
-  .containerDatePicker > div.react-datepicker-wrapper,
-  .containerDatePicker
-    > div
-    > div.react-datepicker__input-container
-    .containerDatePicker
-    > div
-    > div.react-datepicker__input-container
-    input {
-    width: 100% !important;
-  }
-
-  .datePicker {
-    width: 100% !important;
-  } */
 `;
 
 const InputText = styled.textarea`
