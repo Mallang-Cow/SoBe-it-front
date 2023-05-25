@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import axios from "axios";
 
 export default function Feed(props) {
-  const { setCenterContent, setArticleSeq, setUserSeq } = props;
+  const { setCenterContent, setArticleSeq, setUserId } = props;
   const [articleType, setArticleType] = useState();
 
   const [articles, setArticles] = useState([]);
@@ -71,7 +71,7 @@ export default function Feed(props) {
                 articleSeq={article.articleSeq}
                 setCenterContent={setCenterContent}
                 setArticleSeq={setArticleSeq}
-                setUserSeq={setUserSeq}
+                setUserId={setUserId}
                 setArticleType={setArticleType}
                 clickActive={true}
               />
@@ -83,7 +83,7 @@ export default function Feed(props) {
                 articleSeq={article.articleSeq}
                 setCenterContent={setCenterContent}
                 setArticleSeq={setArticleSeq}
-                setUserSeq={setUserSeq}
+                setUserId={setUserId}
                 setArticleType={setArticleType}
                 clickActive={true}
               />

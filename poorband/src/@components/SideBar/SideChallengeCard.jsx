@@ -1,29 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import ChallengeProgressBar from "./ChallengeProgressBar";
+import { getChallenge } from "../../../api/getChallenge";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+
 export default function SideChallengeCard(props) {
+  const [data, setData] = useState([]);
+
+  const newData = {
+    userId: "test1",
+  };
+
+  useEffect(() => {
+    challenge(newData);
+  }, []);
+
+  const { mutate: challenge } = useMutation(getChallenge, {
+    onSuccess: (response) => {
+      setData(response.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        console.log("도전 정보 가져오기 실패");
+      }
+    },
+  });
+
   return (
     <Wrapper>
       <TitleWrapper>
-        <p>하루 만원 챌린지🔥🔥🔥</p>
+        <hr></hr>
+        <p>{data?.title}</p>
+        <hr></hr>
       </TitleWrapper>
       <BarWrapper>
         <span>기간</span>
-        <span>23/05/10 - 23/05/31</span>
+        <span>
+          {data?.startDate} - {data?.endDate}
+        </span>
 
         <ProgressBarWrapper>
           <ProgressBarContainer>
             <ChallengeProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={70}></ChallengeProgressBar>
           </ProgressBarContainer>
-          <p>10,000원</p>
+          <p>{data?.goalAmount /*.toLocaleString()*/}원</p>
         </ProgressBarWrapper>
       </BarWrapper>
       <RemainWrapper>
         <div id="remain-container">
           <span className="bold">지출</span>
-          <span className="gray">6,900</span>
+          <span className="gray">{data?.consumption?.toLocaleString()}원</span>
           <span className="bold">잔여</span>
-          <span className="gray">3,100</span>
+          <span className="gray">{data?.goalAmount - data?.consumption?.toLocaleString()}원</span>
         </div>
       </RemainWrapper>
     </Wrapper>
@@ -31,7 +59,7 @@ export default function SideChallengeCard(props) {
 }
 
 const Wrapper = styled.div`
-  padding: 2rem 1rem;
+  padding: 1rem 2rem;
 
   ${({ theme }) => theme.fonts.regular};
 
@@ -44,7 +72,7 @@ const Wrapper = styled.div`
 const TitleWrapper = styled.div``;
 const BarWrapper = styled.div`
   height: 5rem;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.lightgrey_1};
 `;
 const ProgressBarWrapper = styled.div`
   padding: 2rem 1rem;
@@ -73,5 +101,5 @@ const ProgressBarContainer = styled.div`
 `;
 
 const RemainWrapper = styled.section`
-  padding: 2rem;
+  padding: 0 2rem;
 `;

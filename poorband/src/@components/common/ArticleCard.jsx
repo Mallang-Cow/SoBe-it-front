@@ -10,30 +10,33 @@ import { voteArticle } from "../../../api/vote";
 import ProgressBar from "./ProgressBar";
 
 export default function ArticleCard(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserSeq, clickActive } = props;
-  const [thisSeq, setThisSeq] = useState();
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, setUserId, clickActive } = props;
+  const [thisArticleSeq, setThisArticleSeq] = useState(0);
+  const [thisUserId, setThisUserId] = useState(0);
   const [time, setTime] = useState([]);
   const nowTime = new Date();
+
+  console.log(thisArticleSeq, thisUserId);
   // 글 정보 가져오기
   const {
     data: article,
     isLoading,
     isError,
     error,
-  } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(articleSeq), {
+  } = useQuery(["articleDetail", Number(articleSeq)], () => getArticleDetailData(Number(articleSeq)), {
     onSuccess: () => {
-      setThisSeq(article?.articleSeq);
+      setThisArticleSeq(Number(article?.articleSeq));
+      setThisUserId(article?.user?.userId);
     },
     onError: () => {
       console.log("Error");
     },
   });
+
   // 글번호 & 글타입 & 날짜 구하기
   useEffect(() => {
     setArticleType(article?.articleType);
-
     const artDate = new Date(article?.writtenDate);
-    console.log(artDate);
     if (artDate.getFullYear() != nowTime.getFullYear())
       setTime(["year", nowTime.getFullYear() - artDate.getFullYear()]); // 연도차이
     if (artDate.getMonth() != nowTime.getMonth())
@@ -54,6 +57,12 @@ export default function ArticleCard(props) {
       setArticleSeq(articleSeq);
       setCenterContent("detail");
     }
+  }
+
+  // 글 작성자 프로필 페이지로 이동
+  function goToProfileDetail(UserId) {
+    setUserId(userId);
+    setCenterContent("profile");
   }
 
   // 좋아요
@@ -121,7 +130,7 @@ export default function ArticleCard(props) {
       <Body
         clickActive={clickActive}
         onClick={() => {
-          goToArticleDetail(article?.articleSeq);
+          goToArticleDetail(thisArticleSeq);
         }}>
         <TitleContainer>{article?.articleType === 1 ? <p>지출 내역</p> : <p>결재 내역</p>}</TitleContainer>
 
