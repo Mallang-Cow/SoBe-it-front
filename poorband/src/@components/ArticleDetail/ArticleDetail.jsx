@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import { styled } from "styled-components";
 
 export default function ArticleDetail(props) {
-  const { articleSeq, setCenterContent, setArticleSeq, setUserSeq } = props;
+  const { articleSeq, setCenterContent, setArticleSeq, setUserId } = props;
   const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(1);
   const [isMine, setIsMine] = useState(false);
@@ -21,12 +21,12 @@ export default function ArticleDetail(props) {
       <ContentWrapper>
         <ArticleWrapper>
           <ArticleCard
-            articleSeq={articleSeq}
+            articleSeq={Number(articleSeq)}
             setArticleType={setArticleType}
             clickActive={clickActive}
             setCenterContent={setCenterContent}
             setArticleSeq={setArticleSeq}
-            setUserSeq={setUserSeq}
+            setUserId={setUserId}
           />
           {/* 내 글이면 수정/삭제 버튼 생성 */}
           {isMine && (

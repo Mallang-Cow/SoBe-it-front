@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 
 export default function MenuBar(props) {
-  const { centerContent, setCenterContent, setUserSeq } = props;
+  const { centerContent, setCenterContent, setUserId } = props;
 
   return (
     <Wrapper>
@@ -66,7 +66,7 @@ export default function MenuBar(props) {
         <ProfileWrapper
           onClick={() => {
             setCenterContent("profile");
-            //setUserSeq(현재유저번호);
+            //setUserId(현재유저번호);
           }}>
           <ProfileImgWrapper>
             <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
