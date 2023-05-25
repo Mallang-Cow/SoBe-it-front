@@ -89,7 +89,7 @@ export default function MenuBar(props) {
     </Wrapper>
   );
 }
-const Wrapper = styled.li`
+const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -98,16 +98,16 @@ const Wrapper = styled.li`
   background-color: white;
 `;
 
-const HeaderWrapper = styled.li`
+const HeaderWrapper = styled.section`
   margin: 1rem;
   ${({ theme }) => theme.fonts.bold};
 `;
-const BottomWrapper = styled.li`
+const BottomWrapper = styled.section`
   margin: 1rem;
   font-size: 1.6rem;
   ${({ theme }) => theme.fonts.regular};
 `;
-const MenuWrapper = styled.div`
+const MenuWrapper = styled.section`
   :hover {
     background-color: #845ec2;
     color: white;
@@ -118,7 +118,7 @@ const MenuWrapper = styled.div`
   }
 `;
 
-const ProfileWrapper = styled.div`
+const ProfileWrapper = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -135,17 +135,17 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-const MenuBarItem = styled.ul`
+const MenuBarItem = styled.div`
   background-color: white;
   font-size: 2rem;
   border: 1rem;
 `;
-const ActiveMenuBarItem = styled.ul`
+const ActiveMenuBarItem = styled.div`
   background-color: white;
   font-size: 2rem;
 `;
 
-const LogoutWrapper = styled.ul`
+const LogoutWrapper = styled.section`
   display: flex;
   align-items: center;
   padding: 2rem 0;
@@ -155,10 +155,10 @@ const LogoutWrapper = styled.ul`
   }
 `;
 
-const ProfileImgWrapper = styled.ul``;
-const ProfileInfoWrapper = styled.ul`
+const ProfileImgWrapper = styled.section``;
+const ProfileInfoWrapper = styled.section`
   #username {
     ${({ theme }) => theme.fonts.light};
   }
 `;
-const ProfileMenuWrapper = styled.ul``;
+const ProfileMenuWrapper = styled.section``;
