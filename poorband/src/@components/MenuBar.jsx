@@ -20,9 +20,9 @@ export default function MenuBar(props) {
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
-      setData(response.data[props.idx]);
-      console.log(response.data[0]);
-      console.log(data?.user?.profileImageUrl);
+      setData(response.data[0]);
+      // console.log(response.data[0]);
+      // console.log(data?.user?.userName);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
@@ -40,13 +40,16 @@ export default function MenuBar(props) {
     <Wrapper>
       <HeaderWrapper>
         <LogoWrapper>
-          <img src="{data?.user?.profileImageUrl}" alt="logo" width="50rem"></img>
+          <img
+            src="https://ih1.redbubble.net/image.1819983922.6790/st,small,845x845-pad,1000x1000,f8f8f8.jpg"
+            alt="logo"
+            width="50rem"></img>
         </LogoWrapper>
         <MenuWrapper>
           {sidebarNavItems.map((item, index) => (
             <MenuItem
               key={index}
-              active={activeIndex === index}
+              active={(activeIndex === index).toString()}
               onClick={() => {
                 handleMenuItemClick(index);
               }}>
@@ -65,11 +68,11 @@ export default function MenuBar(props) {
           }}>
           <ProfileInfoWrapper>
             <ProfileImgWrapper>
-              <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
+              <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
             </ProfileImgWrapper>
             <ProfileNameWrapper>
-              <p>{SIDEBAR_DETAIL.user.nickname}</p>
-              <p id="username">{SIDEBAR_DETAIL.user.userName}</p>
+              <p>{data?.user?.nickname}</p>
+              <p id="username">{data?.user?.userName}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
           <ProfileMenuWrapper>
@@ -124,7 +127,6 @@ const MenuWrapper = styled.section`
 
   border-radius: 1px;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 1px 0 rgba(0, 0, 0, 0.22);
-
   animation: ${fadeInAnimation} 0.5s ease-in-out;
 `;
 

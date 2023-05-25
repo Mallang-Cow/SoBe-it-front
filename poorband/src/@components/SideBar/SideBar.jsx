@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import SideChallengeCard from "./SideChallengeCard";
 import HotPostCard from "./HotPostCard";
 import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
+import { useQuery } from "react-query";
+import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
-export default function SideBar() {
+export default function SideBar(props) {
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setUserId } = props;
+  const { data } = useQuery(["articleData"], getArticleDetailData, {});
+
+  const [thisArticleSeq, setThisArticleSeq] = useState(0);
+  const [thisUserId, setThisUserId] = useState("");
+
   return (
     <>
       <Wrapper>
@@ -24,7 +32,15 @@ export default function SideBar() {
             <h2>Hot Posts</h2>
           </TitleContainer>
           <HotPostCardWrapper>
-            <HotPostCard idx="0" />
+            <HotPostCard
+              idx="0"
+              articleSeq={Number(articleSeq)}
+              setArticleType={setArticleType}
+              clickActive={clickActive}
+              setCenterContent={setCenterContent}
+              setArticleSeq={setArticleSeq}
+              setUserId={setUserId}
+            />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
             <HotPostCard idx="1" />
