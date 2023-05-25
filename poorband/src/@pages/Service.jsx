@@ -9,11 +9,16 @@ import Notifications from "../@components/Notifications/Notifications";
 import SearchResults from "../@components/Search/SearchResults";
 import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
 import ArticleEditForm from "../@components/common/ArticleEditForm";
+import { userIdState } from "../recoil/userId";
+import { useRecoilState } from "recoil";
 
 export default function Service() {
   const [centerContent, setCenterContent] = useState("home");
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useRecoilState(userIdState);
   const [articleSeq, setArticleSeq] = useState(0);
+
+  console.log(userId);
+
   return (
     <>
       <ServiceWrapper>
@@ -34,7 +39,7 @@ export default function Service() {
             <Notifications setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "profile" && (
-            <Profile setCenterContent={setCenterContent} setUserId={setUserId} UserId={UserId} />
+            <Profile setCenterContent={setCenterContent} setUserId={setUserId} userId={userId} />
           )}
           {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
