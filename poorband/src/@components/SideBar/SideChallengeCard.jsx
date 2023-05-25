@@ -5,9 +5,7 @@ import { getChallenge } from "../../../api/getChallenge";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export default function SideChallengeCard(props) {
-  // const queryClient = useQueryClient();
   const [data, setData] = useState([]);
-  // const [data2, setData2] = useState([]);
 
   const newData = {
     userId: "test1",
@@ -17,27 +15,8 @@ export default function SideChallengeCard(props) {
     challenge(newData);
   }, []);
 
-  // const {
-  //   data: challenge,
-  //   isLoading,
-  //   isError,
-  //   error,
-  // } = useQuery(["articleDetail", Number(articleSeq)], () => getChallenge(articleSeq), {
-  //   onSuccess: () => {
-  //     setThisSeq(challenge?.articleSeq);
-  //   },
-  //   onError: () => {
-  //     console.log("Error");
-  //   },
-  // });
-
-  // const { data2: challengeData } = useQuery("getChallenge", () =>
-  //   axios.get("/challenge/list").then(({ challengeData }) => challengeData),
-  // );
-
   const { mutate: challenge } = useMutation(getChallenge, {
     onSuccess: (response) => {
-      console.log(response.data[1].consumption); // 렌더링 시 값 변경됨
       setData(response.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
     },
     onError: (error) => {
@@ -50,7 +29,9 @@ export default function SideChallengeCard(props) {
   return (
     <Wrapper>
       <TitleWrapper>
+        <hr></hr>
         <p>{data.title}</p>
+        <hr></hr>
       </TitleWrapper>
       <BarWrapper>
         <span>기간</span>
@@ -78,7 +59,7 @@ export default function SideChallengeCard(props) {
 }
 
 const Wrapper = styled.div`
-  padding: 2rem 1rem;
+  padding: 1rem 2rem;
 
   ${({ theme }) => theme.fonts.regular};
 
@@ -91,7 +72,7 @@ const Wrapper = styled.div`
 const TitleWrapper = styled.div``;
 const BarWrapper = styled.div`
   height: 5rem;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.lightgrey_1};
 `;
 const ProgressBarWrapper = styled.div`
   padding: 2rem 1rem;
@@ -120,5 +101,5 @@ const ProgressBarContainer = styled.div`
 `;
 
 const RemainWrapper = styled.section`
-  padding: 2rem;
+  padding: 0 2rem;
 `;

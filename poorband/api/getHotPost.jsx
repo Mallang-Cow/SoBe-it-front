@@ -6,7 +6,5 @@ export async function getHotPost(newData) {
       Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
     },
   });
-  //   data.idx = newData.idx;
-
   return data;
 }
