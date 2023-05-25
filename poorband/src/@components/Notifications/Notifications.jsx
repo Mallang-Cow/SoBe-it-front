@@ -6,6 +6,7 @@ import { List, Typography } from '@mui/material';
 import { theme } from '../../style/theme';
 import ReplyNotificationCard from "./ReplyNotificationCard";
 import { selectAllNotification } from "../../../api/notificationAPI";
+import ReplyLikeNotificationCard from "./ReplyLikeNotificationCard";
 
 function generate(element) {
   return [0, 1, 2].map((value) =>
@@ -47,6 +48,7 @@ export default function Notifications() {
           <ArticleLikeNotificationCard />
         )}
         <ReplyNotificationCard />
+        <ReplyLikeNotificationCard />
       </List>
     </div>
   );
