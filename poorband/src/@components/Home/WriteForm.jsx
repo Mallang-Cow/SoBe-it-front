@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
+import { css } from 'styled-components';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
@@ -301,6 +302,10 @@ const StyledSelect1 = styled.select`
   text-align: center;
   display: flex;
   justify-content: center;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
 `;
 
 // 공개여부 셀렉트
@@ -324,6 +329,11 @@ option {
   text-align: center;
   margin-left: auto;
   display: flex;
+
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.lightpurple};
+  }
 `;
 
 const ConsumeFormWrapper=styled.section` 
@@ -376,6 +386,23 @@ const Button1=styled.button`
   align-items: center;
   
   height:100%;
+  
+  position: relative; // 막대가 버튼 안에 고정되게하기 위해
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: ${({ theme }) => theme.colors.darkpurple_2};
+    transition: width 0.3s;
+
+    ${props => props['data-isclicked'] && css`
+      width: 100%;
+    `}
+  }
 `;
 
 const Button2=styled.button`
@@ -398,6 +425,24 @@ const Button2=styled.button`
   align-items: center;
   
   height:100%;
+
+  position: relative; // 막대가 버튼 안에 고정되게하기 위해
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: ${({ theme }) => theme.colors.darkpurple_2};
+    transition: width 0.3s;
+
+    ${props => !props['data-isclicked'] && css`
+    width: 100%;
+    `}
+
+  }
 `;
 
 const ButtonWrapper=styled.section`
@@ -408,6 +453,11 @@ const ButtonWrapper=styled.section`
   margin-bottom: 2rem;
   /* padding-bottom: 1.5rem; */
   border-bottom: 1px solid #E6E6E6;
+  
+  button {
+    border: none;
+    outline: none;
+  }
 `;
 
 const BottomWrapper = styled.section`
@@ -428,6 +478,7 @@ const Image=styled.img`
   border-radius: 0.8rem;
   text-align: center;
 `;
+
 const FileLabel = styled.label`
   display: flex;
   justify-content: center;
@@ -509,4 +560,8 @@ const SubmitButton = styled.button`
   justify-content: center;
   align-items: center;
   margin-left: 2rem;
+   
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
 `;
