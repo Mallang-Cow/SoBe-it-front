@@ -1,12 +1,11 @@
 import React from "react";
 import { styled as muiStyled } from '@mui/material/styles';
-import { styled } from "styled-components";
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from '../../style/theme';
 
-export default function NotificationCard() {
+export default function ArticleLikeNotificationCard() {
   return (
     <NotificationCardButton disableRipple>
       <ListItem secondaryAction={
@@ -20,8 +19,11 @@ export default function NotificationCard() {
           </Avatar>
         </ListItemAvatar>
         <div style={{ marginLeft: "2rem" }}>
-          <MainNotificationText primary="Single-line item" />
-          <SubNotificationText secondary="Secondary text" />
+          <div style={{ display: "flex", flexDirection: "row", marginBottom: '0.6rem', alignItems: 'center' }}>
+            <MainNotificationText primary="Article Like Content" />
+            <TimeNotificationText primary="time" />
+          </div>
+          <SubNotificationText secondary="Article Content" />
         </div>
       </ListItem>
     </NotificationCardButton>
@@ -58,8 +60,6 @@ const NotificationIconButton = muiStyled(IconButton) ({
 });
 
 const MainNotificationText = muiStyled(ListItemText) ({
-  marginBottom: '0.6rem',
-
   '& span': { 
     fontSize: '1.6rem',
     fontFamily: [
@@ -70,6 +70,20 @@ const MainNotificationText = muiStyled(ListItemText) ({
     letterSpacing: '0.03em',
   },
 });
+
+const TimeNotificationText = muiStyled(ListItemText) ({
+    marginLeft: '0.6rem',
+  
+    '& span': { 
+      fontSize: '1.2rem',
+      fontFamily: [
+        'Roboto',
+      ].join(','),
+      fontStyle: 'normal',
+      fontWeight: 500,
+      letterSpacing: '0.03em',
+    },
+  });
 
 const SubNotificationText = muiStyled(ListItemText) ({
   '& p': { 

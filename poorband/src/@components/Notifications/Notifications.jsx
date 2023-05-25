@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NotificationCard from "./NotificationCard";
+import ArticleLikeNotificationCard from "./ArticleLikeNotificationCard";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { List, Typography } from '@mui/material';
@@ -44,7 +44,7 @@ export default function Notifications() {
 
         {/* 알림 전체 불러오기 */}
         {generate(
-          <NotificationCard />
+          <ArticleLikeNotificationCard />
         )}
         <ReplyNotificationCard />
       </List>
