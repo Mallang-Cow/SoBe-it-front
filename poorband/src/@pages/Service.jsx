@@ -12,37 +12,39 @@ import ArticleEditForm from "../@components/common/ArticleEditForm";
 
 export default function Service() {
   const [centerContent, setCenterContent] = useState("home");
-  const [userSeq, setUserSeq] = useState(0);
+  const [userId, setUserId] = useState("");
   const [articleSeq, setArticleSeq] = useState(0);
   return (
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} setUserSeq={setUserSeq} />
+          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} setUserId={setUserId} />
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}
 
         <CenterWrapper>
           {centerContent === "home" && (
-            <Home setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
+            <Home setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "statistics" && (
             <Statistics setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "notifications" && (
-            <Notifications setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
+            <Notifications setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
           )}
-          {centerContent === "profile" && <Profile setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
-          {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
-          {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserSeq={setUserSeq} />}
+          {centerContent === "profile" && (
+            <Profile setCenterContent={setCenterContent} setUserId={setUserId} UserId={UserId} />
+          )}
+          {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
+          {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "search" && (
-            <SearchResults setCenterContent={setCenterContent} setUserSeq={setUserSeq} setArticleSeq={setArticleSeq} />
+            <SearchResults setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "detail" && (
             <ArticleDetail
               setCenterContent={setCenterContent}
-              setUserSeq={setUserSeq}
+              setUserId={setUserId}
               articleSeq={articleSeq}
               setArticleSeq={setArticleSeq}
             />
