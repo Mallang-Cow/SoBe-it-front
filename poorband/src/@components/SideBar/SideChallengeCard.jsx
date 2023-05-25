@@ -30,28 +30,28 @@ export default function SideChallengeCard(props) {
     <Wrapper>
       <TitleWrapper>
         <hr></hr>
-        <p>{data.title}</p>
+        <p>{data?.title}</p>
         <hr></hr>
       </TitleWrapper>
       <BarWrapper>
         <span>기간</span>
         <span>
-          {data.startDate} - {data.endDate}
+          {data?.startDate} - {data?.endDate}
         </span>
 
         <ProgressBarWrapper>
           <ProgressBarContainer>
             <ChallengeProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={70}></ChallengeProgressBar>
           </ProgressBarContainer>
-          <p>{data.goalAmount /*.toLocaleString()*/}원</p>
+          <p>{data?.goalAmount /*.toLocaleString()*/}원</p>
         </ProgressBarWrapper>
       </BarWrapper>
       <RemainWrapper>
         <div id="remain-container">
           <span className="bold">지출</span>
-          <span className="gray">{data.consumption /*.toLocaleString()*/}원</span>
+          <span className="gray">{data?.consumption?.toLocaleString()}원</span>
           <span className="bold">잔여</span>
-          <span className="gray">{data.goalAmount - data.consumption /*.toLocaleString()*/}원</span>
+          <span className="gray">{data?.goalAmount - data?.consumption?.toLocaleString()}원</span>
         </div>
       </RemainWrapper>
     </Wrapper>
