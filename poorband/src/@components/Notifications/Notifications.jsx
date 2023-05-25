@@ -4,6 +4,7 @@ import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { List, Typography } from '@mui/material';
 import { theme } from '../../style/theme';
+import ReplyNotificationCard from "./ReplyNotificationCard";
 
 function generate(element) {
   return [0, 1, 2].map((value) =>
@@ -28,6 +29,7 @@ export default function Notifications() {
         {generate(
           <NotificationCard />
         )}
+        <ReplyNotificationCard />
       </List>
     </div>
   );
