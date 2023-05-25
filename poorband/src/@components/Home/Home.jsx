@@ -38,3 +38,4 @@ const HomeTag = styled.h2`
   line-height: 30px;
   color: #000000;
 `;
+
