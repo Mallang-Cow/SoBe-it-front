@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { css, keyframes } from "styled-components";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
+import { useMutation } from "react-query";
+import { getHotPost } from "../../api/getHotPost";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserId } = props;
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const [data, setData] = useState([]);
+  const newData = {
+    userId: "test1",
+  };
+
+  useEffect(() => {
+    hotPosts(newData);
+  }, []);
+
+  const { mutate: hotPosts } = useMutation(getHotPost, {
+    onSuccess: (response) => {
+      setData(response.data[props.idx]);
+      console.log(response.data[0]);
+      console.log(data?.user?.profileImageUrl);
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        console.log("인기 게시물 가져오기 실패");
+      }
+    },
+  });
 
   const handleMenuItemClick = (index) => {
     setActiveIndex(index);
@@ -16,10 +40,7 @@ export default function MenuBar(props) {
     <Wrapper>
       <HeaderWrapper>
         <LogoWrapper>
-          <img
-            src="https://ih1.redbubble.net/image.1819983922.6790/st,small,845x845-pad,1000x1000,f8f8f8.jpg"
-            alt="logo"
-            width="50rem"></img>
+          <img src="{data?.user?.profileImageUrl}" alt="logo" width="50rem"></img>
         </LogoWrapper>
         <MenuWrapper>
           {sidebarNavItems.map((item, index) => (
@@ -42,12 +63,14 @@ export default function MenuBar(props) {
             setCenterContent("profile");
             //setUserId(현재유저번호);
           }}>
-          <ProfileImgWrapper>
-            <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
-          </ProfileImgWrapper>
           <ProfileInfoWrapper>
-            <p>{SIDEBAR_DETAIL.user.nickname}</p>
-            <p id="username">{SIDEBAR_DETAIL.user.userName}</p>
+            <ProfileImgWrapper>
+              <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
+            </ProfileImgWrapper>
+            <ProfileNameWrapper>
+              <p>{SIDEBAR_DETAIL.user.nickname}</p>
+              <p id="username">{SIDEBAR_DETAIL.user.userName}</p>
+            </ProfileNameWrapper>
           </ProfileInfoWrapper>
           <ProfileMenuWrapper>
             <button>
@@ -92,11 +115,9 @@ const HeaderWrapper = styled.section`
   font-weight: 700;
   ${({ theme }) => theme.fonts.bold};
 `;
-const ActiveMenuBarItem = styled.div``;
 const LogoWrapper = styled.div`
   padding: 2rem 0;
 `;
-const MenuBarItem = styled.div``;
 const MenuWrapper = styled.section`
   background-color: white;
   font-size: 2rem;
@@ -164,8 +185,6 @@ const sidebarNavItems = [
 ];
 
 const BottomWrapper = styled.section`
-  align-self: flex-end;
-  margin: 1rem;
   font-size: 1.6rem;
   ${({ theme }) => theme.fonts.regular};
 `;
@@ -173,7 +192,6 @@ const BottomWrapper = styled.section`
 const ProfileWrapper = styled.section`
   display: flex;
   justify-content: space-between;
-  align-items: center;
 
   img:hover {
     background-color: #845ec2;
@@ -187,20 +205,30 @@ const ProfileWrapper = styled.section`
   }
 `;
 
+const ProfileImgWrapper = styled.section`
+  margin-right: 1rem;
+`;
+const ProfileInfoWrapper = styled.section`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ProfileNameWrapper = styled.section`
+  #username {
+    ${({ theme }) => theme.fonts.light};
+  }
+`;
+const ProfileMenuWrapper = styled.section`
+  display: flex;
+  align-self: flex-end;
+`;
+
 const LogoutWrapper = styled.section`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 2rem 0;
 
   button {
     padding: 0 2rem;
   }
 `;
-
-const ProfileImgWrapper = styled.section``;
-const ProfileInfoWrapper = styled.section`
-  #username {
-    ${({ theme }) => theme.fonts.light};
-  }
-`;
-const ProfileMenuWrapper = styled.section``;
