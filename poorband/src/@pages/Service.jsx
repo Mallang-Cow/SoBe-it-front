@@ -17,8 +17,6 @@ export default function Service() {
   const [userId, setUserId] = useRecoilState(userIdState);
   const [articleSeq, setArticleSeq] = useState(0);
 
-  console.log(userId);
-
   return (
     <>
       <ServiceWrapper>
@@ -55,7 +53,10 @@ export default function Service() {
             />
           )}
           {centerContent === "edit" && (
-            <ArticleEditForm setCenterContent={setCenterContent} articleSeq={articleSeq}></ArticleEditForm>
+            <ArticleEditForm
+              setCenterContent={setCenterContent}
+              articleSeq={articleSeq}
+              setArticleSeq={setArticleSeq}></ArticleEditForm>
           )}
         </CenterWrapper>
 

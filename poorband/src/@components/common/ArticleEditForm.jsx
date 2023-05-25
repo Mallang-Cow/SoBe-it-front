@@ -1,32 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { styled } from "styled-components";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { articeWrite } from "../../../api/articleWriteApi";
+import { updataeArticle } from "../../../api/editArticle";
 
 export default function ArticleEditForm(props) {
-  const { setCenterContent, articleSeq } = props;
-  const [articleType] = useState(1);
-  const [category, setCategory] = useState("dd");
+  const { setCenterContent, articleSeq, setArticleSeq } = props;
+  const [articleType, setArticleType] = useState();
+  const [category, setCategory] = useState(0);
   const [imageUrl, setImageUrl] = useState();
-
-  const [isConsumeWrite, setIsConsumeWrite] = useState(1);
-  const [isclicked, setisclicked] = useState(true);
-
+  const [isConsumeWrite, setIsConsumeWrite] = useState();
   const [consumeText, setconsumeText] = useState("");
-  const [consumeDate, setconsumeDate] = useState(new Date());
+  const [consumeDate, setconsumeDate] = useState();
   const [financialText, setfinancialText] = useState("");
   const [status, setStatus] = useState(1); // 공개여부
   const [amount, setAmount] = useState("");
-  console.log(articleType);
-  /**
-   * 지출입력 or 결재받기 버튼선택
-   * @param {*} type
-   */
-  const handleClick = (type) => {
-    setIsConsumeWrite(type);
+  const [init, setInit] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const newData = {
+    articleSeq: articleSeq,
+    status: status,
+    imageUrl: imageUrl,
+    expenditureCategory: category,
+    amount: Number(amount),
+    financialText: financialText,
+    articleText: consumeText,
+    articleType: articleType,
+    consumptionDate: consumeDate,
+    isAllowed: "false",
   };
+
+  // 글 정보 가져와기
+  const {
+    data: article,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
+    onSuccess: () => {
+      console.log("파텍: " + article?.financialText);
+
+      // 처음 로딩 시 초기값 설정
+      if (!init) {
+        setCategory(article?.expenditureCategory);
+        setImageUrl(article?.imageUrl);
+        setconsumeText(article?.articleText);
+        setconsumeDate(new Date(article?.consumptionDate));
+        setfinancialText(article?.financialText);
+        setStatus(article?.status);
+        setArticleType(article?.articleType);
+        setAmount(article?.amount);
+        setInit(true);
+      }
+    },
+    onError: () => {
+      console.log("Error");
+    },
+  });
 
   /**
    * @param {*} event
@@ -70,7 +104,6 @@ export default function ArticleEditForm(props) {
    */
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    console.log(file);
     // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
   };
 
@@ -159,27 +192,27 @@ export default function ArticleEditForm(props) {
       if (newData.articleText && newData.amount && newData.status) {
         // API 호출
         newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
+        editArticle(newData);
       }
     }
   }
 
-  const { mutate: writeArticle } = useMutation(articeWrite, {
+  const { mutate: editArticle } = useMutation(updataeArticle, {
     onSuccess: (response) => {
-      console.log(response);
-      // 글쓰기 성공하면 바로 피드랑 입력폼 새로고침 해주기.
-      // 성공하면 따로 alert를 줄건지?
-      setconsumeText("");
-      setCategory("");
-      setfinancialText("");
-      setAmount("");
-      setStatus("");
-      setconsumeDate(new Date());
+      setIsSuccess(true);
     },
     onError: () => {
-      // 실패시 뭐하지
+      console.log("update error");
     },
   });
+
+  // 수정 성공 시 화면 전환
+  useEffect(() => {
+    if (isSuccess) {
+      setArticleSeq(articleSeq);
+      setCenterContent("detail");
+    }
+  }, [isSuccess]);
 
   return (
     <>
@@ -188,12 +221,10 @@ export default function ArticleEditForm(props) {
         {articleType === 1 ? <header>지출 내역 수정</header> : <header>결재 내역 수정</header>}
       </HeaderContainer>
 
-      {/* isConsumeWrite에 따라 지출 받기 / 결재 받기 바뀌기 */}
       <EditFormWrapper>
         {articleType === 1 && (
           <TopWrapper>
             <StyledSelect1 value={category} onChange={handleCategoryChange}>
-              <option value="">카테고리</option>
               <option value="1">식비</option>
               <option value="2">패션/미용</option>
               <option value="3">생활용품</option>
@@ -315,12 +346,14 @@ const EditFormWrapper = styled.section`
     font-size: 1.1rem;
     text-align: center;
     color: #707070;
+    cursor: pointer;
   }
 `;
 
 const DataPickerWrapper = styled.section`
   display: flex;
   height: 3rem;
+
   .react-datepicker-popper {
     //transform: translate3d(995px, 137.5px, 0px) !important;
   }
@@ -338,6 +371,8 @@ const StyledSelect1 = styled.select`
   border-radius: 3rem;
   height: 3rem;
   width: 8rem;
+
+  cursor: pointer;
 `;
 
 const TopWrapper = styled.section`
@@ -473,6 +508,7 @@ const StyledSelect2 = styled.select`
   border-radius: 3rem;
   height: 3rem;
   width: 8rem;
+  cursor: pointer;
 `;
 
 const SubmitButton = styled.button`
