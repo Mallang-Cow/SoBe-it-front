@@ -1,8 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
-
+import { useMutation } from "react-query";
+import { getHotPost } from "../../../api/getHotPost";
 export default function HotPostCard(props) {
+  const [data, setData] = useState([]);
+  const newData = {
+    userId: "test1",
+  };
+
+  useEffect(() => {
+    hotPosts(newData);
+  }, []);
+
+  const { mutate: hotPosts } = useMutation(getHotPost, {
+    onSuccess: (response) => {
+      setData(response.data[props.idx]);
+      console.log(response.data[0]);
+      console.log(data?.user?.profileImageUrl);
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        console.log("인기 게시물 가져오기 실패");
+      }
+    },
+  });
+
   const [like, setLike] = useState(false);
 
   const handleLike = () => {
@@ -18,30 +41,33 @@ export default function HotPostCard(props) {
   return (
     <Wrapper>
       <ProfileWrapper>
-        <img id="profile-image" src={SIDEBAR_DETAIL.user.profileImageUrl} alt="프로필사진" />
-        <span>{SIDEBAR_DETAIL.user.nickname}</span>
+        <img id="profile-image" src="{data?.user?.profileImageUrl}" alt="프로필사진" />
+        <span>{data?.user?.nickname}</span>
       </ProfileWrapper>
       <ReceiptContainer>
-        <h1>{SIDEBAR_DETAIL.articleText}</h1>
+        <h1>{data?.articleText}</h1>
         <hr></hr>
         <div id="price">
+          <span>{data?.articleSeq}</span>
           <span>금액</span>
-          <span>{SIDEBAR_DETAIL.amount}원</span>
+          <span>{data?.amount}원</span>
         </div>
-        <div className="likeIcon" onClick={handleLike}>
-          {like ? (
-            <span id="filledIcon" className="material-symbols-outlined">
-              favorite
-            </span>
-          ) : (
-            <span className="material-symbols-outlined">favorite</span>
-          )}
-        </div>
-        <span>{SIDEBAR_DETAIL.likeCnt}</span>
-        <div>
-          <span className="material-symbols-outlined">chat_bubble</span>
-        </div>
-        <span>{SIDEBAR_DETAIL.commentCnt}</span>
+        <CountInfoWrapper>
+          <div className="likeIcon" onClick={handleLike}>
+            {like ? (
+              <span id="filledIcon" className="material-symbols-outlined">
+                favorite
+              </span>
+            ) : (
+              <span className="material-symbols-outlined">favorite</span>
+            )}
+          </div>
+          <span>{SIDEBAR_DETAIL.likeCnt}</span>
+          <div>
+            <span className="material-symbols-outlined">chat_bubble</span>
+          </div>
+          <span>{SIDEBAR_DETAIL.commentCnt}</span>
+        </CountInfoWrapper>
       </ReceiptContainer>
     </Wrapper>
   );
@@ -88,4 +114,8 @@ const ReceiptContainer = styled.div`
     fill: 1;
     color: red;
   }
+`;
+const CountInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
