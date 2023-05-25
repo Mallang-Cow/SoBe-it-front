@@ -201,13 +201,15 @@ export default function ArticleEditForm(props) {
               <option value="5">취미생활</option>
               <option value="6">기타</option>
             </StyledSelect1>
-            {/* <DatePicker
-              selected={consumeDate}
-              onChange={handleDateInput}
-              locale={ko}
-              dateFormat="yyyy-MM-dd"
-              wrapperClassName="w-full"
-            /> */}
+            <DataPickerWrapper>
+              <DatePicker
+                selected={consumeDate}
+                onChange={handleDateInput}
+                locale={ko}
+                dateFormat="yyyy-MM-dd"
+                wrapperClassName="w-full"
+              />
+            </DataPickerWrapper>
           </TopWrapper>
         )}
 
@@ -315,6 +317,13 @@ const EditFormWrapper = styled.section`
   }
 `;
 
+const DataPickerWrapper = styled.div`
+  display: flex;
+  .react-datepicker-popper {
+    transform: translate3d(995px, 137.5px, 0px) !important;
+  }
+`;
+
 // 카테고리 셀렉트
 const StyledSelect1 = styled.select`
   font-size: 1.4rem;
@@ -337,15 +346,22 @@ const TopWrapper = styled.section`
   margin-bottom: 1.5rem;
 
   .react-datepicker-wrapper {
-    width: 100%;
+    margin: 0;
+    width: fit-content;
     height: 100%;
     text-align: center;
   }
-
+  .react-datepicker__aria-live {
+    background-color: red;
+  }
   .react-datepicker__input-container {
-    width: 100%;
+    margin-left: 5rem;
+    width: fit-content;
     display: flex;
     justify-content: end;
+  }
+  .react-datepicker-ignore-onclickoutside {
+    width: fit-content;
   }
   .react-datepicker__input-container input {
     text-align: center;
