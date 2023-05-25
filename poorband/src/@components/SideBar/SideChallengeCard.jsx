@@ -51,7 +51,7 @@ export default function SideChallengeCard(props) {
           <span className="bold">지출</span>
           <span className="gray">{data?.consumption?.toLocaleString()}원</span>
           <span className="bold">잔여</span>
-          <span className="gray">{data?.goalAmount - data?.consumption?.toLocaleString()}원</span>
+          <span className="gray">{(data?.goalAmount - data?.consumption)?.toLocaleString()}원</span>
         </div>
       </RemainWrapper>
     </Wrapper>
