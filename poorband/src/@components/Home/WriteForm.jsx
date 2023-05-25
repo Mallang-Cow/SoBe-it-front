@@ -275,7 +275,6 @@ export default function WriteForm() {
         )}
         <SubmitAndPrivacySet>
           <StyledSelect2 value={status} onChange={handleStatusChage}>
-            <option value="">공개여부 ⬇️</option>
             <option value="1">전체공개</option>
             <option value="2">맞팔공개</option>
             <option value="3">비공개</option>
@@ -295,6 +294,7 @@ const WriteFormWrapper = styled.section`
 const StyledSelect1 = styled.select`
   option {
     color : #FFFFFF;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
