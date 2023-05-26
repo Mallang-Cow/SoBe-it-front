@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { useMutation } from "react-query"; // useQuery, useQueryClient
+import { useMutation, useQuery, useQueryClient } from "react-query"; // useQuery, useQueryClient
 import { getHotPost } from "../../../api/getHotPost";
+import { getArticleDetailData } from "../../../api/getArticleDetailData";
+import { likeArticle } from "../../../api/likeArticle";
+
 // import { likeArticle } from "../../../api/likeArticle";
 // import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
 export default function HotPostCard(props) {
-  // const { articleSeq } = props;
+  const { articleSeq, setArticleSeq, clickActive } = props;
 
   const [data, setData] = useState([]);
+  const [thisArticleSeq, setThisArticleSeq] = useState(0);
+  const [thisUserId, setThisUserId] = useState("");
+
   const newData = {
     userId: "test1",
   };
@@ -45,16 +51,13 @@ export default function HotPostCard(props) {
     content = <span className="material-symbols-outlined">favorite</span>;
   }
 
-  // const [thisArticleSeq, setThisArticleSeq] = useState(0);
-  // const [thisUserId, setThisUserId] = useState("");
-
-  // // 글 정보 가져오기
+  // 글 정보 가져오기
   // const {
   //   data: article,
   //   isLoading,
   //   isError,
   //   error,
-  // } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
+  // } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(18), {
   //   onSuccess: () => {
   //     setThisArticleSeq(Number(article?.articleSeq));
   //     setThisUserId(article?.user?.userId);
@@ -64,7 +67,15 @@ export default function HotPostCard(props) {
   //   },
   // });
 
-  // // 좋아요
+  function goToArticleDetail() {
+    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
+    if (clickActive) {
+      setArticleSeq(thisArticleSeq);
+      setCenterContent("detail");
+    }
+  }
+
+  // 좋아요
   // function clickLike() {
   //   like({ articleSeq: Number(articleSeq) });
   // }
@@ -80,7 +91,11 @@ export default function HotPostCard(props) {
   //   },
   // });
   return (
-    <Wrapper>
+    <Wrapper
+      clickActive={clickActive}
+      onClick={() => {
+        goToArticleDetail();
+      }}>
       <ProfileWrapper>
         <img id="profile-image" src="{data?.user?.profileImageUrl}" alt="프로필사진" />
         <span>{data?.user?.nickname}</span>
@@ -125,6 +140,8 @@ export default function HotPostCard(props) {
 }
 
 const Wrapper = styled.div`
+  cursor: ${({ clickActive }) => clickActive && "pointer"};
+
   padding: 2rem 1rem;
   * {
     margin: 0.5rem;
@@ -171,4 +188,20 @@ const CountInfoWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+`;
+const Like = styled.div`
+  display: flex;
+  margin: 0 2rem 0 0;
+  align-items: center;
+
+  p {
+    font-size: 1.4rem;
+    margin-left: 1rem;
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
+  }
+  span.active.material-symbols-rounded {
+    color: ${({ theme }) => theme.colors.red};
+  }
 `;

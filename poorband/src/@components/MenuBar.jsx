@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import styled, { css, keyframes } from "styled-components";
 import { signout } from "../../api/userAPI";
-import { ACCESS_TOKEN } from '../../api/ApiService';
+import { ACCESS_TOKEN } from "../../api/ApiService";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 import { getHotPost } from "../../api/getHotPost";
 
@@ -11,6 +11,7 @@ export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserId } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
+  const [thisUserId, setThisUserId] = useState("");
 
   const [data, setData] = useState([]);
   const newData = {
@@ -24,6 +25,9 @@ export default function MenuBar(props) {
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
       setData(response.data[0]);
+      setThisUserId(response.data[0]?.user?.userId);
+
+      console.log(response.data[0]?.user?.userId);
       // console.log(response.data[0]);
       // console.log(data?.user?.userName);
     },
@@ -38,6 +42,12 @@ export default function MenuBar(props) {
     setActiveIndex(index);
     setCenterContent(sidebarNavItems[index].section);
   };
+
+  // 글 작성자 프로필 페이지로 이동
+  function goToProfile() {
+    setUserId(thisUserId);
+    setCenterContent("profile");
+  }
 
   const { mutate: logoutUser } = useMutation(signout, {
     onSuccess: (response) => {
@@ -82,10 +92,9 @@ export default function MenuBar(props) {
       </HeaderWrapper>
 
       <BottomWrapper>
-        <ProfileWrapper
+        <LinkContainer
           onClick={() => {
-            setCenterContent("profile");
-            //setUserId(현재유저번호);
+            goToProfile();
           }}>
           <ProfileInfoWrapper>
             <ProfileImgWrapper>
@@ -101,10 +110,10 @@ export default function MenuBar(props) {
               <span className="material-symbols-outlined">more_vert</span>
             </button>
           </ProfileMenuWrapper>
-        </ProfileWrapper>
+        </LinkContainer>
         <LogoutWrapper>
           <span className="material-symbols-outlined">logout</span>
-          <button onClick={ logout }>로그아웃</button>
+          <button onClick={logout}>로그아웃</button>
         </LogoutWrapper>
       </BottomWrapper>
     </Wrapper>
@@ -147,8 +156,6 @@ const MenuWrapper = styled.section`
   font-size: 2rem;
 
   border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 1px 0 rgba(0, 0, 0, 0.22);
-  animation: ${fadeInAnimation} 0.5s ease-in-out;
 `;
 
 const MenuItem = styled.div`
@@ -158,7 +165,7 @@ const MenuItem = styled.div`
   padding: 2rem 1.2rem;
   font-size: 1.4rem;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.darkgrey_1};
   transition: color 0.3s ease-in-out;
   cursor: pointer;
 
@@ -212,7 +219,7 @@ const BottomWrapper = styled.section`
   ${({ theme }) => theme.fonts.regular};
 `;
 
-const ProfileWrapper = styled.section`
+const LinkContainer = styled.section`
   display: flex;
   justify-content: space-between;
 

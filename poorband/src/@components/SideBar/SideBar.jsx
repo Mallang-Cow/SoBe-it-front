@@ -3,15 +3,9 @@ import SideChallengeCard from "./SideChallengeCard";
 import HotPostCard from "./HotPostCard";
 import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
-import { useQuery } from "react-query";
-import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
 export default function SideBar(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setUserId } = props;
-  const { data } = useQuery(["articleData"], getArticleDetailData, {});
-
-  const [thisArticleSeq, setThisArticleSeq] = useState(0);
-  const [thisUserId, setThisUserId] = useState("");
+  const { setCenterContent, setArticleSeq, setUserId, clickActive } = props;
 
   return (
     <>
@@ -34,19 +28,29 @@ export default function SideBar(props) {
           <HotPostCardWrapper>
             <HotPostCard
               idx="0"
-              articleSeq={Number(articleSeq)}
-              setArticleType={setArticleType}
-              clickActive={clickActive}
+              setArticleSeq={Number(setArticleSeq)}
               setCenterContent={setCenterContent}
-              setArticleSeq={setArticleSeq}
               setUserId={setUserId}
+              clickActive={true}
             />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
-            <HotPostCard idx="1" />
+            <HotPostCard
+              idx="1"
+              setArticleSeq={Number(setArticleSeq)}
+              setCenterContent={setCenterContent}
+              setUserId={setUserId}
+              clickActive={true}
+            />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
-            <HotPostCard idx="2" />
+            <HotPostCard
+              idx="2"
+              setArticleSeq={Number(setArticleSeq)}
+              setCenterContent={setCenterContent}
+              setUserId={setUserId}
+              clickActive={true}
+            />
           </HotPostCardWrapper>
         </HotPostWrapper>
       </Wrapper>
