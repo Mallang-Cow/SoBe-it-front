@@ -74,7 +74,7 @@ export default function Feed(props) {
 
   return (
     <FeedWrapper>
-      {articles.map((article, idx) => (
+      {(Array.isArray(articles) ? articles : []).map((article, idx) => (
         <React.Fragment key={idx}>
           {articles.length - 1 === idx ? (
             <ArticleWrapper>
