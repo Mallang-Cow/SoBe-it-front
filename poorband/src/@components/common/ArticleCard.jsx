@@ -13,7 +13,7 @@ import { useRecoilState } from "recoil";
 import { deleteArticle } from "../../../api/deleteArticle";
 
 export default function ArticleCard(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
   const [time, setTime] = useState([]);
@@ -117,6 +117,7 @@ export default function ArticleCard(props) {
     onSuccess: (response) => {
       console.log(response);
       setCenterContent("home");
+      setReloadFeed(true);
     },
     onError: (response) => {
       console.log(response);
@@ -151,7 +152,7 @@ export default function ArticleCard(props) {
               {time[0] === "date" && "일"}
               {time[0] === "hours" && "시간"}
               {time[0] === "minutes" && "분"}
-              {time[0] === "secounds" && "초"} 전
+              {time[0] === "seconds" && "초"} 전
             </p>
           )}
         </div>

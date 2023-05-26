@@ -22,7 +22,7 @@ export default function ArticleDetail(props) {
     isLoading,
     isError,
     error,
-  } = useQuery(["commentList"], () => getComments(Number(articleSeq)), {
+  } = useQuery(["commentList", commentList], () => getComments(Number(articleSeq)), {
     onSuccess: () => {
       setCommentList(comments);
     },

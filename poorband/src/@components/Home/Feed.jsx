@@ -14,35 +14,38 @@ export default function Feed(props) {
 
   const [ref, inView] = useInView();
 
-  const getItems = useCallback(async (lastId, keepExisting = false) => {
-    await axios
-      .get(`http://localhost:9000/article/selectAll`, {
-        headers: {
-          Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
-        },
-        params: {
-          lastArticleId: lastId,
-          size: 4,
-        },
-      })
-      .then((res) => {
-        const newArticles = res.data;
-        setArticles((prevState) => keepExisting ? [...prevState, ...newArticles] : newArticles);
+  const getItems = useCallback(
+    async (lastId, keepExisting = false) => {
+      await axios
+        .get(`http://localhost:9000/article/selectAll`, {
+          headers: {
+            Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+          params: {
+            lastArticleId: lastId,
+            size: 4,
+          },
+        })
+        .then((res) => {
+          const newArticles = res.data;
+          setArticles((prevState) => (keepExisting ? [...prevState, ...newArticles] : newArticles));
 
-        // set the lastArticleId as the last fetched article's id
-        const lastFetchedArticle = newArticles[newArticles.length - 1];
-        if (lastFetchedArticle) {
-          setLastArticleId(lastFetchedArticle.articleSeq);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        return;
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [lastArticleId]);
+          // set the lastArticleId as the last fetched article's id
+          const lastFetchedArticle = newArticles[newArticles.length - 1];
+          if (lastFetchedArticle) {
+            setLastArticleId(lastFetchedArticle.articleSeq);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          return;
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    [lastArticleId],
+  );
 
   // 최초 렌더링 후 한 번만 실행
   useEffect(() => {
@@ -85,6 +88,7 @@ export default function Feed(props) {
                 setUserId={setUserId}
                 setArticleType={setArticleType}
                 clickActive={true}
+                setReloadFeed={setReloadFeed}
               />
               <div ref={ref}></div>
             </ArticleWrapper>
@@ -97,6 +101,7 @@ export default function Feed(props) {
                 setUserId={setUserId}
                 setArticleType={setArticleType}
                 clickActive={true}
+                setReloadFeed={setReloadFeed}
               />
               <div></div>
             </ArticleWrapper>
