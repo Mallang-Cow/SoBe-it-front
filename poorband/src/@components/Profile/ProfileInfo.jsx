@@ -1,60 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { TIER } from "../../../core/tierImage";
 import { styled } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { getProfileInfoData } from "../../../api/getProfileInfoData";
+import { useMutation } from "react-query";
 
 export default function ProfileInfo(props) {
-  const {setShowEdit}=props;
+  const {setShowEdit, userId}=props;
+  const [showFollowing, setShowFollowing] = useState(false);
+  const [showFollower, setShowFollower] = useState(false);
+  const [data, setData] = useState();
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    data && console.log(data);
+  }, [data]);
 
-  function moveToFollowerPage(){
-    navigate("/follower");
-  }
+  useEffect(() => {
+    console.log("useEffect")
+    console.log(targegtUserId) // userId는 띄워지나 targegtUserId는 띄워지지 않는다.(400)
+    targegtUserId(userId)
+  }, [userId]);
 
-  function moveToFollowingPage(){
-    navigate("/following");
-  }
-
-  // 특정 사용자 ID
-  const specificUserId = ARTICLE_DETAIL.user.userId;
+  const {mutate: targegtUserId} = useMutation (getProfileInfoData,{
+    onSuccess: (response) => {
+      console.log(response);
+      setData(response);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   return (
     <ProfileInfoWrapper>
       {/*프로필 이미지, 닉네임, 티어, ID, 한줄소개 불러오기*/}
-      <img id="profile-img" src={ARTICLE_DETAIL.user.profileImageUrl} alt="프로필 사진" />
+      <img id="profile-img" src={data?.profileImg} alt="프로필 사진" />
         <ProfileHeaderWrapper>
           <div id="name-container">
-            <span className="bold">{ARTICLE_DETAIL.user.nickname}</span>
-            <img id="tier-img" src={TIER[ARTICLE_DETAIL.user.userTier]} alt="티어" />
-            <span className="bold">@{ARTICLE_DETAIL.user.userId}</span>
+            <span className="bold">{data?.nickname}</span>
+            <img id="tier-img" src={TIER[data?.user?.userTier]} alt="티어" />
+            <span className="bold">@{data?.userId}</span>
           </div>
           {/*자신의 프로필인 경우, '프로필 편집' 버튼 보여주기*/}
-          {ARTICLE_DETAIL.user.userId === specificUserId && (
+          {data?.status === 1 && (
             <button onClick={() => setShowEdit(true)}>프로필 편집</button>
           )}
         </ProfileHeaderWrapper>
 
-        <span>{ARTICLE_DETAIL.user.introduction}</span>
+        <span>{data?.introDetail}</span>
 
         <ProfileFollowWrapper>
-           {/*팔로잉 수(클릭시, Following로 이동), 팔로워 수(클릭시, Follower로 이동) 불러오기*/}
-           <div onClick={moveToFollowingPage}>
+          {/*팔로잉 수(클릭시, Following로 이동), 팔로워 수(클릭시, Follower로 이동) 불러오기*/}
+          <div onClick={() => {setShowFollowing(true)}}>
             <span >팔로잉 </span>
-            <span className="bold">1000</span>
+            <span className="bold">{data?.followingCnt}</span>
           </div>
 
-          <div onClick={moveToFollowerPage}>
+          <div onClick={() => {setShowFollower(true)}}>
             <span >팔로워 </span>
-            <span className="bold">1000</span>
+            <span className="bold">{data?.followerCnt}</span>
           </div>
         </ProfileFollowWrapper>     
     </ProfileInfoWrapper>
   );
 }
 const ProfileInfoWrapper = styled.section`
-  background-color: ${({ theme }) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.white};
   display: flex;
   align-items: center;
   padding: 3rem;
