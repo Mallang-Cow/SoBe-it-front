@@ -4,8 +4,7 @@ import Feed from "./Feed";
 import { styled } from "styled-components";
 
 export default function Home(props) {
-  const { setCenterContent, setArticleSeq, setUserId } = props;
-  const [reloadFeed, setReloadFeed] = useState(false);
+  const { setCenterContent, setArticleSeq, setUserId, reloadFeed, setReloadFeed } = props;
 
   return (
     <>
