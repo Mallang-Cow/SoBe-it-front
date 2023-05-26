@@ -19,8 +19,8 @@ export default function FollowNotificationCard() {
             <FolderIcon />
           </Avatar>
         </ListItemAvatar>
-        <div style={{ marginLeft: "2rem" }}>
-          <div style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ marginLeft: "2rem", width: "100%" }}>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
             <div>
               <div style={{ display: "flex", flexDirection: "row", marginBottom: "0.6rem", alignItems: "center" }}>
                 <MainNotificationText primary="NickName" />
@@ -35,7 +35,7 @@ export default function FollowNotificationCard() {
               </div>
             </div>
 
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <FollowButton>팔로우</FollowButton>
             </div>
           </div>
