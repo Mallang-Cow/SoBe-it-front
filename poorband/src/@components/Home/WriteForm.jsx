@@ -222,12 +222,12 @@ export default function WriteForm(props) {
                     <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
                       <StyledSelect1 value={category} onChange={handleCategoryChange}>
                         <option value="">카테고리 ⬇️</option>
-                        <option value="1">식비</option>
-                        <option value="2">패션/미용</option>
-                        <option value="3">생활용품</option>
-                        <option value="4">교육</option>
-                        <option value="5">취미생활</option>
-                        <option value="6">기타</option>
+                        <option value="1">식비😋</option>
+                        <option value="2">패션/미용🕶</option>
+                        <option value="3">생활용품🌂</option>
+                        <option value="4">교육📚</option>
+                        <option value="5">취미생활🎾</option>
+                        <option value="6">기타🤔</option>
                       </StyledSelect1>
                   </ImageAndCategorySelect>
                   <DatePicker selected={consumeDate} onChange={handleDateInput} locale={ko} dateFormat="yyyy-MM-dd" />

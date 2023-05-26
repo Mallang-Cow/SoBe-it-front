@@ -10,6 +10,7 @@ export default function ProfileEdit(props) {
 
   const [nickname, setNickname] = useState("");
   const [introduction, setIntroduction] = useState("");
+  const [profileImageUrl, setProfileImageUrl] = useState("");
 
   const [newProfileData, setNewProfileData] = useState({
     "nickname":nickname,
@@ -33,10 +34,18 @@ export default function ProfileEdit(props) {
   }
 
   /**
+   * 프로필 사진 변경
+   * @param {*} event 
+   **/
+  const profileImageUrlChange = (event) => {
+    setProfileImageUrl((perv)=>({...perv, profileImageUrl:event.target.value}));
+  }  
+
+  /**
    * 프로필 수정 폼 
    **/
   function submitNewProfileData(){
-    if (newProfileData.nickname&&newProfileData.introduction) {
+    if (newProfileData.nickname&&newProfileData.introduction&&newProfileData.profileImageUrl) {
       // API 호출
       
       
@@ -46,9 +55,8 @@ export default function ProfileEdit(props) {
 
   return (
     <ProfileEditWrapper>
-          {/*자신의 프로필인 경우에만 가능*/}
-          {/*프로필 사진, ID 불러오기*/}
-          {/*닉네임, 한줄소개 수정가능*/}
+          {/*ID 불러오기*/}
+          {/*프로필 사진, 닉네임, 한줄소개 수정가능*/}
           <img id="profile-img" src={ARTICLE_DETAIL.user.profileImageUrl} alt="프로필 사진" />
           <div>
             <input type="text" id="editNickname" placeholder="닉네임" onChange={nicknameChange}/>
