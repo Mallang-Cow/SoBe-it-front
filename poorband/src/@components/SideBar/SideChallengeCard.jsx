@@ -34,25 +34,28 @@ export default function SideChallengeCard(props) {
         <hr></hr>
       </TitleWrapper>
       <BarWrapper>
-        <span>기간</span>
-        <span>
-          {data?.startDate} - {data?.endDate}
-        </span>
+        <PeriodWrapper>
+          <span>기간</span>
+          <span>
+            {data?.startDate} - {data?.endDate}
+          </span>
+        </PeriodWrapper>
 
         <ProgressBarWrapper>
           <ProgressBarContainer>
-            <ChallengeProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={70}></ChallengeProgressBar>
+            <ChallengeProgressBar basecolor={"#E7E7E7"} barcolor={"#845EC2"} percentage={70}></ChallengeProgressBar>
           </ProgressBarContainer>
-          <p>{data?.goalAmount /*.toLocaleString()*/}원</p>
         </ProgressBarWrapper>
       </BarWrapper>
       <RemainWrapper>
-        <div id="remain-container">
+        <RemainDetailWrapper>
           <span className="bold">지출</span>
           <span className="gray">{data?.consumption?.toLocaleString()}원</span>
+        </RemainDetailWrapper>
+        <RemainDetailWrapper>
           <span className="bold">잔여</span>
           <span className="gray">{(data?.goalAmount - data?.consumption)?.toLocaleString()}원</span>
-        </div>
+        </RemainDetailWrapper>
       </RemainWrapper>
     </Wrapper>
   );
@@ -61,21 +64,24 @@ export default function SideChallengeCard(props) {
 const Wrapper = styled.div`
   padding: 1rem 2rem;
 
-  ${({ theme }) => theme.fonts.regular};
+  ${({ theme }) => theme.fonts.bold};
+  font-size: 1rem;
 
   #remain-container {
-    display: flex;
-    justify-content: flex-end;
   }
 `;
 
-const TitleWrapper = styled.div``;
+const TitleWrapper = styled.div`
+  hr {
+    color: ${({ theme }) => theme.colors.lightgrey_1};
+  }
+`;
 const BarWrapper = styled.div`
   height: 5rem;
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
 `;
 const ProgressBarWrapper = styled.div`
-  padding: 2rem 1rem;
+  padding: 1rem 0;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -91,7 +97,7 @@ const ProgressBarWrapper = styled.div`
 const ProgressBarContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 70%;
+  width: 100%;
   p {
     ${({ theme }) => theme.fonts.regular};
     color: ${({ theme }) => theme.colors.black};
@@ -101,5 +107,17 @@ const ProgressBarContainer = styled.div`
 `;
 
 const RemainWrapper = styled.section`
-  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const PeriodWrapper = styled.section`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const RemainDetailWrapper = styled.section`
+  span {
+    padding: 0 0.4rem;
+  }
 `;

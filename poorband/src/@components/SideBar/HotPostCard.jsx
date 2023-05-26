@@ -90,7 +90,7 @@ export default function HotPostCard(props) {
         <hr></hr>
         <div id="price">
           <span>금액</span>
-          <span>{data?.amount}원</span>
+          <span>{data?.amount?.toLocaleString()}원</span>
         </div>
         <CountInfoWrapper>
           <div className="likeIcon" onClick={handleLike}>
@@ -148,8 +148,9 @@ const ProfileWrapper = styled.div`
   }
 
   hr {
+    border-top: 1px dashed red;
     margin: 0;
-    background: ${({ theme }) => theme.colors.black};
+    background: ${({ theme }) => theme.colors.lightgrey_2};
     height: 0.1rem;
     border: 0;
   }
@@ -168,5 +169,6 @@ const ReceiptContainer = styled.div`
 `;
 const CountInfoWrapper = styled.div`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 `;
