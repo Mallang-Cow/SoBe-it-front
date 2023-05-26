@@ -6,6 +6,8 @@ import { styled } from "styled-components";
 
 export default function SideBar(props) {
   const { setCenterContent, setArticleSeq, setUserId, clickActive } = props;
+  const [thisArticleSeq, setThisArticleSeq] = useState(0);
+  const [thisUserId, setThisUserId] = useState("");
 
   return (
     <>
