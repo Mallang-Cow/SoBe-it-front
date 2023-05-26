@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
-import ArticleLikeNotificationCard from "./ArticleLikeNotificationCard";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { List, Typography } from '@mui/material';
 import { theme } from '../../style/theme';
-import ReplyNotificationCard from "./ReplyNotificationCard";
 import { selectAllNotification } from "../../../api/notificationAPI";
+import ArticleLikeNotificationCard from "./ArticleLikeNotificationCard";
+import ReplyNotificationCard from "./ReplyNotificationCard";
 import ReplyLikeNotificationCard from "./ReplyLikeNotificationCard";
 import FollowNotificationCard from "./FollowNotificationCard";
-
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-}
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
@@ -27,10 +19,68 @@ export default function Notifications() {
   const fetchNotifications = async () => {
     try {
       const response = await selectAllNotification();
-//      setNotifications(response); // API에서 받은 알림 데이터를 상태로 설정
       console.log(response);
+      setNotifications(response); // API에서 받은 알림 데이터를 상태로 설정
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const renderNotificationCard = (notification) => {
+    const { type } = notification; // 비구조화 할당 문법 : notification 객체에서 type 속성 추출  // const type = notification.type과 동일
+
+    switch (type) {
+      case 1: // 댓글 알림
+        return (
+          <ReplyNotificationCard 
+            key={ notification.notificationSeq }
+            type={ notification.type }
+            content={ notification.content }
+            articleContent={ notification.articleContent }
+            url={ notification.url }
+            imageUrl={ notification.imageUrl }
+            timestamp={ notification.timestamp }
+          />
+        );
+      case 2: // 팔로우 알림
+        return (
+          <FollowNotificationCard 
+            key={ notification.notificationSeq }
+            type={ notification.type }
+            followingUserNickname={ notification.followingUserNickname }
+            followingUserId={ notification.followingUserId }
+            following={ notification.following }
+            content = { notification.content }
+            url={ notification.url }
+            imageUrl={ notification.imageUrl }
+            timestamp={ notification.timestamp }
+          />
+        );
+      case 3: // 댓글 좋아요 알림
+        return (
+          <ReplyLikeNotificationCard 
+            key={ notification.notificationSeq }
+            type={ notification.type }
+            content={ notification.content }
+            articleContent={ notification.articleContent }
+            url={ notification.url }
+            imageUrl={ notification.imageUrl }
+            timestamp={ notification.timestamp }
+          />
+        );
+      case 4: // 게시글 좋아요 알림
+        return (
+          <ArticleLikeNotificationCard
+            key={ notification.notificationSeq }
+            type={ notification.type }
+            content={ notification.content }
+            articleContent={ notification.articleContent }
+            url={ notification.url }
+            timestamp={ notification.timestamp }
+          />
+        );
+      default:
+        return null;
     }
   };
 
@@ -45,12 +95,8 @@ export default function Notifications() {
         <DeleteAllNotificationText variant="h6">전체 알림 삭제</DeleteAllNotificationText>
 
         {/* 알림 전체 불러오기 */}
-        {generate(
-          <ArticleLikeNotificationCard />
-        )}
-        <ReplyNotificationCard />
-        <ReplyLikeNotificationCard />
-        <FollowNotificationCard />
+        {/* 알림 목록 렌더링 */}
+        { notifications.map((notification) => renderNotificationCard(notification)) }
       </List>
     </div>
   );
