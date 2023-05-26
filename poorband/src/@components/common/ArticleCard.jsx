@@ -107,6 +107,7 @@ export default function ArticleCard(props) {
   // 글 삭제
   function delArticle() {
     if (window.confirm("글을 삭제하시겠습니까?")) {
+      // 삭제 버튼 누를 경우 삭제 실행
       deleteArt({ articleSeq: thisArticleSeq });
     }
   }
@@ -115,7 +116,6 @@ export default function ArticleCard(props) {
   const { mutate: deleteArt } = useMutation(deleteArticle, {
     onSuccess: (response) => {
       console.log(response);
-      queryClient.invalidateQueries("articleDetail");
       setCenterContent("home");
     },
     onError: (response) => {
