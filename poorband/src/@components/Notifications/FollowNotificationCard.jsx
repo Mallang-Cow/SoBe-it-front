@@ -1,7 +1,7 @@
 import React from "react";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import { Avatar, Button, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from '../../style/theme';
@@ -20,12 +20,25 @@ export default function FollowNotificationCard() {
           </Avatar>
         </ListItemAvatar>
         <div style={{ marginLeft: "2rem" }}>
-          <div style={{ display: "flex", flexDirection: "row", marginBottom: '0.6rem', alignItems: 'center' }}>
-            <MainNotificationText primary="Follower NickName" />
-            <PlusNotificationText primary="Follower UserTier" />
-            <PlusNotificationText primary="Follower UserId" />
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <div>
+              <div style={{ display: "flex", flexDirection: "row", marginBottom: "0.6rem", alignItems: "center" }}>
+                <MainNotificationText primary="NickName" />
+                <PlusNotificationText primary="UserTier" />
+                <PlusNotificationText primary="UserId" />
+              </div>
+              
+              <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                {/* <SubNotificationText secondary="Follow Content" /> */}
+                <FollowContent>Follow Content</FollowContent>
+                <PlusNotificationText secondary="time" />
+              </div>
+            </div>
+
+            <div>
+              <FollowButton>팔로우</FollowButton>
+            </div>
           </div>
-          <SubNotificationText secondary="Follow Content" />
         </div>
       </ListItem>
     </NotificationCardButton>
@@ -87,6 +100,15 @@ const PlusNotificationText = muiStyled(ListItemText) ({
     },
   });
 
+const FollowContent = styled.div`
+  color: #8799A5;
+  font-size: 1.4rem;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+`;  
+
 const SubNotificationText = muiStyled(ListItemText) ({
   '& p': { 
     color: '#8799A5',
@@ -98,4 +120,18 @@ const SubNotificationText = muiStyled(ListItemText) ({
     fontWeight: 500,
     letterSpacing: '0.03em',
   },
+});
+
+const FollowButton = muiStyled(Button) ({
+  width: '3.4rem',
+  height: '2.2rem',
+  borderRadius: '3rem',
+  color: theme.colors.white,
+  backgroundColor: theme.colors.mainpurple,
+  fontSize: '1.2rem',
+  fontFamily: [
+    'Spoqa Han Sans Neo',
+  ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 500,
 });
