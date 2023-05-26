@@ -82,6 +82,8 @@ export default function Notifications(props) {
             articleContent={ notification.articleContent }
             notArticleSeq={ notification.notArticleSeq }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setArticleSeq={ setArticleSeq }
           />
         );
       default:

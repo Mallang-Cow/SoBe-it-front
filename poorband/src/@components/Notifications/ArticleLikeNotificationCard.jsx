@@ -6,9 +6,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 
-export default function ArticleLikeNotificationCard({ type, content, articleContent, notArticleSeq, imageUrl, timestamp }) {  
+export default function ArticleLikeNotificationCard({ type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq }) {  
   const [time, setTime] = useState([]);
   const nowDate = new Date();
+
+  // 댓글이 작성된 게시글 상세 페이지로 이동
+  function goToArticleDetail() {
+    setArticleSeq(notArticleSeq);
+    setCenterContent("detail");
+  }
 
   // 사용자 프로필 이미지
   let avatarImg = null;
@@ -42,7 +48,7 @@ export default function ArticleLikeNotificationCard({ type, content, articleCont
   };
 
   return (
-    <NotificationCardButton disableRipple>
+    <NotificationCardButton onClick={ goToArticleDetail } disableRipple>
       <ListItem secondaryAction={
         <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
           <ClearIcon />
