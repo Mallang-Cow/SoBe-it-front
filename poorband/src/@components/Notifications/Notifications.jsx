@@ -69,6 +69,8 @@ export default function Notifications(props) {
             notArticleSeq={ notification.notArticleSeq }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setArticleSeq={ setArticleSeq }
           />
         );
       case 4: // 게시글 좋아요 알림

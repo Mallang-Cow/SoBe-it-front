@@ -11,6 +11,12 @@ export default function ReplyLikeNotificationCard({ type, content, articleConten
   const [time, setTime] = useState([]);
   const nowDate = new Date();
 
+  // 댓글이 작성된 게시글 상세 페이지로 이동
+  function goToArticleDetail() {
+    setArticleSeq(notArticleSeq);
+    setCenterContent("detail");
+  }
+
   // 사용자 프로필 이미지
   let avatarImg = null;
   if (imageUrl) {
@@ -43,7 +49,7 @@ export default function ReplyLikeNotificationCard({ type, content, articleConten
   };
 
   return (
-    <NotificationCardButton disableRipple>
+    <NotificationCardButton onClick={ goToArticleDetail } disableRipple>
       <ListItem secondaryAction={
         <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
           <ClearIcon />
