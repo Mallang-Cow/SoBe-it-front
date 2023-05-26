@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import ArticleCard from "../common/ArticleCard";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
-import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { useQuery, useQueryClient } from "react-query";
 import { styled } from "styled-components";
 import { getComments } from "../../../api/getComments";
@@ -55,6 +54,7 @@ export default function ArticleDetail(props) {
             setCenterContent={setCenterContent}
             setArticleSeq={setArticleSeq}
             setUserId={setUserId}
+            onPage={"detail"}
           />
         </ArticleWrapper>
 

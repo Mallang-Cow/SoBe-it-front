@@ -13,7 +13,7 @@ import { useRecoilState } from "recoil";
 import { deleteArticle } from "../../../api/deleteArticle";
 
 export default function ArticleCard(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed, onPage } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
   const [time, setTime] = useState([]);
@@ -27,9 +27,9 @@ export default function ArticleCard(props) {
     isError,
     error,
   } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(Number(articleSeq)), {
-    onSuccess: () => {
-      setThisArticleSeq(Number(article?.articleSeq));
-      setThisUserId(article?.user?.userId);
+    onSuccess: (response) => {
+      setThisArticleSeq(Number(response?.articleSeq));
+      setThisUserId(response?.user?.userId);
     },
     onError: () => {
       console.log("Error");
@@ -118,8 +118,9 @@ export default function ArticleCard(props) {
   const { mutate: deleteArt } = useMutation(deleteArticle, {
     onSuccess: (response) => {
       console.log(response);
-      setCenterContent("home");
-      setReloadFeed(true);
+
+      if (onPage === "detail") setCenterContent("home"); // 상세 페이지에서 삭제한다면 홈으로 이동
+      else if (onPage === "home") setReloadFeed(true); // 리로드
     },
     onError: (response) => {
       console.log(response);
