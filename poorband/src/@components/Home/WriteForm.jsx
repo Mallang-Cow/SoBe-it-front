@@ -7,32 +7,31 @@ import { useMutation } from "react-query";
 import { articeWrite } from "../../../api/articleWriteApi";
 
 export default function WriteForm() {
-
-  const [isConsumeWrite, setIsConsumeWrite] = useState(1); 
+  const [isConsumeWrite, setIsConsumeWrite] = useState(1);
   const [isclicked, setisclicked] = useState(true);
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   const [consumeText, setconsumeText] = useState("");
   const [consumeDate, setconsumeDate] = useState(new Date());
   const [financialText, setfinancialText] = useState("");
-  const [status, setStatus] = useState(''); // 공개여부
+  const [status, setStatus] = useState(""); // 공개여부
   const [amount, setAmount] = useState("");
 
   const newData = {
-    status:status,
-    imageUrl:"url",
-    expenditureCategory:category,
-    amount:Number(amount),
-    financialText:financialText,
-    articleText:consumeText,
-    articleType:isConsumeWrite,
-    consumptionDate:consumeDate,
-    isAllowed:"false"
+    status: status,
+    imageUrl: "url",
+    expenditureCategory: category,
+    amount: Number(amount),
+    financialText: financialText,
+    articleText: consumeText,
+    articleType: isConsumeWrite,
+    consumptionDate: consumeDate,
+    isAllowed: "false",
   };
 
   /**
    * 지출입력 or 결재받기 버튼선택
-   * @param {*} type 
+   * @param {*} type
    */
   const handleClick = (type) => {
     setIsConsumeWrite(type);
@@ -40,7 +39,7 @@ export default function WriteForm() {
 
   /**
    * @param {*} event
-   * 소비 날짜 셋팅 
+   * 소비 날짜 셋팅
    */
   const handleDateInput = (date) => {
     setconsumeDate(date);
@@ -48,29 +47,27 @@ export default function WriteForm() {
 
   function formatDate(date) {
     let d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join('-');
+    return [year, month, day].join("-");
   }
 
   /**
    * 글 작성
-   * @param {*} event 
+   * @param {*} event
    */
   const handleCousumeInput = (event) => {
-    setconsumeText(event.target.value)
+    setconsumeText(event.target.value);
   };
 
   /**
    * 가계부 메모
-   * @param {*} event 
+   * @param {*} event
    */
   const handleFinancialInput = (event) => {
     setfinancialText(event.target.value);
@@ -78,43 +75,41 @@ export default function WriteForm() {
 
   /**
    * 사진업로드
-   * @param {*} event 
+   * @param {*} event
    */
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     console.log(file);
     // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
   };
-  
+
   /**
    * 카테고리
-   * @param {*} event 
+   * @param {*} event
    */
   const handleCategoryChange = (event) => {
     setCategory(Number(event.target.value));
   };
 
-  
-
   /**
    * 금액
-   * @param {*} e 
+   * @param {*} e
    */
   const handleAmountChange = (event) => {
     const value = event.target.value;
-    const formattedValue = value.replace(/[^0-9]/g, '');  // 숫자만 허용
+    const formattedValue = value.replace(/[^0-9]/g, ""); // 숫자만 허용
     setAmount(formattedValue);
-  }
+  };
 
   /**
    * 금액 입력할때 쉼표 붙여주
    */
   const formatWithCommas = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  };
   /**
    * 공개여부
-   * @param {*} event 
+   * @param {*} event
    */
   const handleStatusChage = (event) => {
     setStatus(event.target.value);
@@ -135,7 +130,7 @@ export default function WriteForm() {
         return;
       }
 
-      if (amount === '') {
+      if (amount === "") {
         alert("금액을 입력해주세요.");
         return;
       }
@@ -145,12 +140,18 @@ export default function WriteForm() {
         return;
       }
 
-      if (newData.amount&&newData.articleText&&newData.articleType&&
-        newData.consumptionDate&&newData.expenditureCategory&&newData.status){
+      if (
+        newData.amount &&
+        newData.articleText &&
+        newData.articleType &&
+        newData.consumptionDate &&
+        newData.expenditureCategory &&
+        newData.status
+      ) {
         // API 호출
         newData.consumptionDate = formatDate(consumeDate);
         writeArticle(newData);
-        
+
         // console.log(newData);
       }
     } else {
@@ -159,106 +160,158 @@ export default function WriteForm() {
         return;
       }
 
-      if (amount === '') {
+      if (amount === "") {
         alert("금액을 입력해주세요.");
         return;
       }
 
-      if (newData.articleText&&newData.amount&&newData.status){
+      if (newData.articleText && newData.amount && newData.status) {
         // API 호출
         newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
+        const formData = new FormData();
+        const blob = new Blob([newData.articleDTO], { type: "application/json" });
+        formData.append("file", file);
+        formData.append("articleDTO", blob);
+        writeArticle(formData); // Post 메소드
       }
     }
   }
 
-  const {mutate : writeArticle} = useMutation(articeWrite, {
+  const { mutate: writeArticle } = useMutation(articeWrite, {
     onSuccess: (response) => {
       console.log(response);
       // 글쓰기 성공하면 바로 피드랑 입력폼 새로고침 해주기.
       // 성공하면 따로 alert를 줄건지?
       setconsumeText("");
-      setCategory('');
+      setCategory("");
       setfinancialText("");
       setAmount("");
-      setStatus('');
+      setStatus("");
       setconsumeDate(new Date());
-
     },
-    onError:() => {
+    onError: () => {
       // 실패시 뭐하지
-      
     },
   });
-
 
   return (
     <>
       {/* isConsumeWrite에 따라 지출 받기 / 결재 받기 바뀌기 */}
       <WriteFormWrapper>
         <ButtonWrapper>
-          <Button1 data-isclicked={isclicked} onClick={() => { handleClick(1); setisclicked(true); }}>지출 입력</Button1>
-          <Button2 data-isclicked={isclicked} onClick={() => { handleClick(2); setisclicked(false); }}>결재 받기</Button2>
+          <Button1
+            data-isclicked={isclicked}
+            onClick={() => {
+              handleClick(1);
+              setisclicked(true);
+            }}>
+            지출 입력
+          </Button1>
+          <Button2
+            data-isclicked={isclicked}
+            onClick={() => {
+              handleClick(2);
+              setisclicked(false);
+            }}>
+            결재 받기
+          </Button2>
         </ButtonWrapper>
-        
+
         {isConsumeWrite === 1 && (
           <ConsumeFormWrapper>
-              <TopWrapper>
-                <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
-                <StyledSelect1 value={category} onChange={handleCategoryChange}>
-                  <option value="">카테고리 ⬇️</option>
-                  <option value="1">식비</option>
-                  <option value="2">패션/미용</option>
-                  <option value="3">생활용품</option>
-                  <option value="4">교육</option>
-                  <option value="5">취미생활</option>
-                  <option value="6">기타</option>
-                </StyledSelect1>
-                <DatePicker selected={consumeDate} onChange={handleDateInput} locale={ko} dateFormat="yyyy-MM-dd" />
-              </TopWrapper>
+            <TopWrapper>
+              <Image
+                src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw"
+                alt=""
+              />
+              <StyledSelect1 value={category} onChange={handleCategoryChange}>
+                <option value="">카테고리 ⬇️</option>
+                <option value="1">식비</option>
+                <option value="2">패션/미용</option>
+                <option value="3">생활용품</option>
+                <option value="4">교육</option>
+                <option value="5">취미생활</option>
+                <option value="6">기타</option>
+              </StyledSelect1>
+              <DatePicker selected={consumeDate} onChange={handleDateInput} locale={ko} dateFormat="yyyy-MM-dd" />
+            </TopWrapper>
 
-              <InputText name="consumeInput" value={consumeText} placeholder="글을 작성하세요." onChange={handleCousumeInput}/>
+            <InputText
+              name="consumeInput"
+              value={consumeText}
+              placeholder="글을 작성하세요."
+              onChange={handleCousumeInput}
+            />
 
-              <BottomWrapper>
-                <FileLabel htmlFor="file">
-                  <span className="material-symbols-outlined" >
-                    image
-                  </span>
-                </FileLabel>
-                <input type="file" name="file" id="file" accept="image/*" onChange={handleFileUpload} style={{display: 'none'}}/>
-                <FinancialTextWrapper>
-                  <FinancialText type="text" value={financialText} name="financialInput" placeholder="가계부 메모를 작성하세요." onChange={handleFinancialInput}/>
-                </FinancialTextWrapper>
+            <BottomWrapper>
+              <FileLabel htmlFor="file">
+                <span className="material-symbols-outlined">image</span>
+              </FileLabel>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                style={{ display: "none" }}
+              />
+              <FinancialTextWrapper>
+                <FinancialText
+                  type="text"
+                  value={financialText}
+                  name="financialInput"
+                  placeholder="가계부 메모를 작성하세요."
+                  onChange={handleFinancialInput}
+                />
+              </FinancialTextWrapper>
 
-                <AmountInput type="text" placeholder="금액 입력" value={formatWithCommas(amount)} onChange={handleAmountChange} />
-
-              </BottomWrapper>
-
+              <AmountInput
+                type="text"
+                placeholder="금액 입력"
+                value={formatWithCommas(amount)}
+                onChange={handleAmountChange}
+              />
+            </BottomWrapper>
           </ConsumeFormWrapper>
         )}
-        
+
         {isConsumeWrite === 2 && (
           <PermissionFormWrapper>
-              
-              <TopWrapper>
-                <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
-              </TopWrapper>
+            <TopWrapper>
+              <Image
+                src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw"
+                alt=""
+              />
+            </TopWrapper>
 
-              <InputText type="text" name="permissionInput" placeholder="글을 작성하세요." onChange={handleCousumeInput}/>
-              
-              <BottomWrapper>
-                <FileLabel htmlFor="file">
-                  <span className="material-symbols-outlined">
-                    image
-                  </span>
-                </FileLabel>  
-                <input type="file" name="file" id="file" accept="image/*" onChange={handleFileUpload} style={{display: 'none'}}/>
-                <PermissionBottomDiv></PermissionBottomDiv>
+            <InputText
+              type="text"
+              name="permissionInput"
+              placeholder="글을 작성하세요."
+              onChange={handleCousumeInput}
+            />
 
-                <AmountInput type="text" placeholder="금액 입력" value={formatWithCommas(amount)} onChange={handleAmountChange} />
+            <BottomWrapper>
+              <FileLabel htmlFor="file">
+                <span className="material-symbols-outlined">image</span>
+              </FileLabel>
+              <input
+                type="file"
+                name="file"
+                id="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                style={{ display: "none" }}
+              />
+              <PermissionBottomDiv></PermissionBottomDiv>
 
-              </BottomWrapper>
-
+              <AmountInput
+                type="text"
+                placeholder="금액 입력"
+                value={formatWithCommas(amount)}
+                onChange={handleAmountChange}
+              />
+            </BottomWrapper>
           </PermissionFormWrapper>
         )}
         <SubmitAndPrivacySet>
@@ -268,7 +321,7 @@ export default function WriteForm() {
             <option value="2">맞팔공개</option>
             <option value="3">비공개</option>
           </StyledSelect2>
-          <SubmitButton onClick={submitNewData}>게시하기</SubmitButton>  
+          <SubmitButton onClick={submitNewData}>게시하기</SubmitButton>
         </SubmitAndPrivacySet>
       </WriteFormWrapper>
     </>
@@ -282,18 +335,18 @@ const WriteFormWrapper = styled.section`
 // 카테고리 셀렉트
 const StyledSelect1 = styled.select`
   option {
-    color : #FFFFFF;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
   }
-  
+
   width: 9rem;
   height: 100%;
   border-radius: 3rem;
-  border: 1px solid #845EC2;
-  background-color: #845EC2;
+  border: 1px solid #845ec2;
+  background-color: #845ec2;
   ${({ theme }) => theme.fonts.regular};
   font-size: 1.1rem;
   color: white;
@@ -305,8 +358,8 @@ const StyledSelect1 = styled.select`
 
 // 공개여부 셀렉트
 const StyledSelect2 = styled.select`
-option {
-    color : #845EC2;
+  option {
+    color: #845ec2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -315,24 +368,23 @@ option {
   width: 9.4rem;
   height: 2.65rem;
   border-radius: 3rem;
-  border: 1px solid #845EC2;
+  border: 1px solid #845ec2;
   background-color: white;
   ${({ theme }) => theme.fonts.regular};
   font-size: 1.1rem;
-  color: #845EC2;
+  color: #845ec2;
   appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
   text-align: center;
   margin-left: auto;
   display: flex;
 `;
 
-const ConsumeFormWrapper=styled.section` 
-
+const ConsumeFormWrapper = styled.section`
   .react-datepicker-wrapper {
-      width: 10rem;
-      text-align: center;
-      margin-left: 40.1rem;
-      margin-right: 4rem;
+    width: 10rem;
+    text-align: center;
+    margin-left: 40.1rem;
+    margin-right: 4rem;
   }
   .react-datepicker__input-container input {
     width: 10rem;
@@ -342,7 +394,7 @@ const ConsumeFormWrapper=styled.section`
     text-align: center;
     color: #707070;
   }
-  
+
   display: flex;
   width: 100%;
   text-align: center;
@@ -356,11 +408,10 @@ const PermissionFormWrapper = styled.section`
   flex-wrap: wrap;
 `;
 
-const Button1=styled.button`
-  
+const Button1 = styled.button`
   ${({ theme }) => theme.fonts.bold};
 
-  font-family: 'Spoqa Han Sans Neo';
+  font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
   font-size: 1.7rem;
@@ -368,21 +419,20 @@ const Button1=styled.button`
   /* identical to box height */
 
   text-align: center;
-  color: ${props => props['data-isclicked'] ? '#000000' : '#C4C4C4'};
+  color: ${(props) => (props["data-isclicked"] ? "#000000" : "#C4C4C4")};
   padding-left: 10rem;
   padding-right: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  height:100%;
+
+  height: 100%;
 `;
 
-const Button2=styled.button`
-  
+const Button2 = styled.button`
   ${({ theme }) => theme.fonts.bold};
 
-  font-family: 'Spoqa Han Sans Neo';
+  font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
   font-size: 1.7rem;
@@ -390,24 +440,24 @@ const Button2=styled.button`
   /* identical to box height */
 
   text-align: center;
-  color: ${props => props['data-isclicked'] ? '#C4C4C4' : '#000000'};
+  color: ${(props) => (props["data-isclicked"] ? "#C4C4C4" : "#000000")};
   padding-left: 10rem;
   padding-right: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  
-  height:100%;
+
+  height: 100%;
 `;
 
-const ButtonWrapper=styled.section`
+const ButtonWrapper = styled.section`
   display: flex;
   justify-content: space-evenly;
-  width:699px;
+  width: 699px;
   height: 5rem;
   margin-bottom: 2rem;
   /* padding-bottom: 1.5rem; */
-  border-bottom: 1px solid #E6E6E6;
+  border-bottom: 1px solid #e6e6e6;
 `;
 
 const BottomWrapper = styled.section`
@@ -418,9 +468,9 @@ const BottomWrapper = styled.section`
 const TopWrapper = styled.section`
   display: flex;
   height: 2.3rem;
-`
+`;
 
-const Image=styled.img`
+const Image = styled.img`
   width: 2.3rem;
   height: 2.3rem;
   margin-left: 2rem;
@@ -440,7 +490,7 @@ const FileLabel = styled.label`
   & > span {
     font-size: 3rem;
   }
-`
+`;
 const FinancialTextWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -470,7 +520,7 @@ const AmountInput = styled.input`
   font-size: 1.2rem;
   margin-top: 1.24rem;
   margin-left: 28.5rem;
-  color: #845EC2;
+  color: #845ec2;
 `;
 
 const InputText = styled.textarea`
@@ -483,7 +533,6 @@ const InputText = styled.textarea`
   margin-top: 1.3rem;
   border-radius: 0.5rem;
   ${({ theme }) => theme.fonts.regular};
-
 `;
 
 const SubmitAndPrivacySet = styled.section`
@@ -493,12 +542,12 @@ const SubmitAndPrivacySet = styled.section`
 
 const SubmitButton = styled.button`
   option {
-    color : #FFFFFF;
+    color: #ffffff;
   }
   width: 8rem;
   height: 2.65rem;
   border-radius: 3rem;
-  background-color: #845EC2;
+  background-color: #845ec2;
   ${({ theme }) => theme.fonts.bold};
   font-size: 1.1rem;
   font-style: normal;
