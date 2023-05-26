@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
-import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
-import { useMutation } from "react-query";
+import { useMutation } from "react-query"; // useQuery, useQueryClient
 import { getHotPost } from "../../../api/getHotPost";
+// import { likeArticle } from "../../../api/likeArticle";
+// import { getArticleDetailData } from "../../../api/getArticleDetailData";
+
 export default function HotPostCard(props) {
+  // const { articleSeq } = props;
+
   const [data, setData] = useState([]);
   const newData = {
     userId: "test1",
@@ -16,8 +20,10 @@ export default function HotPostCard(props) {
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
       setData(response.data[props.idx]);
-      console.log(response.data[0]);
-      console.log(data?.user?.profileImageUrl);
+      // setThisArticleSeq(Number(article?.articleSeq));
+
+      // console.log(response.data[0]);
+      // console.log(data?.user?.profileImageUrl);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
@@ -26,18 +32,53 @@ export default function HotPostCard(props) {
     },
   });
 
-  const [like, setLike] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   const handleLike = () => {
-    setLike(!like);
+    setLiked(!liked);
   };
 
   let content = null;
-  if (like === true) {
+  if (liked === true) {
     content = <span className="material-symbols-outlined">favorite</span>;
   } else {
     content = <span className="material-symbols-outlined">favorite</span>;
   }
+
+  // const [thisArticleSeq, setThisArticleSeq] = useState(0);
+  // const [thisUserId, setThisUserId] = useState("");
+
+  // // 글 정보 가져오기
+  // const {
+  //   data: article,
+  //   isLoading,
+  //   isError,
+  //   error,
+  // } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
+  //   onSuccess: () => {
+  //     setThisArticleSeq(Number(article?.articleSeq));
+  //     setThisUserId(article?.user?.userId);
+  //   },
+  //   onError: () => {
+  //     console.log("Error");
+  //   },
+  // });
+
+  // // 좋아요
+  // function clickLike() {
+  //   like({ articleSeq: Number(articleSeq) });
+  // }
+
+  // const queryClient = useQueryClient();
+  // // 좋아요 정보 Post 전송
+  // const { mutate: like } = useMutation(likeArticle, {
+  //   onSuccess: (response) => {
+  //     queryClient.invalidateQueries("articleDetail");
+  //   },
+  //   onError: () => {
+  //     console.log("error");
+  //   },
+  // });
   return (
     <Wrapper>
       <ProfileWrapper>
@@ -48,25 +89,35 @@ export default function HotPostCard(props) {
         <h1>{data?.articleText}</h1>
         <hr></hr>
         <div id="price">
-          <span>{data?.articleSeq}</span>
           <span>금액</span>
           <span>{data?.amount}원</span>
         </div>
         <CountInfoWrapper>
           <div className="likeIcon" onClick={handleLike}>
-            {like ? (
-              <span id="filledIcon" className="material-symbols-outlined">
+            {liked ? (
+              <span
+                id="filledIcon"
+                className="material-symbols-outlined"
+                onClick={() => {
+                  // clickLike();
+                }}>
                 favorite
               </span>
             ) : (
-              <span className="material-symbols-outlined">favorite</span>
+              <span
+                className="material-symbols-outlined"
+                onClick={() => {
+                  // clickLike();
+                }}>
+                favorite
+              </span>
             )}
           </div>
-          <span>{SIDEBAR_DETAIL.likeCnt}</span>
+          <span>{data?.likeCnt}</span>
           <div>
             <span className="material-symbols-outlined">chat_bubble</span>
           </div>
-          <span>{SIDEBAR_DETAIL.commentCnt}</span>
+          <span>{data?.commentCnt}</span>
         </CountInfoWrapper>
       </ReceiptContainer>
     </Wrapper>

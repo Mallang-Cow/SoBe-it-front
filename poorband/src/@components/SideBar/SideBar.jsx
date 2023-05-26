@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import SideChallengeCard from "./SideChallengeCard";
 import HotPostCard from "./HotPostCard";
 import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
+import { useQuery } from "react-query";
+import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
-export default function SideBar() {
+export default function SideBar(props) {
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setUserId } = props;
+  const { data } = useQuery(["articleData"], getArticleDetailData, {});
+
+  const [thisArticleSeq, setThisArticleSeq] = useState(0);
+  const [thisUserId, setThisUserId] = useState("");
+
   return (
     <>
       <Wrapper>
@@ -24,7 +32,15 @@ export default function SideBar() {
             <h2>Hot Posts</h2>
           </TitleContainer>
           <HotPostCardWrapper>
-            <HotPostCard idx="0" />
+            <HotPostCard
+              idx="0"
+              articleSeq={Number(articleSeq)}
+              setArticleType={setArticleType}
+              clickActive={clickActive}
+              setCenterContent={setCenterContent}
+              setArticleSeq={setArticleSeq}
+              setUserId={setUserId}
+            />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
             <HotPostCard idx="1" />
@@ -62,19 +78,31 @@ const TitleContainer = styled.div`
 const SearchBarWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
+
+  border-radius: 1px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const ChallengeWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
+
+  border-radius: 1px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const HotPostWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
+
+  border-radius: 1px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const HotPostCardWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   margin: 1rem 2rem;
+
+  border-radius: 1px;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.12), 0 1px 1px 0 rgba(0, 0, 0, 0.22);
 `;
