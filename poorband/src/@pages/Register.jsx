@@ -31,7 +31,7 @@ export default function Register() {
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
-        alert("회원 가입 정보를 다시 확인해 주세요.");
+        alert(error.response.data.error);
       }
     },
   });
