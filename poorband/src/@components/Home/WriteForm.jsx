@@ -117,19 +117,6 @@ export default function WriteForm(props) {
    */
   function submitNewData() {
 
-    const newData = {
-      articleDTO:{
-        status:status,
-        expenditureCategory:category,
-        amount:Number(amount),
-        financialText:financialText,
-        articleText:consumeText,
-        articleType:isConsumeWrite,
-        consumptionDate:formatDate(consumeDate),
-        isAllowed:"false"
-      }
-    };
-
     if (isConsumeWrite === 1) {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
@@ -150,6 +137,17 @@ export default function WriteForm(props) {
         alert("공개여부를 선택해주세요.");
         return;
       }
+      const newData = {
+        articleDTO:{
+          status:status,
+          expenditureCategory:category,
+          amount:Number(amount),
+          financialText:financialText,
+          articleText:consumeText,
+          articleType:isConsumeWrite,
+          consumptionDate:formatDate(consumeDate),
+          isAllowed:"false"
+      }};
 
       const formData = new FormData();
       const json = JSON.stringify(newData.articleDTO);
@@ -157,15 +155,23 @@ export default function WriteForm(props) {
 
       formData.append('file', file);
       formData.append('articleDTO', blob);
-
-      console.log(formData);
-      console.log("file:" + file);
-      console.log(newData.articleDTO);
-      console.log(blob);
       writeArticle(formData);
 
 
     } else {
+
+      const newData = {
+        articleDTO:{
+          status:status,
+          expenditureCategory:category,
+          amount:Number(amount),
+          financialText:financialText,
+          articleText:consumeText,
+          articleType:isConsumeWrite,
+          isAllowed:"false"
+        }
+      };
+
       if (consumeText === "") {
         alert("글을 입력해주세요.");
         return;
@@ -177,7 +183,8 @@ export default function WriteForm(props) {
       }
       
       const formData = new FormData();
-      const blob = new Blob([newData.articleDTO], { type: "application/json" })
+      const json1 = JSON.stringify(newData.articleDTO);
+      const blob = new Blob([json1], { type: 'application/json' });
       formData.append('file', file);
       formData.append('articleDTO', blob);
       writeArticle(formData);
