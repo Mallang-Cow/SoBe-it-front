@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import WriteForm from "./WriteForm";
 import Feed from "./Feed";
 import { styled } from "styled-components";
 
 export default function Home(props) {
   const { setCenterContent, setArticleSeq, setUserId } = props;
+  const [reloadFeed, setReloadFeed] = useState(false);
+
   return (
     <>
       <HomeWrapper>
         <HomeTag>Home</HomeTag>
-        <WriteForm />
-        <Feed setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} setUserId={setUserId} />
+        <WriteForm setReloadFeed={setReloadFeed}/> 
+        <Feed setCenterContent={setCenterContent} 
+              setArticleSeq={setArticleSeq} 
+              setUserId={setUserId} 
+              reloadFeed={reloadFeed} 
+              setReloadFeed={setReloadFeed} />
       </HomeWrapper>
     </>
   );
@@ -38,3 +44,4 @@ const HomeTag = styled.h2`
   line-height: 30px;
   color: #000000;
 `;
+

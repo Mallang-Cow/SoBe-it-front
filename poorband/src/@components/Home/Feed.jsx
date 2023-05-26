@@ -5,7 +5,7 @@ import { useInView } from "react-intersection-observer";
 import axios from "axios";
 
 export default function Feed(props) {
-  const { setCenterContent, setArticleSeq, setUserId } = props;
+  const { setCenterContent, setArticleSeq, setUserId, reloadFeed, setReloadFeed } = props;
   const [articleType, setArticleType] = useState();
 
   const [articles, setArticles] = useState([]);
@@ -14,21 +14,20 @@ export default function Feed(props) {
 
   const [ref, inView] = useInView();
 
-  const getItems = useCallback(async () => {
-    console.log("요청중...");
+  const getItems = useCallback(async (lastId, keepExisting = false) => {
     await axios
       .get(`http://localhost:9000/article/selectAll`, {
         headers: {
           Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
         },
         params: {
-          lastArticleId: lastArticleId,
+          lastArticleId: lastId,
           size: 4,
         },
       })
       .then((res) => {
         const newArticles = res.data;
-        setArticles((prevState) => [...prevState, ...newArticles]);
+        setArticles((prevState) => keepExisting ? [...prevState, ...newArticles] : newArticles);
 
         // set the lastArticleId as the last fetched article's id
         const lastFetchedArticle = newArticles[newArticles.length - 1];
@@ -48,22 +47,34 @@ export default function Feed(props) {
   // 최초 렌더링 후 한 번만 실행
   useEffect(() => {
     setLoading(true);
-    getItems();
+    getItems(null, false);
   }, []);
 
   // 스크롤 이벤트에 따라 실행
   useEffect(() => {
     if (inView && !loading) {
       setLoading(true);
-      getItems();
+      getItems(lastArticleId, true);
       console.log("무한스크롤 요청중!");
     }
     return;
   }, [inView, loading]);
 
+  useEffect(() => {
+    // console.log("피드가 감지했음.");
+    if (reloadFeed) {
+      const lastId = null;
+      setLastArticleId(null);
+      getItems(lastId, false).then(() => {
+        // console.log("데이터 로드 완료");
+        setReloadFeed(false);
+      });
+    }
+  }, [reloadFeed]);
+
   return (
     <FeedWrapper>
-      {articles.map((article, idx) => (
+      {(Array.isArray(articles) ? articles : []).map((article, idx) => (
         <React.Fragment key={idx}>
           {articles.length - 1 === idx ? (
             <ArticleWrapper>

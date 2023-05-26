@@ -1,12 +1,14 @@
 import axios from "axios";
 
-export async function articeWrite(newData) {
-    const data = await axios.post(`http://localhost:9000/article/write`, newData, {
+export async function articeWrite(formData) {
+    console.log(formData)
+    const data = await axios.post(`http://localhost:9000/article/write`, formData, {
         headers: {
-            "Content-type": "application/json",
+            "Content-type": "multipart/form-data",
             Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
         }
     });
 
-    return data;
+
+  return data;
 }
