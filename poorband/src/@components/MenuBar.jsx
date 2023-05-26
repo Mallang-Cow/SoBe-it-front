@@ -10,6 +10,7 @@ import { getHotPost } from "../../api/getHotPost";
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserId } = props;
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
 
   const [data, setData] = useState([]);
   const newData = {
@@ -52,7 +53,7 @@ export default function MenuBar(props) {
     },
   });
 
-  const logout = async () => {
+  const logout = () => {
     logoutUser();
   };
 
