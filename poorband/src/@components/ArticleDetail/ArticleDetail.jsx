@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArticleCard from "../common/ArticleCard";
 import CommentForm from "./CommentForm";
 import CommentCard from "./CommentCard";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { styled } from "styled-components";
 import { getComments } from "../../../api/getComments";
 
@@ -13,6 +13,7 @@ export default function ArticleDetail(props) {
   const [articleType, setArticleType] = useState(1);
   const [clickActive, setClickActive] = useState(false);
   const [commentList, setCommentList] = useState();
+  const [reload, setReload] = useState(false);
 
   // 댓글 전체 불러오기
   // 글 정보 가져오기
@@ -29,6 +30,15 @@ export default function ArticleDetail(props) {
       console.log("Error");
     },
   });
+
+  // const queryClient = useQueryClient();
+  // // 댓글, 좋아요 변경 시 리로드
+  // useEffect(() => {
+  //   if (reload == true) {
+  //     console.log(true);
+  //     queryClient.invalidateQueries("commentList");
+  //   }
+  // }, [setReload]);
 
   return (
     <>
@@ -51,7 +61,7 @@ export default function ArticleDetail(props) {
         <CommentForm />
 
         {commentList?.map((x) => (
-          <CommentCard comment={x} />
+          <CommentCard comment={x} setReload={setReload} />
         ))}
 
         <CommentCard />
