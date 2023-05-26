@@ -61,7 +61,12 @@ export default function Service() {
         </CenterWrapper>
 
         <SideBarWrapper>
-          <SideBar />
+          <SideBar
+            articleSeq={Number(articleSeq)}
+            setCenterContent={setCenterContent}
+            setArticleSeq={setArticleSeq}
+            setUserId={setUserId}
+          />
         </SideBarWrapper>
       </ServiceWrapper>
     </>
