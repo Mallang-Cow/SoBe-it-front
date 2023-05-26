@@ -171,9 +171,11 @@ export default function Register() {
   });
 
   const smsOk = () => {
-    const code = authenticationNumber;
-
-    userSmsAuthOk(code);
+    const data = {
+      "code" : authenticationNumber,
+      "phone" : userPhoneNumber
+    };
+    userSmsAuthOk(data);
   };
 
   const handleChange = (event, setter) => {
