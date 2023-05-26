@@ -3,7 +3,9 @@ import { styled } from "styled-components";
 
 export default function CommentCard(props) {
   const { comment } = props;
-  console.log(comment);
+  //console.log(comment);
+
+  function clickLike() {}
   return (
     <Wrapper>
       <ProfileContainer>
@@ -21,19 +23,28 @@ export default function CommentCard(props) {
       <FooterContainer>
         <Like>
           {comment?._clicked_like ? (
-            <span className="material-symbols-rounded active">favorite</span>
+            <span
+              className="material-symbols-rounded active"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           ) : (
-            <span className="material-symbols-rounded">favorite</span>
+            <span
+              className="material-symbols-rounded"
+              onClick={() => {
+                clickLike();
+              }}>
+              favorite
+            </span>
           )}
           <p>{comment?.reply_like_cnt}</p>
         </Like>
 
         <Comment>
           <span className="material-symbols-rounded">comment</span>
-          <p>
-            {/* 댓글수 */}
-            {comment?.reply_like_cnt}
-          </p>
+          <p>{comment?.reply_like_cnt}</p>
         </Comment>
       </FooterContainer>
     </Wrapper>
@@ -109,16 +120,23 @@ const Like = styled.div`
   display: flex;
   margin: 0 2rem 0 0;
   align-items: center;
+
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
+  }
+  span.material-symbols-rounded:hover {
+    color: ${({ theme }) => theme.colors.red};
+  }
+  span.active.material-symbols-rounded {
+    color: ${({ theme }) => theme.colors.red};
   }
 `;
 const Comment = styled.div`
   display: flex;
   align-items: center;
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-left: 1rem;
   }
 `;
