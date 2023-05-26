@@ -7,8 +7,8 @@ import { ko } from "date-fns/esm/locale";
 import { useMutation } from "react-query";
 import { articeWrite } from "../../../api/articleWriteApi";
 
-export default function WriteForm() {
-
+export default function WriteForm(props) {
+  const {setReloadFeed} = props;
   const [isConsumeWrite, setIsConsumeWrite] = useState(1); 
   const [isclicked, setisclicked] = useState(true);
 
@@ -17,7 +17,7 @@ export default function WriteForm() {
   const [consumeText, setconsumeText] = useState("");
   const [consumeDate, setconsumeDate] = useState(new Date());
   const [financialText, setfinancialText] = useState("");
-  const [status, setStatus] = useState(''); // 공개여부
+  const [status, setStatus] = useState("1"); // 공개여부
   const [amount, setAmount] = useState("");
 
   /**
@@ -180,7 +180,6 @@ export default function WriteForm() {
       const blob = new Blob([newData.articleDTO], { type: "application/json" })
       formData.append('file', file);
       formData.append('articleDTO', blob);
-
       writeArticle(formData);
     }
   }
@@ -194,13 +193,14 @@ export default function WriteForm() {
       setCategory('');
       setfinancialText("");
       setAmount("");
-      setStatus('');
+      setStatus("1");
       setconsumeDate(new Date());
-
+      setReloadFeed(true);
     },
     onError:(error) => {
       // 실패시 뭐하지
       console.log(error);
+      alert("게시글 업로드에 실패했습니다.");
     },
   });
 
@@ -275,7 +275,7 @@ export default function WriteForm() {
                 <option value="2">맞팔공개</option>
                 <option value="3">비공개</option>
               </StyledSelect2>
-              <SubmitButton onClick={submitNewData}>게시하기</SubmitButton>  
+              <SubmitButton onClick={() => {submitNewData();}}>게시하기</SubmitButton>
             </StatusAndSubmitWrapper>
           </SubmitAndPrivacySet>
         </InputWrapper>
@@ -559,7 +559,7 @@ const AmountInput = styled.input`
 `;
 
 const InputText = styled.textarea`
-  width: 100%;
+width: 100%;
   height: 6.7rem;
   border: 1px solid #ddd;
   text-align: left;
@@ -567,12 +567,17 @@ const InputText = styled.textarea`
   border-radius: 0.5rem;
   ${({ theme }) => theme.fonts.regular};
   transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
+  position: relative;
+  outline: none;
+  resize: none; /* 크기 조정 방지 */
+
+  &::placeholder {
+    text-align: initial;
+  }
 
   &:focus {
     border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
   }
-  outline: none;
-  resize: none; /* 크기 조정 방지 */
 `;
 
 const FileInputContainer = styled.label`
