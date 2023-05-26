@@ -2,56 +2,56 @@ import React from "react";
 import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
+import ProgressBar from "../common/ProgressBar";
 
 export default function ChallengeCard() {
   return (
     <ChallengeCardWrapper>
-      <ProfileAndBtn>
-        <NicknameAndImg>
+      <HeaderWrapper>
           <img id="profile-img" src={ARTICLE_DETAIL.user.profileImageUrl} alt="프로필사진" />
           <span className="bold">{ARTICLE_DETAIL.user.nickname}</span>
-        </NicknameAndImg>
-        <ChallengeBtn>
           <span className="bold">진행중/도전과제 상태</span>
           <button>공유/구현x</button>
           <button>삭제하기</button>
-        </ChallengeBtn>
-      </ProfileAndBtn>
+      </HeaderWrapper>
 
-      <ChallengeTitle>
-        <div>도전과제 제목</div>
-      </ChallengeTitle>
+      <ChallengeTitle>도전과제 제목</ChallengeTitle>
 
-      <ChallengeDate>
-        <span>기간</span>
-        <span>2023-05-11~2023-05-18</span>
-      </ChallengeDate>
+      <BarWrapper>
+        <ChallengeDate>
+          <span>기간</span>
+          <span>2023-05-12~2023-05-18</span>
+        </ChallengeDate>
 
-      {/* 날짜 경과 그래프 */}
+        {/* 날짜 경과 그래프 */}
+        <ProgressBarWrapper>
+          <ProgressBarContainer>
+            <ProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={50}></ProgressBar>
+          </ProgressBarContainer>
+          <p>달성일수 3/6</p>
+        </ProgressBarWrapper>
 
-      <ChallengeDays>
-        <span>달성일수 3/22</span>
-      </ChallengeDays>
+        <RemainWrapper>
+          <div id="remain-container">
+            <span className="bold">목표 금액</span>
+            <span className="gray">매일 10000원</span>
+            <span className="bold">잔여 금액</span>
+            <span className="gray">3100원</span>
+          </div>
+        </RemainWrapper>
 
-      <GoalAmount>
-        <span>목표 금액</span>
-        <span>매일 10000원</span>
-      </GoalAmount>
-      
-      <Balance>
-        <span>잔여 금액</span>
-        <span>3100원</span>
-      </Balance>
-
-      {/* 소비(잔여금액)와 도전금액 비교 그래프 */}
-      
-      <BalancePercent>
-        <span>잔여금액 31%</span>
-      </BalancePercent>
-    </ChallengeCardWrapper>
+        {/* 소비(잔여금액)와 도전금액 비교 그래프 */}
+        <ProgressBarWrapper>
+          <ProgressBarContainer>
+            <ProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={31}></ProgressBar>
+          </ProgressBarContainer>
+          <p>잔여금액 31%</p>
+        </ProgressBarWrapper>
+      </BarWrapper>
+    </ChallengeCardWrapper>  
   );
 }
-const ChallengeCardWrapper = styled.div`
+const ChallengeCardWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
   padding: 3rem;
   * {
@@ -76,15 +76,9 @@ const ChallengeCardWrapper = styled.div`
   }
 `;
 
-const ProfileAndBtn = styled.div`
+const HeaderWrapper = styled.section`
   display: flex;
   justify-content: space-between;
-`;
-
-const NicknameAndImg = styled.div`
-  display: flex;
-  align-items: center;
-
   #profile-img {
     width: 3rem;
     height: 3rem;
@@ -92,12 +86,7 @@ const NicknameAndImg = styled.div`
   }
 `;
 
-const ChallengeBtn = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ChallengeTitle = styled.div`
+const ChallengeTitle = styled.h1`
   display: flex;
   justify-content: center;
   font: ${({ theme }) => theme.fonts.bold};
@@ -108,22 +97,38 @@ const ChallengeDate = styled.div`
   justify-content: space-between;
 `;
 
-const ChallengeDays = styled.div`
+const ProgressBarWrapper = styled.div`
+  padding: 2rem 1rem;
   display: flex;
-  justify-content: end;
-`;
-
-const GoalAmount = styled.div`
-  display: flex;
+  width: 100%;
   justify-content: space-between;
+
+  p {
+    ${({ theme }) => theme.fonts.bold};
+    color: ${({ theme }) => theme.colors.darkgrey_2};
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+  }
 `;
 
-const Balance = styled.div`
+const ProgressBarContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  p {
+    ${({ theme }) => theme.fonts.regular};
+    color: ${({ theme }) => theme.colors.black};
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
 `;
 
-const BalancePercent = styled.div`
-  display: flex;
-  justify-content: right;
+const BarWrapper = styled.div`
+  height: 5rem;
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const RemainWrapper = styled.section`
+  padding: 2rem;
 `;

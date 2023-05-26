@@ -1,40 +1,31 @@
 import React, { useRef, useState } from "react";
-import { styled } from "styled-components";
+import styled from "styled-components";
+import { css } from 'styled-components';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { useMutation } from "react-query";
 import { articeWrite } from "../../../api/articleWriteApi";
 
-export default function WriteForm() {
-
+export default function WriteForm(props) {
+  const {setReloadFeed} = props;
   const [isConsumeWrite, setIsConsumeWrite] = useState(1); 
   const [isclicked, setisclicked] = useState(true);
 
+  const [file, setFile] = useState(null);
   const [category, setCategory] = useState('');
   const [consumeText, setconsumeText] = useState("");
   const [consumeDate, setconsumeDate] = useState(new Date());
   const [financialText, setfinancialText] = useState("");
-  const [status, setStatus] = useState(''); // 공개여부
+  const [status, setStatus] = useState("1"); // 공개여부
   const [amount, setAmount] = useState("");
-
-  const newData = {
-    status:status,
-    imageUrl:"url",
-    expenditureCategory:category,
-    amount:Number(amount),
-    financialText:financialText,
-    articleText:consumeText,
-    articleType:isConsumeWrite,
-    consumptionDate:consumeDate,
-    isAllowed:"false"
-  };
 
   /**
    * 지출입력 or 결재받기 버튼선택
    * @param {*} type 
    */
   const handleClick = (type) => {
+    // 입력값 초기화 해야함.
     setIsConsumeWrite(type);
   };
 
@@ -82,6 +73,7 @@ export default function WriteForm() {
    */
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    setFile(file);
     console.log(file);
     // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
   };
@@ -124,6 +116,20 @@ export default function WriteForm() {
    * 입력 폼 제출
    */
   function submitNewData() {
+
+    const newData = {
+      articleDTO:{
+        status:status,
+        expenditureCategory:category,
+        amount:Number(amount),
+        financialText:financialText,
+        articleText:consumeText,
+        articleType:isConsumeWrite,
+        consumptionDate:formatDate(consumeDate),
+        isAllowed:"false"
+      }
+    };
+
     if (isConsumeWrite === 1) {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
@@ -145,14 +151,20 @@ export default function WriteForm() {
         return;
       }
 
-      if (newData.amount&&newData.articleText&&newData.articleType&&
-        newData.consumptionDate&&newData.expenditureCategory&&newData.status){
-        // API 호출
-        newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
-        
-        // console.log(newData);
-      }
+      const formData = new FormData();
+      const json = JSON.stringify(newData.articleDTO);
+      const blob = new Blob([json], { type: 'application/json' });
+
+      formData.append('file', file);
+      formData.append('articleDTO', blob);
+
+      console.log(formData);
+      console.log("file:" + file);
+      console.log(newData.articleDTO);
+      console.log(blob);
+      writeArticle(formData);
+
+
     } else {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
@@ -163,12 +175,12 @@ export default function WriteForm() {
         alert("금액을 입력해주세요.");
         return;
       }
-
-      if (newData.articleText&&newData.amount&&newData.status){
-        // API 호출
-        newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
-      }
+      
+      const formData = new FormData();
+      const blob = new Blob([newData.articleDTO], { type: "application/json" })
+      formData.append('file', file);
+      formData.append('articleDTO', blob);
+      writeArticle(formData);
     }
   }
 
@@ -181,13 +193,14 @@ export default function WriteForm() {
       setCategory('');
       setfinancialText("");
       setAmount("");
-      setStatus('');
+      setStatus("1");
       setconsumeDate(new Date());
-
+      setReloadFeed(true);
     },
-    onError:() => {
+    onError:(error) => {
       // 실패시 뭐하지
-      
+      console.log(error);
+      alert("게시글 업로드에 실패했습니다.");
     },
   });
 
@@ -201,88 +214,88 @@ export default function WriteForm() {
           <Button2 data-isclicked={isclicked} onClick={() => { handleClick(2); setisclicked(false); }}>결재 받기</Button2>
         </ButtonWrapper>
         
-        {isConsumeWrite === 1 && (
-          <ConsumeFormWrapper>
-              <TopWrapper>
-                <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
-                <StyledSelect1 value={category} onChange={handleCategoryChange}>
-                  <option value="">카테고리 ⬇️</option>
-                  <option value="1">식비</option>
-                  <option value="2">패션/미용</option>
-                  <option value="3">생활용품</option>
-                  <option value="4">교육</option>
-                  <option value="5">취미생활</option>
-                  <option value="6">기타</option>
-                </StyledSelect1>
-                <DatePicker selected={consumeDate} onChange={handleDateInput} locale={ko} dateFormat="yyyy-MM-dd" />
-              </TopWrapper>
+        <InputWrapper>
+          {isConsumeWrite === 1 && (
+            <ConsumeFormWrapper>
+                <TopWrapper>
+                  <ImageAndCategorySelect>
+                    <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
+                      <StyledSelect1 value={category} onChange={handleCategoryChange}>
+                        <option value="">카테고리 ⬇️</option>
+                        <option value="1">식비😋</option>
+                        <option value="2">패션/미용🕶</option>
+                        <option value="3">생활용품🌂</option>
+                        <option value="4">교육📚</option>
+                        <option value="5">취미생활🎾</option>
+                        <option value="6">기타🤔</option>
+                      </StyledSelect1>
+                  </ImageAndCategorySelect>
+                  <DatePicker selected={consumeDate} onChange={handleDateInput} locale={ko} dateFormat="yyyy-MM-dd" />
+                </TopWrapper>
 
-              <InputText name="consumeInput" value={consumeText} placeholder="글을 작성하세요." onChange={handleCousumeInput}/>
+                <InputText name="consumeInput" value={consumeText} placeholder="글을 작성하세요." onChange={handleCousumeInput}/>
 
-              <BottomWrapper>
-                <FileLabel htmlFor="file">
-                  <span className="material-symbols-outlined" >
-                    image
-                  </span>
-                </FileLabel>
-                <input type="file" name="file" id="file" accept="image/*" onChange={handleFileUpload} style={{display: 'none'}}/>
-                <FinancialTextWrapper>
-                  <FinancialText type="text" value={financialText} name="financialInput" placeholder="가계부 메모를 작성하세요." onChange={handleFinancialInput}/>
-                </FinancialTextWrapper>
+                <BottomWrapper>
+                  <FinancialTextWrapper>
+                    <FinancialText type="text" value={financialText} name="financialInput" placeholder="가계부 메모를 작성하세요." onChange={handleFinancialInput}/>
+                  </FinancialTextWrapper>
 
-                <AmountInput type="text" placeholder="금액 입력" value={formatWithCommas(amount)} onChange={handleAmountChange} />
+                  <AmountInput type="text" placeholder="금액 입력" value={formatWithCommas(amount)} onChange={handleAmountChange} />
 
-              </BottomWrapper>
+                </BottomWrapper>
 
-          </ConsumeFormWrapper>
-        )}
-        
-        {isConsumeWrite === 2 && (
-          <PermissionFormWrapper>
-              
-              <TopWrapper>
-                <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
-              </TopWrapper>
+            </ConsumeFormWrapper>
+          )}
+          
+          {isConsumeWrite === 2 && (
+            <PermissionFormWrapper>
+                
+                <TopWrapper>
+                  <Image src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw" alt="" />
+                </TopWrapper>
 
-              <InputText type="text" name="permissionInput" placeholder="글을 작성하세요." onChange={handleCousumeInput}/>
-              
-              <BottomWrapper>
-                <FileLabel htmlFor="file">
-                  <span className="material-symbols-outlined">
-                    image
-                  </span>
-                </FileLabel>  
-                <input type="file" name="file" id="file" accept="image/*" onChange={handleFileUpload} style={{display: 'none'}}/>
-                <PermissionBottomDiv></PermissionBottomDiv>
+                <InputText type="text" name="permissionInput" placeholder="글을 작성하세요." onChange={handleCousumeInput}/>
+                
+                <BottomWrapper>
+                  <PermissionBottomDiv></PermissionBottomDiv>
+                  <AmountInput type="text" placeholder="금액 입력" value={formatWithCommas(amount)} onChange={handleAmountChange} />
+                </BottomWrapper>
 
-                <AmountInput type="text" placeholder="금액 입력" value={formatWithCommas(amount)} onChange={handleAmountChange} />
-
-              </BottomWrapper>
-
-          </PermissionFormWrapper>
-        )}
-        <SubmitAndPrivacySet>
-          <StyledSelect2 value={status} onChange={handleStatusChage}>
-            <option value="">공개여부 ⬇️</option>
-            <option value="1">전체공개</option>
-            <option value="2">맞팔공개</option>
-            <option value="3">비공개</option>
-          </StyledSelect2>
-          <SubmitButton onClick={submitNewData}>게시하기</SubmitButton>  
-        </SubmitAndPrivacySet>
+            </PermissionFormWrapper>
+          )}
+          <SubmitAndPrivacySet>
+            <FileInputContainer>
+              {file && <img src={URL.createObjectURL(file)} alt="File Preview" />}
+              {file ? file.name : 'Choose File'}
+              <input type="file" name="file" accept="image/*" onChange={handleFileUpload} />
+            </FileInputContainer>
+            <StatusAndSubmitWrapper>
+              <StyledSelect2 value={status} onChange={handleStatusChage}>
+                <option value="1">전체공개</option>
+                <option value="2">맞팔공개</option>
+                <option value="3">비공개</option>
+              </StyledSelect2>
+              <SubmitButton onClick={() => {submitNewData();}}>게시하기</SubmitButton>
+            </StatusAndSubmitWrapper>
+          </SubmitAndPrivacySet>
+        </InputWrapper>
       </WriteFormWrapper>
     </>
   );
 }
 
 const WriteFormWrapper = styled.section`
+  width: 100%;
   background-color: ${({ theme }) => theme.colors.white};
+  border-bottom: 1px solid #E6E6E6;
+
 `;
 
 // 카테고리 셀렉트
 const StyledSelect1 = styled.select`
   option {
     color : #FFFFFF;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -301,6 +314,10 @@ const StyledSelect1 = styled.select`
   text-align: center;
   display: flex;
   justify-content: center;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
 `;
 
 // 공개여부 셀렉트
@@ -324,6 +341,11 @@ option {
   text-align: center;
   margin-left: auto;
   display: flex;
+
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.lightpurple};
+  }
 `;
 
 const ConsumeFormWrapper=styled.section` 
@@ -331,8 +353,6 @@ const ConsumeFormWrapper=styled.section`
   .react-datepicker-wrapper {
       width: 10rem;
       text-align: center;
-      margin-left: 40.1rem;
-      margin-right: 4rem;
   }
   .react-datepicker__input-container input {
     width: 10rem;
@@ -342,7 +362,6 @@ const ConsumeFormWrapper=styled.section`
     text-align: center;
     color: #707070;
   }
-  
   display: flex;
   width: 100%;
   text-align: center;
@@ -376,6 +395,23 @@ const Button1=styled.button`
   align-items: center;
   
   height:100%;
+  
+  position: relative; // 막대가 버튼 안에 고정되게하기 위해
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: ${({ theme }) => theme.colors.darkpurple_2};
+    transition: width 0.3s;
+
+    ${props => props['data-isclicked'] && css`
+      width: 100%;
+    `}
+  }
 `;
 
 const Button2=styled.button`
@@ -398,6 +434,23 @@ const Button2=styled.button`
   align-items: center;
   
   height:100%;
+
+  position: relative; // 막대가 버튼 안에 고정되게하기 위해
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: ${({ theme }) => theme.colors.darkpurple_2};
+    transition: width 0.3s;
+
+    ${props => !props['data-isclicked'] && css`
+    width: 100%;
+    `}
+  }
 `;
 
 const ButtonWrapper=styled.section`
@@ -405,29 +458,50 @@ const ButtonWrapper=styled.section`
   justify-content: space-evenly;
   width:699px;
   height: 5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.6rem;
   /* padding-bottom: 1.5rem; */
   border-bottom: 1px solid #E6E6E6;
+  
+  button {
+    border: none;
+    outline: none;
+  }
 `;
 
-const BottomWrapper = styled.section`
+const ImageAndCategorySelect = styled.section`
   display: flex;
   justify-content: space-between;
 `;
 
-const TopWrapper = styled.section`
+const InputWrapper = styled.section`
+  /* width: 100%;
+  padding: 2rem;
+  background-color: ${({ theme }) => theme.colors.white}; */
+  padding: 2rem;
+`;
+
+const BottomWrapper = styled.section`
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  padding-top: 1.3rem;
+`;
+
+const TopWrapper = styled.section`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   height: 2.3rem;
 `
 
 const Image=styled.img`
   width: 2.3rem;
   height: 2.3rem;
-  margin-left: 2rem;
   margin-right: 2rem;
   border-radius: 0.8rem;
   text-align: center;
 `;
+
 const FileLabel = styled.label`
   display: flex;
   justify-content: center;
@@ -455,6 +529,12 @@ const FinancialText = styled.input`
   text-align: center;
   font-size: 1.25rem;
   /* margin-top: 1.24rem; */
+
+  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
+
+  &:focus {
+  border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+  }
 `;
 
 const PermissionBottomDiv = styled.section`
@@ -468,27 +548,94 @@ const AmountInput = styled.input`
   border-radius: 0.4rem;
   text-align: center;
   font-size: 1.2rem;
-  margin-top: 1.24rem;
-  margin-left: 28.5rem;
+  /* margin-left: 28.5rem; */
   color: #845EC2;
+
+  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
+
+&:focus {
+  border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+  }
 `;
 
 const InputText = styled.textarea`
-  width: 640px;
+width: 100%;
   height: 6.7rem;
   border: 1px solid #ddd;
   text-align: left;
-  margin-left: 1.5rem;
-  margin-right: 3.5rem;
   margin-top: 1.3rem;
   border-radius: 0.5rem;
   ${({ theme }) => theme.fonts.regular};
+  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
+  position: relative;
+  outline: none;
+  resize: none; /* 크기 조정 방지 */
 
+  &::placeholder {
+    text-align: initial;
+  }
+
+  &:focus {
+    border: 1px solid #845EC2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+  }
+`;
+
+const FileInputContainer = styled.label`
+  display: inline-flex;
+  padding: 10px 20px;
+  cursor: pointer;
+  /* background: ${({ theme }) => theme.colors.mainpurple} */
+  background: pink;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  display: flex;
+  align-items: center;
+  overflow: hidden; /* 텍스트 오버플로우 처리 */
+
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.darkpurple_2};
+  }
+
+  input[type='file'] {
+    position: absolute;
+    top: -100px;
+  }
+
+  img {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  max-width: 150px; /* 버튼의 최대 너비 설정 */
+  }
+`;
+
+
+const StatusAndSubmitWrapper = styled.section`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const SubmitAndPrivacySet = styled.section`
   display: flex;
-  margin-right: 4.5rem;
+  justify-content: space-between;
+  :focus {
+    outline: none;
+  }
+  .submit:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
+  padding-top: 0.8rem;
 `;
 
 const SubmitButton = styled.button`
@@ -509,4 +656,8 @@ const SubmitButton = styled.button`
   justify-content: center;
   align-items: center;
   margin-left: 2rem;
+   
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
 `;

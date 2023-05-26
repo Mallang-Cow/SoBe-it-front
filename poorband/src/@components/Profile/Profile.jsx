@@ -5,7 +5,8 @@ import ProfilePosts from "./ProfilePosts";
 import ProfileChallenges from "./ProfileChallenges";
 import { styled } from "styled-components";
 
-export default function Profile() {
+export default function Profile(props) {
+  const {setCenterContent, setArticleSeq, setUserId, userId} = props;
   const [showEdit, setShowEdit]=useState(false)
   const [showChallenges, setShowChallenges] = useState(false);
 
@@ -15,7 +16,7 @@ export default function Profile() {
         <ProfileTitle>Profile</ProfileTitle>
 
         {/* 프로필 편집 시 편집 창으로 바뀌기 */}
-        {!showEdit?<ProfileInfo showEdit={showEdit} setShowEdit={setShowEdit}/>:<ProfileEdit showEdit={showEdit} setShowEdit={setShowEdit}/>}
+        {!showEdit?<ProfileInfo showEdit={showEdit} setShowEdit={setShowEdit} setUserId={setUserId} userId={userId}/>:<ProfileEdit showEdit={showEdit} setShowEdit={setShowEdit} setUserId={setUserId} userId={userId}/>}
 
         {/* 메뉴 */}
         {/* 메뉴 선택함에따라 다른 내용 보이기 -> 길어진다면 컴포넌트 분리 */}
@@ -24,7 +25,7 @@ export default function Profile() {
           <Button2 showChallenges={showChallenges} onClick={() => {setShowChallenges(true); }}>도전 과제</Button2>
         </BtnProfileWrapper>
 
-        {!showChallenges?<ProfilePosts/>:<ProfileChallenges/>}
+        {!showChallenges?<ProfilePosts setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} setUserId={setUserId} userId={userId}/>:<ProfileChallenges setUserId={setUserId} userId={userId}/>}
       </ProfileWrapper>
     </>
   );
@@ -65,7 +66,7 @@ const Button1=styled.button`
   /* identical to box height */
 
   text-align: center;
-  color: ${props => props.showChallenges ? '#000000' : '#C4C4C4'};
+  color: ${props => props.showChallenges ? '#C4C4C4' : '#000000'};
   padding-left: 17vh;
   padding-right: 17vh;
   display: flex;
@@ -86,7 +87,7 @@ const Button2=styled.button`
   /* identical to box height */
 
   text-align: center;
-  color: ${props => props.showChallenges ? '#C4C4C4' : '#000000'};
+  color: ${props => props.showChallenges ? '#000000' : '#C4C4C4'};
   padding-left: 17vh;
   padding-right: 17vh;
   display: flex;

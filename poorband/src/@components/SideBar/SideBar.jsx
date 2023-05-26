@@ -8,7 +8,7 @@ import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
 export default function SideBar(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setUserId } = props;
-  const { data } = useQuery(["articleData"], getArticleDetailData, {});
+  //const { data } = useQuery(["articleData"], getArticleDetailData, {});
 
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");

@@ -42,8 +42,6 @@ export default function ArticleEditForm(props) {
     error,
   } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
     onSuccess: () => {
-      console.log("파텍: " + article?.financialText);
-
       // 처음 로딩 시 초기값 설정
       if (!init) {
         setCategory(article?.expenditureCategory);
