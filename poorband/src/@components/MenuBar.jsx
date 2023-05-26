@@ -229,8 +229,9 @@ const LinkContainer = styled.section`
   background-color: white;
 
   #profile-image {
-    width: 3rem;
-    height: 3rem;
+    display: block;
+    width: 4rem;
+    height: 4rem;
     border-radius: 1rem;
   }
 `;

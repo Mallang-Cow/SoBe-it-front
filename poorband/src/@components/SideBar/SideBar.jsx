@@ -28,7 +28,7 @@ export default function SideBar(props) {
           <HotPostCardWrapper>
             <HotPostCard
               idx="0"
-              setArticleSeq={Number(setArticleSeq)}
+              setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
               clickActive={true}
@@ -37,7 +37,7 @@ export default function SideBar(props) {
           <HotPostCardWrapper>
             <HotPostCard
               idx="1"
-              setArticleSeq={Number(setArticleSeq)}
+              setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
               clickActive={true}
@@ -46,7 +46,7 @@ export default function SideBar(props) {
           <HotPostCardWrapper>
             <HotPostCard
               idx="2"
-              setArticleSeq={Number(setArticleSeq)}
+              setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
               clickActive={true}

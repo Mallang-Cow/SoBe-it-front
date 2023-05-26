@@ -8,7 +8,7 @@ import { styled } from "styled-components";
 
 export default function ArticleDetail(props) {
   const { articleSeq, setCenterContent, setArticleSeq, setUserId } = props;
-  const { data } = useQuery(["articleData"], getArticleDetailData, {});
+  // const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(1);
   const [clickActive, setClickActive] = useState(false);
 

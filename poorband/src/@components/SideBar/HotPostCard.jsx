@@ -9,15 +9,17 @@ import { likeArticle } from "../../../api/likeArticle";
 // import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
 export default function HotPostCard(props) {
-  const { articleSeq, setArticleSeq, clickActive } = props;
+  const { clickActive, setCenterContent, setArticleSeq } = props;
 
   const [data, setData] = useState([]);
-  const [thisArticleSeq, setThisArticleSeq] = useState(0);
+
+  const [thisArticleSeq, setThisArticleSeq] = useState(null);
   const [thisUserId, setThisUserId] = useState("");
 
   const newData = {
     userId: "test1",
   };
+  console.log(thisArticleSeq);
 
   useEffect(() => {
     hotPosts(newData);
@@ -25,9 +27,9 @@ export default function HotPostCard(props) {
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
-      setData(response.data[props.idx]);
-      // setThisArticleSeq(Number(article?.articleSeq));
-
+      setData(response?.data[props.idx]);
+      setThisArticleSeq(Number(response?.data[props.idx]?.articleSeq));
+      console.log(response?.data[props.idx]?.articleSeq);
       // console.log(response.data[0]);
       // console.log(data?.user?.profileImageUrl);
     },
@@ -51,22 +53,6 @@ export default function HotPostCard(props) {
     content = <span className="material-symbols-outlined">favorite</span>;
   }
 
-  // 글 정보 가져오기
-  // const {
-  //   data: article,
-  //   isLoading,
-  //   isError,
-  //   error,
-  // } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(18), {
-  //   onSuccess: () => {
-  //     setThisArticleSeq(Number(article?.articleSeq));
-  //     setThisUserId(article?.user?.userId);
-  //   },
-  //   onError: () => {
-  //     console.log("Error");
-  //   },
-  // });
-
   function goToArticleDetail() {
     // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
     if (clickActive) {
@@ -75,67 +61,73 @@ export default function HotPostCard(props) {
     }
   }
 
-  // 좋아요
-  // function clickLike() {
-  //   like({ articleSeq: Number(articleSeq) });
-  // }
+  function clickLike() {
+    like({ articleSeq: Number(thisArticleSeq) });
+  }
 
-  // const queryClient = useQueryClient();
-  // // 좋아요 정보 Post 전송
-  // const { mutate: like } = useMutation(likeArticle, {
-  //   onSuccess: (response) => {
-  //     queryClient.invalidateQueries("articleDetail");
-  //   },
-  //   onError: () => {
-  //     console.log("error");
-  //   },
-  // });
+  const queryClient = useQueryClient();
+  // 좋아요 정보 Post 전송
+  const { mutate: like } = useMutation(likeArticle, {
+    onSuccess: (response) => {
+      console.log(response);
+      hotPosts(thisArticleSeq);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
   return (
-    <Wrapper
-      clickActive={clickActive}
-      onClick={() => {
-        goToArticleDetail();
-      }}>
-      <ProfileWrapper>
-        <img id="profile-image" src="{data?.user?.profileImageUrl}" alt="프로필사진" />
-        <span>{data?.user?.nickname}</span>
-      </ProfileWrapper>
-      <ReceiptContainer>
-        <h1>{data?.articleText}</h1>
-        <hr></hr>
-        <div id="price">
-          <span>금액</span>
-          <span>{data?.amount?.toLocaleString()}원</span>
-        </div>
-        <CountInfoWrapper>
-          <div className="likeIcon" onClick={handleLike}>
-            {liked ? (
-              <span
-                id="filledIcon"
-                className="material-symbols-outlined"
-                onClick={() => {
-                  // clickLike();
-                }}>
-                favorite
-              </span>
-            ) : (
-              <span
-                className="material-symbols-outlined"
-                onClick={() => {
-                  // clickLike();
-                }}>
-                favorite
-              </span>
-            )}
-          </div>
-          <span>{data?.likeCnt}</span>
-          <div>
-            <span className="material-symbols-outlined">chat_bubble</span>
-          </div>
-          <span>{data?.commentCnt}</span>
-        </CountInfoWrapper>
-      </ReceiptContainer>
-    </Wrapper>
+    <>
+      {data && (
+        <Wrapper
+          clickActive={clickActive}
+          onClick={() => {
+            goToArticleDetail();
+          }}>
+          <ProfileWrapper>
+            <img id="profile-image" src="{data?.user?.profileImageUrl}" alt="프로필사진" />
+            <span>{data?.user?.nickname}</span>
+          </ProfileWrapper>
+          <ReceiptContainer>
+            <h1>{data?.articleText}</h1>
+            <hr></hr>
+            <div id="price">
+              <span>금액</span>
+              <span>{data?.amount?.toLocaleString()}원</span>
+            </div>
+            <CountInfoWrapper>
+              <div className="likeIcon" onClick={handleLike}>
+                {liked ? (
+                  <span
+                    id="filledIcon"
+                    className="material-symbols-outlined"
+                    onClick={() => {
+                      clickLike();
+                      console.log("click1");
+                    }}>
+                    favorite
+                  </span>
+                ) : (
+                  <span
+                    className="material-symbols-outlined"
+                    onClick={() => {
+                      clickLike();
+                      console.log("click2");
+                    }}>
+                    favorite
+                  </span>
+                )}
+              </div>
+              <span>{data?.likeCnt}</span>
+              <div>
+                <span className="material-symbols-outlined">chat_bubble</span>
+              </div>
+              <span>{data?.commentCnt}</span>
+            </CountInfoWrapper>
+          </ReceiptContainer>
+        </Wrapper>
+      )}
+    </>
   );
 }
 
