@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL } from "./app-config";
 
-const ACCESS_TOKEN = "ACCESS_TOKEN";
+export const ACCESS_TOKEN = "ACCESS_TOKEN";
 
 // 커스텀 axios 인스턴스 생성
 const apiInstance = axios.create({
