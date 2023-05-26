@@ -5,12 +5,30 @@ import CommentCard from "./CommentCard";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { useQuery } from "react-query";
 import { styled } from "styled-components";
+import { getComments } from "../../../api/getComments";
 
 export default function ArticleDetail(props) {
   const { articleSeq, setCenterContent, setArticleSeq, setUserId } = props;
   const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(1);
   const [clickActive, setClickActive] = useState(false);
+  const [commentList, setCommentList] = useState();
+
+  // 댓글 전체 불러오기
+  // 글 정보 가져오기
+  const {
+    data: comments,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(["commentList"], () => getComments(Number(articleSeq)), {
+    onSuccess: () => {
+      setCommentList(comments);
+    },
+    onError: () => {
+      console.log("Error");
+    },
+  });
 
   return (
     <>
@@ -32,7 +50,10 @@ export default function ArticleDetail(props) {
 
         <CommentForm />
 
-        <CommentCard />
+        {commentList?.map((x) => (
+          <CommentCard comment={x} />
+        ))}
+
         <CommentCard />
         <ReCommentWrapper>
           <Temp></Temp>

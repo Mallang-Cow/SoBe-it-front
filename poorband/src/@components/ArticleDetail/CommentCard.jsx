@@ -1,40 +1,38 @@
 import React from "react";
 import { styled } from "styled-components";
 
-export default function CommentCard() {
+export default function CommentCard(props) {
+  const { comment } = props;
+  console.log(comment);
   return (
     <Wrapper>
       <ProfileContainer>
         <NameContainer>
-          <img src="" alt="프사" className="profile-img" />
-          <p className="nickname">닉네임</p>
-          <p className="id">아이디</p>
+          <img src={comment?.profile_image_url} alt="프사" className="profile-img" />
+          <p className="nickname">{comment?.nickname}</p>
+          <p className="id">@아이디</p>
           <img src="" alt="티어" className="tier-img" />
         </NameContainer>
         <span className="material-symbols-outlined more">more_vert</span>
       </ProfileContainer>
       <TextContainer>
-        <p>댓글 내용</p>
+        <p>{comment?.reply_text}</p>
       </TextContainer>
       <FooterContainer>
         <Like>
-          {/* {isLiked ? (
+          {comment?._clicked_like ? (
             <span className="material-symbols-rounded active">favorite</span>
           ) : (
             <span className="material-symbols-rounded">favorite</span>
-          )} */}
-          <span className="material-symbols-rounded">favorite</span>
-          <p>
-            {/* {likeCnt} */}
-            30
-          </p>
+          )}
+          <p>{comment?.reply_like_cnt}</p>
         </Like>
 
         <Comment>
           <span className="material-symbols-rounded">comment</span>
           <p>
-            {/* {article?.commentCnt} */}
-            30
+            {/* 댓글수 */}
+            {comment?.reply_like_cnt}
           </p>
         </Comment>
       </FooterContainer>
