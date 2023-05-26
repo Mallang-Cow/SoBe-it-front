@@ -1,12 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
-import FolderIcon from '@mui/icons-material/Folder';
 import ClearIcon from '@mui/icons-material/Clear';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { theme } from '../../style/theme';
+// import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 
-export default function ReplyLikeNotificationCard() {
+export default function ReplyLikeNotificationCard({ type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq }) {
+  const [time, setTime] = useState([]);
+  const nowDate = new Date();
+
+  // 사용자 프로필 이미지
+  let avatarImg = null;
+  if (imageUrl) {
+    avatarImg = <img src={ imageUrl } alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%" }} />;
+  }
+  else {
+//    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
+    avatarImg = <FavoriteBorderIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }}/>;
+  }
+
+  // 알림 시간 구하기
+  useEffect(() => {
+    const notificationDate = new Date(timestamp);
+    if (notificationDate.getFullYear() != nowDate.getFullYear())
+      setTime(["year", nowDate.getFullYear() - notificationDate.getFullYear()]); // 연도 차이
+    if (notificationDate.getMonth() != nowDate.getMonth())
+      setTime(["month", nowDate.getMonth() - notificationDate.getMonth()]); // 달 차이
+    else if (notificationDate.getDate() != nowDate.getDate())
+      setTime(["date", nowDate.getDate() - notificationDate.getDate()]); // 일 차이
+    else if (notificationDate.getHours() != nowDate.getHours())
+      setTime(["hours", nowDate.getHours() - notificationDate.getHours()]); // 시간 차이
+    else if (notificationDate.getMinutes() != nowDate.getMinutes())
+      setTime(["minutes", nowDate.getMinutes() - notificationDate.getMinutes()]); // 분 차이
+    else setTime(["seconds", nowDate.getSeconds() - notificationDate.getSeconds()]); // 초 차이
+  }, []);
+
   const deleteNotification = (event) => {
     event.stopPropagation(); // 이벤트 버블링 중단
     console.log("삭제 버튼 클릭");
@@ -21,17 +51,27 @@ export default function ReplyLikeNotificationCard() {
       }>
         
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
-          <Avatar style={{ width: "6rem", height: "6rem" }}>
-            <FolderIcon />
-          </Avatar>
+          {/* <Avatar style={{ width: "6rem", height: "6rem" }}> */}
+            { avatarImg }
+          {/* </Avatar> */}
         </ListItemAvatar>
 
         <div style={{ marginLeft: "2rem" }}>
           <div style={{ display: "flex", flexDirection: "row", marginBottom: '0.6rem', alignItems: 'center' }}>
-            <MainNotificationText primary="Reply Like Content" />
-            <TimeNotificationText primary="time" />
+            <MainNotificationText primary={ content } />
+            <TimeNotificationText primary={ time && (
+              <p className="grey">
+                {time[1]}
+                {time[0] === "year" && "년"}
+                {time[0] === "month" && "월"}
+                {time[0] === "date" && "일"}
+                {time[0] === "hours" && "시간"}
+                {time[0] === "minutes" && "분"}
+                {time[0] === "secounds" && "초"} 전
+              </p>
+            )} />
           </div>
-          <SubNotificationText secondary="Article Content" />
+          <SubNotificationText secondary={ articleContent } />
         </div>
       </ListItem>
     </NotificationCardButton>
