@@ -9,7 +9,8 @@ import ReplyNotificationCard from "./ReplyNotificationCard";
 import ReplyLikeNotificationCard from "./ReplyLikeNotificationCard";
 import FollowNotificationCard from "./FollowNotificationCard";
 
-export default function Notifications() {
+export default function Notifications(props) {
+  const { setArticleSeq, setCenterContent } = props;
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -37,9 +38,11 @@ export default function Notifications() {
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
-            url={ notification.url }
+            notArticleSeq={ notification.notArticleSeq }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setArticleSeq={ setArticleSeq }
           />
         );
       case 2: // 팔로우 알림
@@ -63,7 +66,7 @@ export default function Notifications() {
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
-            url={ notification.url }
+            notArticleSeq={ notification.notArticleSeq }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
           />
@@ -75,7 +78,7 @@ export default function Notifications() {
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
-            url={ notification.url }
+            notArticleSeq={ notification.notArticleSeq }
             timestamp={ notification.timestamp }
           />
         );

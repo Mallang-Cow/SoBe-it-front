@@ -8,29 +8,16 @@ import MoodBadIcon from '@mui/icons-material/MoodBad';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData"; //"../../core/sideBarData";
 
-export default function ReplyNotificationCard({ type, content, articleContent, url, imageUrl, timestamp }) {
+export default function ReplyNotificationCard({ type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
   const navigate = useNavigate();
 
-  // 댓글이 작성된 글로 이동
-  const navigateToArticle = () => {
-    console.log({ url });
-    // const currentOrigin = window.location.origin;
-    // console.log(currentOrigin);
-    // const relativeUrl = url.replace('currentOrigin', ''); // 도메인과 포트 번호 제거
-    // console.log(relativeUrl);
-    // navigate(relativeUrl);
-
-    // setCenterContent() 방식으로 해야 됨
-  };
-
-  // // 상세 페이지로 이동
-  // function goToArticleDetail() {
-    // setArticleSeq(thisArticleSeq);
-    // setCenterContent("detail");
-  //   }
-  // }
+  // 댓글이 작성된 게시글 상세 페이지로 이동
+  function goToArticleDetail() {
+    setArticleSeq(notArticleSeq);
+    setCenterContent("detail");
+  }
 
   // 사용자 프로필 이미지
   let avatarImg = null;
@@ -64,7 +51,7 @@ export default function ReplyNotificationCard({ type, content, articleContent, u
   };
 
   return (
-    <NotificationCardButton onClick={ navigateToArticle } disableRipple>
+    <NotificationCardButton onClick={ goToArticleDetail } disableRipple>
       <ListItem secondaryAction={
         <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
           <ClearIcon />
