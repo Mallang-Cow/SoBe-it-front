@@ -1,4 +1,4 @@
-import { call } from './ApiService'
+import { call } from './ApiService';
 
 export function signin(userDTO) {
   return call("/auth/signin", "POST", userDTO)
@@ -6,6 +6,10 @@ export function signin(userDTO) {
 
 export function signup(userDTO) {
   return call("/auth/signup", "POST", userDTO);
+}
+
+export function signout() {
+  return call("/auth/signout", "POST", null);
 }
 
 export function checkId(userDTO) {

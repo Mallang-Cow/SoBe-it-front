@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import styled, { css, keyframes } from "styled-components";
-import { SIDEBAR_DETAIL } from "../../core/sideBarData";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import styled, { css, keyframes } from "styled-components";
+import { signout } from "../../api/userAPI";
+import { ACCESS_TOKEN } from '../../api/ApiService';
+import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 import { getHotPost } from "../../api/getHotPost";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent, setUserId } = props;
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
 
   const [data, setData] = useState([]);
   const newData = {
@@ -34,6 +37,24 @@ export default function MenuBar(props) {
   const handleMenuItemClick = (index) => {
     setActiveIndex(index);
     setCenterContent(sidebarNavItems[index].section);
+  };
+
+  const { mutate: logoutUser } = useMutation(signout, {
+    onSuccess: (response) => {
+      console.log(response);
+      sessionStorage.setItem(ACCESS_TOKEN, null);
+      navigate("/"); // 추후 경로 /login으로 수정
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        console.log(error.response.data.error);
+        alert("로그아웃 하는 과정에 오류가 발생했습니다.");
+      }
+    },
+  });
+
+  const logout = () => {
+    logoutUser();
   };
 
   return (
@@ -83,7 +104,7 @@ export default function MenuBar(props) {
         </ProfileWrapper>
         <LogoutWrapper>
           <span className="material-symbols-outlined">logout</span>
-          <button>로그아웃</button>
+          <button onClick={ logout }>로그아웃</button>
         </LogoutWrapper>
       </BottomWrapper>
     </Wrapper>
