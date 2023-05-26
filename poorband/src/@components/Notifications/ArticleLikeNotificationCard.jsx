@@ -5,19 +5,26 @@ import FolderIcon from '@mui/icons-material/Folder';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from '../../style/theme';
 
-export default function ArticleLikeNotificationCard() {
+export default function ArticleLikeNotificationCard() {  
+  const deleteNotification = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 중단
+    console.log("삭제 버튼 클릭");
+  };
+
   return (
     <NotificationCardButton disableRipple>
       <ListItem secondaryAction={
-                    <NotificationIconButton edge="end" aria-label="delete">
-                      <ClearIcon />
-                    </NotificationIconButton> }>
+        <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
+          <ClearIcon />
+        </NotificationIconButton> 
+      }>
         
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
           <Avatar style={{ width: "6rem", height: "6rem" }}>
             <FolderIcon />
           </Avatar>
         </ListItemAvatar>
+
         <div style={{ marginLeft: "2rem" }}>
           <div style={{ display: "flex", flexDirection: "row", marginBottom: '0.6rem', alignItems: 'center' }}>
             <MainNotificationText primary="Article Like Content" />
@@ -39,10 +46,6 @@ const NotificationCardButton = muiStyled(ListItemButton) ({
   },
   '%:focus': {
     backgroundColor: 'none',
-  },
-  '& .MuiButtonBase-root': {
-    // ListItemButton 내의 ButtonBase 컴포넌트에 대한 스타일링
-    pointerEvents: 'none',
   },
 });
 
