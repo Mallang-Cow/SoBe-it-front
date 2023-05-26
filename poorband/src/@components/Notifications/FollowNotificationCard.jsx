@@ -7,12 +7,18 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from '../../style/theme';
 
 export default function FollowNotificationCard() {
+  const deleteNotification = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 중단
+    console.log("삭제 버튼 클릭");
+  };
+
   return (
     <NotificationCardButton disableRipple>
       <ListItem secondaryAction={
-                    <NotificationIconButton edge="end" aria-label="delete">
-                      <ClearIcon />
-                    </NotificationIconButton> }>
+        <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
+          <ClearIcon />
+        </NotificationIconButton>
+      }>
         
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
           <Avatar style={{ width: "6rem", height: "6rem" }}>
@@ -54,10 +60,6 @@ const NotificationCardButton = muiStyled(ListItemButton) ({
   },
   '%:focus': {
     backgroundColor: 'none',
-  },
-  '& .MuiButtonBase-root': {
-    // ListItemButton 내의 ButtonBase 컴포넌트에 대한 스타일링
-    pointerEvents: 'none',
   },
 });
 
@@ -134,4 +136,17 @@ const FollowButton = muiStyled(Button) ({
   ].join(','),
   fontStyle: 'normal',
   fontWeight: 500,
+  '&:hover': {
+    backgroundColor: theme.colors.darkpurple_2
+  },
+  '&:active': {
+    boxShadow: 'none',
+    backgroundColor: theme.colors.lightpurple,
+    borderColor: theme.colors.lightgrey_1,
+  },
+  '&:focus': {
+    boxShadow: '0 0 0 0.04rem #EDEDED',
+    border: 'none',
+    outline: 'none',
+  },
 });
