@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export async function getProfileInfoData(userId) {
+    console.log(userId);
     try {
         const data = await axios.post(`http://localhost:9000/profile/profileInfo`, userId, {
             headers: {

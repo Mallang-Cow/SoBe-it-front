@@ -16,10 +16,11 @@ export default function ProfileInfo(props) {
   }, [data]);
 
   useEffect(() => {
-    console.log("useEffect")
-    console.log(targegtUserId) // userId는 띄워지나 targegtUserId는 띄워지지 않는다.(400)
-    targegtUserId(userId)
+    targegtUserId({userId:userId});
   }, [userId]);
+
+  console.log("useEffect")
+  console.log(userId)
 
   const {mutate: targegtUserId} = useMutation (getProfileInfoData,{
     onSuccess: (response) => {
