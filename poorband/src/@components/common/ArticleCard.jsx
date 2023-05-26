@@ -19,13 +19,14 @@ export default function ArticleCard(props) {
   const [time, setTime] = useState([]);
   const [userId, setUserId] = useRecoilState(userIdState);
   const nowTime = new Date();
+
   // 글 정보 가져오기
   const {
     data: article,
     isLoading,
     isError,
     error,
-  } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
+  } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(Number(articleSeq)), {
     onSuccess: () => {
       setThisArticleSeq(Number(article?.articleSeq));
       setThisUserId(article?.user?.userId);
@@ -58,6 +59,7 @@ export default function ArticleCard(props) {
     if (clickActive) {
       setArticleSeq(thisArticleSeq);
       setCenterContent("detail");
+      window.scrollTo(0, 0);
     }
   }
 

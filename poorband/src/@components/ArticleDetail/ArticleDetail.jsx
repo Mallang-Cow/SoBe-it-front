@@ -9,11 +9,11 @@ import { getComments } from "../../../api/getComments";
 
 export default function ArticleDetail(props) {
   const { articleSeq, setCenterContent, setArticleSeq, setUserId } = props;
-  const { data } = useQuery(["articleData"], getArticleDetailData, {});
   const [articleType, setArticleType] = useState(1);
   const [clickActive, setClickActive] = useState(false);
   const [commentList, setCommentList] = useState();
   const [reload, setReload] = useState(false);
+  const [thisArticleSeq, setThisArticleSeq] = useState();
 
   // 댓글 전체 불러오기
   // 글 정보 가져오기
@@ -23,8 +23,8 @@ export default function ArticleDetail(props) {
     isError,
     error,
   } = useQuery(["commentList", commentList], () => getComments(Number(articleSeq)), {
-    onSuccess: () => {
-      setCommentList(comments);
+    onSuccess: (response) => {
+      setCommentList(response);
     },
     onError: () => {
       console.log("Error");
