@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { Avatar, Button, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
@@ -6,10 +7,12 @@ import ClearIcon from '@mui/icons-material/Clear';
 import MoodBadIcon from '@mui/icons-material/MoodBad';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
+import { followUser } from "../../../api/followAPI";
 
 export default function FollowNotificationCard({ type, followingUserNickName, followingUserId, following, content, url, imageUrl, timestamp }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
+  const [isFollowing, setIsFollowing] = useState(following);
 
   // 사용자 프로필 이미지
   let avatarImg = null;
@@ -41,6 +44,36 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
     event.stopPropagation(); // 이벤트 버블링 중단
     console.log("삭제 버튼 클릭");
   };
+
+  const { mutate: followUserMutation } = useMutation(followUser, {
+    onSuccess: (response) => {
+      console.log(response);
+
+      if (response === "success") {
+        setIsFollowing(true); // 팔로우 상태 변경
+      }
+      else {
+        console.log("팔로우 실패");
+      }
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("팔로우 과정에 오류가 발생했습니다.");
+      }
+    },
+  });
+
+  const handleFollow = () => {
+    console.log(followingUserId);
+
+    const handleUserId = {
+      userId: followingUserId,
+    };
+
+    if (!isFollowing) {
+      followUserMutation(handleUserId);
+    }
+  }
 
   return (
     <NotificationCardButton disableRipple>
@@ -88,7 +121,7 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
             </div>
 
             <div style={{ display: "flex", alignItems: "center" }}>
-              <FollowButton>팔로우</FollowButton>
+              <FollowButton onClick={ handleFollow }>{ isFollowing ? "언팔로우" : "팔로우" }</FollowButton>
             </div>
           </div>
         </div>
