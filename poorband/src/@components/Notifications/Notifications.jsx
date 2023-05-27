@@ -50,7 +50,7 @@ export default function Notifications(props) {
           <FollowNotificationCard 
             key={ notification.notificationSeq }
             type={ notification.type }
-            followingUserNickname={ notification.followingUserNickname }
+            followingUserNickName={ notification.followingUserNickName }
             followingUserId={ notification.followingUserId }
             following={ notification.following }
             content = { notification.content }
