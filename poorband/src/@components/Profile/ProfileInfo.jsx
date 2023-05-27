@@ -6,7 +6,6 @@ import { useMutation } from "react-query";
 
 export default function ProfileInfo(props) {
   const { setCenterContent, setShowEdit, userId } = props;
-  const [showFollower, setShowFollower] = useState(false);
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -31,6 +30,11 @@ export default function ProfileInfo(props) {
   const showFollowing = () => {
     console.log("팔로잉 목록 보여 주기");
     setCenterContent("following");
+  }
+
+  const showFollower = () => {
+    console.log("팔로워 목록 보여 주기");
+    setCenterContent("follower");
   }
 
   return (
@@ -66,7 +70,7 @@ export default function ProfileInfo(props) {
 
           <FollowWrapper
             onClick={() => {
-              setShowFollower(true);
+              showFollower();
             }}>
             <p>팔로워</p>
             <p className="followCnt">{data?.followerCnt}</p>
