@@ -1,46 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import ChallengeProgressBar from "./ChallengeProgressBar";
-import { getChallenge } from "../../../api/getChallenge";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { nowUserState } from "../../recoil/nowUserInfo";
 import { useRecoilState } from "recoil";
+import { getLatestChallenge } from "../../../api/getLatestChallenge";
 
 export default function SideChallengeCard(props) {
-  // const { nowUser } = props;
-
   const [data, setData] = useState(null);
   const [percentage, setPercentage] = useState(0);
-  // const [thisNowUser, setThisNowUser] = useState("");
-
-  const [newData, setNewData] = useState(null);
-  const [nowUser] = useRecoilState(nowUserState);
 
   useEffect(() => {
-    setNewData({
-      userId: nowUser?.userId,
-    });
-  }, [nowUser]);
+    challenge();
+  }, []);
 
-  useEffect(() => {
-    if (newData !== null) {
-      challenge(newData);
-    }
-  }, [newData]);
-
-  const { mutate: challenge } = useMutation(getChallenge, {
+  const { mutate: challenge } = useMutation(getLatestChallenge, {
     onSuccess: (response) => {
-      // console.log(response);
-      setData(response?.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+      setData(response?.data); // 사이드바 가장 최근 도전 과제 한 개만 사용.
 
-      const consumption = response?.data[response.data.length - 1]?.consumption;
-      const goalAmount = response?.data[response.data.length - 1]?.goalAmount;
+      const consumption = response?.data?.consumption;
+      const goalAmount = response?.data?.goalAmount;
       const newPercentage =
         typeof consumption === "number" && typeof goalAmount === "number" ? consumption / goalAmount : 0;
       setPercentage(newPercentage); // progress bar의 percentage
-      // console.log(consumption);
-      // console.log(goalAmount);
-      // console.log(newPercentage);
     },
     onError: (error) => {
       if (error.response && error.response.status === 500) {
