@@ -21,13 +21,13 @@ export default function SearchResults(props) {
 
       {/* 메뉴 */}
       <ButtonWrapper>
-        <Button1 data-isclicked={ isClicked } onClick={() => { handleClick("users"); setIsClicked(true); }}>지출 입력</Button1>
-        <Button2 data-isclicked={ isClicked } onClick={() => { handleClick("articles"); setIsClicked(false); }}>결재 받기</Button2>
+        <Button1 data-isclicked={ isClicked } onClick={() => { handleClick("users"); setIsClicked(true); }}>사용자</Button1>
+        <Button2 data-isclicked={ isClicked } onClick={() => { handleClick("articles"); setIsClicked(false); }}>게시글</Button2>
       </ButtonWrapper>
 
       {/* 메뉴에 따라 컴포넌트 변경 */}
       { searchCategory === "users" && (
-        <SearchUsers />
+        <SearchUsers searchWord={ searchWord } />
       )}
 
       { searchCategory === "articles" && (
