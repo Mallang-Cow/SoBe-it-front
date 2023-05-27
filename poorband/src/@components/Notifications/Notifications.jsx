@@ -35,6 +35,7 @@ export default function Notifications(props) {
         return (
           <ReplyNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
