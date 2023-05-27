@@ -27,20 +27,20 @@ export default function ArticleDetail(props) {
   } = useQuery(["commentList", commentList], () => getComments(Number(articleSeq)), {
     onSuccess: (response) => {
       setCommentList(response);
+      setReload(false);
     },
     onError: () => {
       console.log("Error");
     },
   });
 
-  // const queryClient = useQueryClient();
-  // // 댓글, 좋아요 변경 시 리로드
-  // useEffect(() => {
-  //   if (reload == true) {
-  //     console.log(true);
-  //     queryClient.invalidateQueries("commentList");
-  //   }
-  // }, [setReload]);
+  const queryClient = useQueryClient();
+  // 댓글, 좋아요 변경 시 리로드
+  useEffect(() => {
+    if (reload == true) {
+      queryClient.invalidateQueries("commentList");
+    }
+  }, [reload]);
 
   function goBack() {
     prevPage && setCenterContent(prevPage);
@@ -71,17 +71,11 @@ export default function ArticleDetail(props) {
           />
         </ArticleWrapper>
 
-        <CommentForm />
+        <CommentForm articleSeq={Number(articleSeq)} setReload={setReload} />
 
         {commentList?.map((x) => (
           <CommentCard comment={x} setReload={setReload} />
         ))}
-
-        <CommentCard />
-        <ReCommentWrapper>
-          <Temp></Temp>
-          <CommentCard />
-        </ReCommentWrapper>
       </ContentWrapper>
     </>
   );

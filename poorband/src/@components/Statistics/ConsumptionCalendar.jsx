@@ -15,10 +15,6 @@ export default function ConsumptionCalendar() {
   const [monthAmount, setMonthAmount] = useState(0);
 
   useEffect(() => {
-    data && console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     date.year && date.month && loadCalendar(date);
   }, [date]);
 
@@ -56,7 +52,7 @@ export default function ConsumptionCalendar() {
       setYear(year - 1);
     }
   }
-  console.log(data);
+
   return (
     <>
       <Year>
