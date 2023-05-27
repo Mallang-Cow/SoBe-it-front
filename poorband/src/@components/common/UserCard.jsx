@@ -7,15 +7,16 @@ import MoodBadIcon from '@mui/icons-material/MoodBad';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 import { TIER } from "../../../core/tierImage";
-import { followUser } from "../../../api/followAPI";
+import { followUser, unFollowUser } from "../../../api/followAPI";
 
 export default function UserCard(props) {
   const { userId, nickname, userTier, introduction, profileImgUrl, status } = props;
   const [isFollowing, setIsFollowing] = useState(status);
 
+  // 팔로우
   const { mutate: followUserMutation } = useMutation(followUser, {
     onSuccess: (response) => {
-      console.log(response);
+      console.log("팔로우 : " + response);
 
       if (response === "success") {
         setIsFollowing(true); // 팔로우 상태 변경
@@ -31,8 +32,27 @@ export default function UserCard(props) {
     },
   });
 
+  // 언팔로우
+  const { mutate: unFollowUserMutation } = useMutation(unFollowUser, {
+    onSuccess: (response) => {
+      console.log("언팔로우 : " + response);
+
+      if (response === "success") {
+        setIsFollowing(false); // 팔로우 상태 변경
+      }
+      else {
+        console.log("언팔로우 실패");
+      }
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("언팔로우 과정에 오류가 발생했습니다.");
+      }
+    }
+  });
+
   const handleFollow = () => {
-    console.log(userId);
+    console.log("팔로우 또는 언팔로우할 사용자 아이디 : " + userId);
 
     const handleUserId = {
       userId: userId,
@@ -40,6 +60,9 @@ export default function UserCard(props) {
 
     if (isFollowing === 0) {
       followUserMutation(handleUserId);
+    }
+    else if (isFollowing === 2) {
+      unFollowUserMutation(handleUserId);
     }
   }
 
