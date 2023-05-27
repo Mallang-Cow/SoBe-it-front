@@ -11,6 +11,7 @@ import ProgressBar from "./ProgressBar";
 import { userIdState } from "../../recoil/userId";
 import { useRecoilState } from "recoil";
 import { deleteArticle } from "../../../api/deleteArticle";
+import { prevPageState } from "../../recoil/prevPage";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed, onPage } = props;
@@ -19,6 +20,7 @@ export default function ArticleCard(props) {
   const [time, setTime] = useState([]);
   const [userId, setUserId] = useRecoilState(userIdState);
   const nowTime = new Date();
+  const [prevPage, setPrevPage] = useRecoilState(prevPageState);
 
   // 글 정보 가져오기
   const {
@@ -57,6 +59,7 @@ export default function ArticleCard(props) {
   function goToArticleDetail() {
     // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
     if (clickActive) {
+      setPrevPage(onPage);
       setArticleSeq(thisArticleSeq);
       setCenterContent("detail");
       window.scrollTo(0, 0);

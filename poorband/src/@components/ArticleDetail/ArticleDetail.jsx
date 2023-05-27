@@ -5,14 +5,17 @@ import CommentCard from "./CommentCard";
 import { useQuery, useQueryClient } from "react-query";
 import { styled } from "styled-components";
 import { getComments } from "../../../api/getComments";
+import { prevPageState } from "../../recoil/prevPage";
+import { useRecoilState } from "recoil";
 
 export default function ArticleDetail(props) {
-  const { articleSeq, setCenterContent, setArticleSeq, setUserId } = props;
+  const { articleSeq, setCenterContent, setArticleSeq, setUserId, backPage } = props;
   const [articleType, setArticleType] = useState(1);
   const [clickActive, setClickActive] = useState(false);
   const [commentList, setCommentList] = useState();
   const [reload, setReload] = useState(false);
   const [thisArticleSeq, setThisArticleSeq] = useState();
+  const [prevPage, setPrevPage] = useRecoilState(prevPageState);
 
   // 댓글 전체 불러오기
   // 글 정보 가져오기
@@ -39,10 +42,20 @@ export default function ArticleDetail(props) {
   //   }
   // }, [setReload]);
 
+  function goBack() {
+    prevPage && setCenterContent(prevPage);
+  }
+
   return (
     <>
       <HeaderContainer>
-        <span className="material-symbols-rounded">arrow_back</span>
+        <span
+          className="material-symbols-rounded"
+          onClick={() => {
+            goBack();
+          }}>
+          arrow_back
+        </span>
         {articleType === 1 ? <header>지출 내역</header> : <header>결재 내역</header>}
       </HeaderContainer>
       <ContentWrapper>
@@ -92,6 +105,7 @@ const HeaderContainer = styled.div`
   span {
     font-size: 3rem;
     margin-right: 1rem;
+    cursor: pointer;
   }
 `;
 
