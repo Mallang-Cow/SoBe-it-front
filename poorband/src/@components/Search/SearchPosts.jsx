@@ -50,7 +50,7 @@ export default function SearchPosts(props) {
     [lastArticleId],
   );
 
-    // 최초 렌더링 후 한 번만 실행
+    // 최초 렌더링 후 한 번만 실행.
     useEffect(() => {
       console.log("최초 렌더링 후 한 번만 실행");
       setLoading(true);
