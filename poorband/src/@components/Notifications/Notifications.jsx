@@ -62,6 +62,7 @@ export default function Notifications(props) {
             followingUserId={ notification.followingUserId }
             following={ notification.following }
             content = { notification.content }
+            userTier={ notification.userTier }
             url={ notification.url }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }

@@ -7,9 +7,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 import MoodBadIcon from '@mui/icons-material/MoodBad';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
+import { TIER } from "../../../core/tierImage";
 import { followUser, unFollowUser } from "../../../api/followAPI";
 
-export default function FollowNotificationCard({ type, followingUserNickName, followingUserId, following, content, url, imageUrl, timestamp, setCenterContent, setUserId }) {
+export default function FollowNotificationCard({ type, followingUserNickName, followingUserId, following, content, userTier, url, imageUrl, timestamp, setCenterContent, setUserId }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
   const [isFollowing, setIsFollowing] = useState(following);
@@ -127,7 +128,8 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
                   <MainNotificationText primary={ followingUserNickName } />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
-                  <PlusNotificationText primary="UserTier" />
+                  {/* <PlusNotificationText primary={ userTier } /> */}
+                  <TierImg id="tier-img" src={ TIER[userTier] } alt="티어" />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
                   <PlusNotificationText style={{ color: "#878787" }} primary={ `@${followingUserId}` } />
@@ -202,6 +204,12 @@ const MainNotificationText = muiStyled(ListItemText) ({
     letterSpacing: '0.03em',
   },
 });
+
+const TierImg = styled.img`
+  margin-left: 0.6rem;
+  width: 2rem;
+  height: 2rem;
+`;
 
 const PlusNotificationText = muiStyled(ListItemText) ({
   marginLeft: '0.6rem',
