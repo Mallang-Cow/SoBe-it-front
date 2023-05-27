@@ -1,7 +1,10 @@
 import React from "react";
-import UserCard from "./UserCard";
+import UserCard from "../@components/common/UserCard";
 
-export default function Follower() {
+export default function Follower(props) {
+  const { userId } = props;
+  console.log(userId);
+
   return (
     <>
       <div>Follower</div>

@@ -6,6 +6,7 @@ import SideBar from "../@components/SideBar/SideBar";
 import Statistics from "../@components/Statistics/Statistics";
 import Profile from "../@components/Profile/Profile";
 import Following from "../@components/Following";
+import Follower from "../@components/Follower";
 import Notifications from "../@components/Notifications/Notifications";
 import SearchResults from "../@components/Search/SearchResults";
 import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
