@@ -122,18 +122,19 @@ const MainNotificationText = muiStyled(ListItemText) ({
 });
 
 const TimeNotificationText = muiStyled(ListItemText) ({
-    marginLeft: '0.6rem',
-  
-    '& span': { 
-      fontSize: '1.2rem',
-      fontFamily: [
-        'Roboto',
-      ].join(','),
-      fontStyle: 'normal',
-      fontWeight: 500,
-      letterSpacing: '0.03em',
-    },
-  });
+  marginLeft: '0.6rem',
+
+  '& span': { 
+    color: '#85929E',
+    fontSize: '1.2rem',
+    fontFamily: [
+      'Roboto',
+    ].join(','),
+    fontStyle: 'normal',
+    fontWeight: 500,
+    letterSpacing: '0.03em',
+  },
+});
 
 const SubNotificationText = muiStyled(ListItemText) ({
   '& p': { 
