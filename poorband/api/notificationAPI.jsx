@@ -7,3 +7,7 @@ export function selectAllNotification() {
 export function deleteOneNotification(notificationDeleteDTO) {
   return call("/notification/deleteone", "POST", notificationDeleteDTO);
 }
+
+export function deleteAllNotification() {
+  return call("/notification/deleteall", "POST", null);
+}
