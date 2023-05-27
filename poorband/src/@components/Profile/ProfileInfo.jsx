@@ -50,10 +50,7 @@ export default function ProfileInfo(props) {
             {/* {data?.status === 2 && <button onClick={() => setShowEdit(true)}>팔로잉</button>} */}
           </NameWrapper>
           <InformationWrapper>
-            <p>
-              안녕하세요. 민지입니다. 지금은 12시 50분!!안녕하세요. 민지입니다. 지금은 12시 50분!!안녕하세요.
-              민지입니다. 지금은 12시 50분!! 안녕하세요.
-            </p>
+            <p>{data?.introDetail}</p>
           </InformationWrapper>
         </ProfileContextWrapper>
 
@@ -120,10 +117,12 @@ const ProfileInfoWrapper = styled.section`
   }
   p.nickname {
     font-size: 2rem;
+    margin-right: 0.5rem;
   }
   p.userId {
     font-size: 1.6rem;
     color: ${({ theme }) => theme.colors.darkgrey_2};
+    margin-right: 0.5rem;
   }
 
   #tier-img {

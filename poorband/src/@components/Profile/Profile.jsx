@@ -13,7 +13,7 @@ export default function Profile(props) {
   return (
     <ProfileWrapper>
       <HeaderWrapper>
-        <ProfileTitle>Profile</ProfileTitle>
+        <ProfileTitle>@{userId}</ProfileTitle>
 
         {/* 프로필 편집 시 편집 창으로 바뀌기 */}
         {!showEdit ? (
@@ -74,8 +74,6 @@ const ProfileWrapper = styled.section`
 `;
 
 const HeaderWrapper = styled.section`
-  position: sticky;
-  top: 0;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 const ProfileTitle = styled.h2`
@@ -84,6 +82,8 @@ const ProfileTitle = styled.h2`
   padding: 4rem 3rem 2rem;
   display: flex;
   justify-content: start;
+  position: sticky;
+  top: 0;
   align-items: center;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 
