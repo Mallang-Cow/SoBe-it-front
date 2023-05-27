@@ -13,6 +13,16 @@ export default function UserCard(props) {
   const { userId, nickname, userTier, introduction, profileImgUrl, status } = props;
   const [isFollowing, setIsFollowing] = useState(status);
 
+  // 사용자 프로필 이미지
+  let avatarImg = null;
+  if (profileImgUrl) {
+    avatarImg = <img src={ profileImgUrl } alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%" }} />;
+  }
+  else {
+//    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
+    avatarImg = <MoodBadIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }}/>;
+  }
+
   // 팔로우
   const { mutate: followUserMutation } = useMutation(followUser, {
     onSuccess: (response) => {
@@ -71,7 +81,7 @@ export default function UserCard(props) {
       <ListItem>        
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
           {/* <Avatar style={{ width: "6rem", height: "6rem" }}> */}
-            <MoodBadIcon style={{ width: "6rem", height: "6rem" }} />
+            { avatarImg }
           {/* </Avatar> */}
         </ListItemAvatar>
         <div style={{ marginLeft: "2rem", width: "100%" }}>
