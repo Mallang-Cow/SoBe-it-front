@@ -10,7 +10,7 @@ import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData"; //"../../core/sideBarData";
 import { deleteOneNotification } from "../../../api/notificationAPI";
 
-export default function ReplyNotificationCard({ notificationSeq, type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq }) {
+export default function ReplyNotificationCard({ notificationSeq, type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq, onDelete }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
   const navigate = useNavigate();
@@ -51,6 +51,7 @@ export default function ReplyNotificationCard({ notificationSeq, type, content, 
     onSuccess: (response) => {
       if (response) {
         console.log("댓글 알림 삭제 성공");
+        onDelete(notificationSeq);
       }
       else {
         console.log("댓글 알림 삭제 실패");
