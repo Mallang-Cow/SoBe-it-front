@@ -88,6 +88,7 @@ export default function Notifications(props) {
         return (
           <ArticleLikeNotificationCard
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -95,6 +96,7 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       default:
