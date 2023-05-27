@@ -6,34 +6,45 @@ import { signout } from "../../api/userAPI";
 import { ACCESS_TOKEN } from "../../api/ApiService";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 import { getHotPost } from "../../api/getHotPost";
+import { getProfileInfo } from "../../api/getProfileInfo";
+import { getChallenge } from "../../api/getChallenge";
+import { userIdState } from "../recoil/userId";
+import { useRecoilState } from "recoil";
 
 export default function MenuBar(props) {
-  const { centerContent, setCenterContent, setUserId } = props;
+  const { centerContent, setCenterContent } = props;
+  console.log(props.userSeq);
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const [thisUserId, setThisUserId] = useState("");
+  const [userId, setUserId] = useRecoilState(userIdState);
 
   const [data, setData] = useState([]);
+
   const newData = {
-    userId: "test1",
+    userId: "test5",
   };
 
   useEffect(() => {
-    hotPosts(newData);
+    // setUserId(thisUserId);
+    // setThisUserId(setUserId);
+
+    console.log(userId);
+    // console.log(userIdState);
+    console.log(props.userId);
+    console.log(thisUserId);
+    profileInfo(newData);
   }, []);
 
-  const { mutate: hotPosts } = useMutation(getHotPost, {
+  const { mutate: profileInfo } = useMutation(getProfileInfo, {
     onSuccess: (response) => {
-      setData(response.data[0]);
-      setThisUserId(response.data[0]?.user?.userId);
-
-      console.log(response.data[0]?.user?.userId);
-      // console.log(response.data[0]);
-      // console.log(data?.user?.userName);
+      setData(response.data);
+      console.log("성공");
+      console.log(response.data);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
-        console.log("인기 게시물 가져오기 실패");
+        console.log("프로필 정보 가져오기 실패");
       }
     },
   });
@@ -98,11 +109,11 @@ export default function MenuBar(props) {
           }}>
           <ProfileInfoWrapper>
             <ProfileImgWrapper>
-              <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
+              <img id="profile-image" src={data?.profileImg} alt="프로필사진" />
             </ProfileImgWrapper>
             <ProfileNameWrapper>
-              <p>{data?.user?.nickname}</p>
-              <p id="username">{data?.user?.userName}</p>
+              <p>{data?.nickname}</p>
+              <p id="username">{data?.userId}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
           <ProfileMenuWrapper>
