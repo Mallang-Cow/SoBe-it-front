@@ -111,6 +111,7 @@ const NameWrapper = styled.section`
   flex: auto;
   input {
     border-radius: 0.5rem;
+    padding: 0 0.5rem;
     border: 1px solid ${({ theme }) => theme.colors.lightgrey_2};
     height: 3rem;
     flex: auto;
@@ -160,4 +161,5 @@ const TextWrapper = styled.textarea`
   resize: none;
   ${({ theme }) => theme.fonts.regular};
   color: ${({ theme }) => theme.colors.black};
+  padding: 0.5rem;
 `;
