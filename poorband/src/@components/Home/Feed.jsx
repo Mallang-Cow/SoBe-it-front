@@ -87,7 +87,7 @@ export default function Feed(props) {
                 setArticleSeq={setArticleSeq}
                 setUserId={setUserId}
                 setArticleType={setArticleType}
-                clickActive={true}
+                clickactive={"true"}
                 setReloadFeed={setReloadFeed}
                 onPage={"home"}
               />
@@ -101,7 +101,7 @@ export default function Feed(props) {
                 setArticleSeq={setArticleSeq}
                 setUserId={setUserId}
                 setArticleType={setArticleType}
-                clickActive={true}
+                clickactive={"true"}
                 setReloadFeed={setReloadFeed}
                 onPage={"home"}
               />

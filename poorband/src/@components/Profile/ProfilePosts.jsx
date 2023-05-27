@@ -72,7 +72,7 @@ export default function ProfilePosts(props) {
                 setArticleSeq={setArticleSeq}
                 setUserId={setUserId}
                 setArticleType={setArticleType}
-                clickActive={true}
+                clickactive={"true"}
                 setReloadFeed={setReloadFeed}
                 onPage={"profile"}
               />
@@ -86,7 +86,7 @@ export default function ProfilePosts(props) {
                 setArticleSeq={setArticleSeq}
                 setUserId={setUserId}
                 setArticleType={setArticleType}
-                clickActive={true}
+                clickactive={"true"}
                 setReloadFeed={setReloadFeed}
                 onPage={"profile"}
               />
