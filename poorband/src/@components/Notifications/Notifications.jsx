@@ -27,6 +27,12 @@ export default function Notifications(props) {
     }
   };
 
+  const handleDeleteNotification = (notificationSeq) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.notificationSeq !== notificationSeq)
+    );
+  };
+
   const renderNotificationCard = (notification) => {
     const { type } = notification; // 비구조화 할당 문법 : notification 객체에서 type 속성 추출  // const type = notification.type과 동일
 
@@ -35,6 +41,7 @@ export default function Notifications(props) {
         return (
           <ReplyNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -43,6 +50,7 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 2: // 팔로우 알림
