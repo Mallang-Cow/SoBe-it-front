@@ -57,6 +57,7 @@ export default function Notifications(props) {
         return (
           <FollowNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             followingUserNickName={ notification.followingUserNickName }
             followingUserId={ notification.followingUserId }
@@ -68,6 +69,7 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setUserId={ setUserId }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 3: // 댓글 좋아요 알림
