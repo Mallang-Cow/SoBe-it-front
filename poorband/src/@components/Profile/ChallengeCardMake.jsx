@@ -208,7 +208,7 @@ const TitleInput = styled.input`
 const CCDateWrapper = styled.section`
   display: flex;
   margin-bottom: 1rem;
-  *${({ theme }) => theme.fonts.regular};
+  ${({ theme }) => theme.fonts.regular};
   font-size: 1.4rem;
   .react-datepicker-wrapper {
     margin: 0;
@@ -238,7 +238,7 @@ const CCDateWrapper = styled.section`
     width: fit-content;
     ${({ theme }) => theme.fonts.medium};
     font-size: 1.2rem;
-    padding:0.7rem 0;
+    padding: 0.7rem 0;
   }
 `;
 
