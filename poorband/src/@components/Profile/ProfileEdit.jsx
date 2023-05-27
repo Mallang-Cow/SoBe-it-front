@@ -18,25 +18,6 @@ export default function ProfileEdit(props) {
   const [init, setInit] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // 변경될 프로필 정보
-  const newProfileData = {
-    profileEditDTO:{
-      nickname:nickname,
-      introduction:introduction,
-      profileImageUrl: profileImageUrl
-  }};
-
-  console.log("newProfileData = " + newProfileData);
-
-  const formData = new FormData();
-  const json = JSON.stringify(newProfileData.profileEditDTO);
-  const blob = new Blob([json], {type: 'application/json'});
-
-  console.log("formData = " + formData);
-
-  formData.append('file', file);
-  formData.append('profileEditDTO', blob);
-
   // 프로필 정보 가져오기
   const {
     data: profileData,
@@ -101,16 +82,31 @@ export default function ProfileEdit(props) {
       return;
     }
 
-    if (
-      newProfileData.nickname && 
-      newProfileData.introduction && 
-      newProfileData.profileImageUrl
-    ) {
+    // 변경될 프로필 정보
+    const newProfileData = {
+      profileEditDTO:{
+        nickname:nickname,
+        introduction:introduction,
+        profileImageUrl: profileImageUrl
+    }};
+  
+    console.log("newProfileData = " + newProfileData);
+  
+    const formData = new FormData();
+    const json = JSON.stringify(newProfileData.profileEditDTO);
+    const blob = new Blob([json], {type: 'application/json'});
+  
+    console.log("formData = " + formData);
+  
+    formData.append('file', file);
+    formData.append('profileEditDTO', blob);
+
+    {
       console.log("nickname : " + nickname);
       console.log("introduction : " + introduction);
       console.log("profileImageUrl : " + profileImageUrl);
       // API 호출
-      editProfile(newProfileData); 
+      editProfile(formData); 
     }
   }
 
