@@ -96,7 +96,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
   input {
-    appearance: none;
+    appearance: auto;
 
     &:focus {
       outline: none;
