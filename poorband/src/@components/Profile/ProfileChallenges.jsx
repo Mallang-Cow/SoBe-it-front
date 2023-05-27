@@ -24,7 +24,7 @@ export default function ProfileChallenges(props) {
   
   const {mutate: cntUserId} = useMutation (getChallengeCntData,{
     onSuccess: (response) => {
-      console.log(response);
+      console.log("response: " + response);
       setData(response);
     },
     onError: () => {
@@ -56,15 +56,23 @@ export default function ProfileChallenges(props) {
           <ChallengeCnt>
             <div>
               <span>성공한 도전과제</span>
-              <span className="bold">{data?.successGoalAmountCnt}개/{data?.goalAmountCnt}개</span>
+              <span className="bold">
+                {data?.successGoalAmountCnt}개/
+                {data?.goalAmountCnt}개
+              </span>
             </div>
           </ChallengeCnt>
 
           <NextTierCnt>
             <div>
               <span>다음 등급까지</span>
-              <img id="tier-img" src={TIER[data?.user.userTier]} alt="티어" />
-              <span className="bold">3개</span>
+              <img 
+                id="tier-img" 
+                src={TIER[ARTICLE_DETAIL.user.userTier]} 
+                alt="티어" />
+              <span className="bold">
+                ({data?.goalAmountCnt}-{data?.successGoalAmountCnt})개
+              </span>
             </div>
           </NextTierCnt>
         </ChallengeMineWrapper>
