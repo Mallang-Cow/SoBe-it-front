@@ -9,10 +9,16 @@ import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 import { followUser, unFollowUser } from "../../../api/followAPI";
 
-export default function FollowNotificationCard({ type, followingUserNickName, followingUserId, following, content, url, imageUrl, timestamp }) {
+export default function FollowNotificationCard({ type, followingUserNickName, followingUserId, following, content, url, imageUrl, timestamp, setCenterContent, setUserId }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
   const [isFollowing, setIsFollowing] = useState(following);
+
+  // 나를 팔로우한 사용자 프로필 페이지로 이동
+  function goToProfile() {
+    setUserId(followingUserId);
+    setCenterContent("profile");
+  }
 
   // 사용자 프로필 이미지
   let avatarImg = null;
@@ -99,7 +105,7 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
   }
 
   return (
-    <NotificationCardButton disableRipple>
+    <NotificationCardButton onClick={ goToProfile } disableRipple>
       <ListItem secondaryAction={
         <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
           <ClearIcon />
