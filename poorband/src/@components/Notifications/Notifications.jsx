@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
-import { List, Typography } from '@mui/material';
+import { Button, List } from '@mui/material';
 import { theme } from '../../style/theme';
 import { selectAllNotification } from "../../../api/notificationAPI";
 import ArticleLikeNotificationCard from "./ArticleLikeNotificationCard";
@@ -116,7 +116,9 @@ export default function Notifications(props) {
 
       <List dense={ false }>
         {/* 전체 삭제 버튼 */}
-        <DeleteAllNotificationText variant="h6">전체 알림 삭제</DeleteAllNotificationText>
+        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+          <DeleteAllNotificationButton>전체 알림 삭제</DeleteAllNotificationButton>
+        </div>
 
         {/* 알림 전체 불러오기 */}
         {/* 알림 목록 렌더링 */}
@@ -147,10 +149,12 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const DeleteAllNotificationText = muiStyled(Typography) ({
-  paddingRight: '1.6rem',
-  paddingBottom: '0.4rem',
-  textAlign: 'right',
+const DeleteAllNotificationButton = muiStyled(Button) ({
+  marginTop: '0rem',
+  marginRight: '0.8rem',
+  marginBottom: '0.4rem',
+  marginLeft: '0rem',
+  textAlign: 'center',
   color: theme.colors.lightgrey_2,
   fontSize: '1.4rem',
   fontFamily: [
@@ -158,4 +162,15 @@ const DeleteAllNotificationText = muiStyled(Typography) ({
   ].join(','),
   fontStyle: 'normal',
   fontWeight: 500,
+  letterSpacing: '0.012rem',
+  '&:hover': {
+    backgroundColor: theme.colors.lightgrey_1,
+  },
+  '&:active': {
+    backgroundColor: 'none',
+  },
+  '&:focus': {
+    border: 'none',
+    outline: 'none',
+  },
 });
