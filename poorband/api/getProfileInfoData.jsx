@@ -12,6 +12,5 @@ export async function getProfileInfoData(userId) {
         return data.data;
     } catch (error) {
         console.log(error);
-    }
-    
+    }   
 }

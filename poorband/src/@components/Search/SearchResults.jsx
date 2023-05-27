@@ -31,7 +31,7 @@ export default function SearchResults(props) {
       )}
 
       { searchCategory === "articles" && (
-        <SearchPosts />
+        <SearchPosts searchWord={searchWord} />
       )}
     </>
   );

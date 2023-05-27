@@ -198,6 +198,7 @@ export default function WriteForm(props) {
       setStatus("1");
       setconsumeDate(new Date());
       setReloadFeed(true);
+      setFile(null);
     },
     onError: (error) => {
       // 실패시 뭐하지
@@ -639,6 +640,7 @@ const FileInputContainer = styled.label`
   display: flex;
   align-items: center;
   overflow: hidden; /* 텍스트 오버플로우 처리 */
+  max-width: 20rem;
 
   &:hover {
     background: ${({ theme }) => theme.colors.darkpurple_2};
