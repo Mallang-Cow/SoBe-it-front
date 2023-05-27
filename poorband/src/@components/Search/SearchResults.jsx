@@ -7,7 +7,7 @@ import SearchPosts from "./SearchPosts";
 export default function SearchResults(props) {
   const [isClicked, setIsClicked] = useState(true);
   const [searchCategory, setSearchCategory] = useState("users");
-  const { searchWord } = props;
+  const { searchWord, setCenterContent, setUserId } = props;
 
   const handleClick = (type) => {
     setSearchCategory(type);
@@ -27,7 +27,11 @@ export default function SearchResults(props) {
 
       {/* 메뉴에 따라 컴포넌트 변경 */}
       { searchCategory === "users" && (
-        <SearchUsers searchWord={ searchWord } />
+        <SearchUsers 
+          searchWord={ searchWord } 
+          setCenterContent={ setCenterContent }
+          setUserId={ setUserId }
+        />
       )}
 
       { searchCategory === "articles" && (
