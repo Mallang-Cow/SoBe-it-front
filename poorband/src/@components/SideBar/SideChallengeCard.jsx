@@ -3,27 +3,37 @@ import { styled } from "styled-components";
 import ChallengeProgressBar from "./ChallengeProgressBar";
 import { getChallenge } from "../../../api/getChallenge";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { nowUserState } from "../../recoil/nowUserInfo";
+import { useRecoilState } from "recoil";
 
 export default function SideChallengeCard(props) {
-  const { nowUser } = props;
+  // const { nowUser } = props;
 
   const [data, setData] = useState([]);
   const [percentage, setPercentage] = useState(0);
+  // const [thisNowUser, setThisNowUser] = useState("");
 
-  const newData = {
-    // userId: "test1",
-    userId: nowUser?.userId,
-  };
+  const [newData, setNewData] = useState([]);
+  const [nowUser] = useRecoilState(nowUserState);
 
   useEffect(() => {
+    setNewData({
+      userId: nowUser?.userId,
+    });
+  }, [nowUser]);
+
+  useEffect(() => {
+    // setThisNowUser(nowUser);
+    // console.log(newData);
+
     // console.log(nowUser?.userId);
-    challenge(newData);
-  }, []);
+    newData && challenge(newData);
+  }, [newData]);
 
   const { mutate: challenge } = useMutation(getChallenge, {
     onSuccess: (response) => {
       // console.log(response);
-      setData(response.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+      setData(response?.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
 
       setPercentage(
         response?.data[response.data.length - 1]?.consumption / response?.data[response.data.length - 1]?.goalAmount,
@@ -40,7 +50,7 @@ export default function SideChallengeCard(props) {
   });
   return (
     <>
-      {data && (
+      {data !== null && (
         <Wrapper>
           <TitleWrapper>
             <hr></hr>

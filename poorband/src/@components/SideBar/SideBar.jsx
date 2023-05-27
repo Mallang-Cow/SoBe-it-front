@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
 
 export default function SideBar(props) {
-  const { setCenterContent, setArticleSeq, setUserId, clickActive, nowUser } = props;
+  const { setCenterContent, setArticleSeq, setUserId, clickActive } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
 
@@ -20,7 +20,7 @@ export default function SideBar(props) {
           <TitleContainer>
             <h2>Challenge</h2>
           </TitleContainer>
-          <SideChallengeCard nowUser={nowUser} />
+          <SideChallengeCard />
         </ChallengeWrapper>
         {/* 인기게시글 리스트 - 진행중인 도전과제 있으면 3개, 없으면 5개정도..? */}
         <HotPostWrapper>

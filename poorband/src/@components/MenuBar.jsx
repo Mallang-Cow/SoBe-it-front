@@ -11,15 +11,18 @@ import { userIdState } from "../recoil/userId";
 import { useRecoilState } from "recoil";
 import { getNowUser } from "../../api/getNowUser";
 import { getMyInfo } from "../../api/getMyInfo";
+import { nowUserState } from "../recoil/nowUserInfo";
 
 export default function MenuBar(props) {
-  const { centerContent, setCenterContent, nowUser } = props;
+  const { centerContent, setCenterContent } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const [thisUserId, setThisUserId] = useState("");
   const [userId, setUserId] = useRecoilState(userIdState);
 
   const [data, setData] = useState([]);
+
+  const [nowUser] = useRecoilState(nowUserState);
 
   // const newData = {
   //   userId: "test5",

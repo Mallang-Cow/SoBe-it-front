@@ -32,7 +32,7 @@ export default function HotPostCard(props) {
     onSuccess: (response) => {
       setData(response?.data[props.idx]);
       setThisArticleSeq(Number(response?.data[props.idx]?.articleSeq));
-      // console.log(response?.data[props.idx]?.articleSeq);
+      // console.log(response?.data[props.idx]?.liked);
       // console.log(data?.user?.profileImageUrl);
       // console.log(data?.user?.profileImageUrl);
     },
@@ -43,7 +43,7 @@ export default function HotPostCard(props) {
     },
   });
 
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(data?.liked);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -106,15 +106,14 @@ export default function HotPostCard(props) {
             <div id="price">
               <span>금액</span>
               <span>{data?.amount?.toLocaleString()}원</span>
-            </div>{" "}
+            </div>
           </ReceiptContainer>
 
           <CountInfoWrapper>
-            <Like onClick={handleLike}>
-              {liked ? (
+            <Like>
+              {data?.liked ? (
                 <span
-                  id="filledIcon"
-                  className="material-symbols-outlined"
+                  className="material-symbols-rounded active"
                   onClick={() => {
                     clickLike();
                     console.log("click1");
@@ -123,7 +122,7 @@ export default function HotPostCard(props) {
                 </span>
               ) : (
                 <span
-                  className="material-symbols-outlined"
+                  className="material-symbols-rounded"
                   onClick={() => {
                     clickLike();
                     console.log("click2");
@@ -134,7 +133,7 @@ export default function HotPostCard(props) {
             </Like>
             <span>{data?.likeCnt}</span>
             <div>
-              <span className="material-symbols-outlined">chat_bubble</span>
+              <span className="material-symbols-rounded">comment</span>
             </div>
             <span>{data?.commentCnt}</span>
           </CountInfoWrapper>
