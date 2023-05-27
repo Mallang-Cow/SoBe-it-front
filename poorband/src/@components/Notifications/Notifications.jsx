@@ -57,22 +57,26 @@ export default function Notifications(props) {
         return (
           <FollowNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             followingUserNickName={ notification.followingUserNickName }
             followingUserId={ notification.followingUserId }
             following={ notification.following }
             content = { notification.content }
+            userTier={ notification.userTier }
             url={ notification.url }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setUserId={ setUserId }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 3: // 댓글 좋아요 알림
         return (
           <ReplyLikeNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -81,12 +85,14 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 4: // 게시글 좋아요 알림
         return (
           <ArticleLikeNotificationCard
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -94,6 +100,7 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       default:

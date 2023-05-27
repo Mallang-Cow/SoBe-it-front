@@ -22,8 +22,7 @@ export default function MenuBar(props) {
   const [nowUser, setNowUser] = useRecoilState(nowUserState);
 
   const [data, setData] = useState([]);
-
-  console.log(userId);
+  const [nowUser] = useRecoilState(nowUserState);
 
   // const newData = {
   //   userId: "test5",

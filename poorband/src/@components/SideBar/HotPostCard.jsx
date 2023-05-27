@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "react-query"; // useQuery
 import { getHotPost } from "../../../api/getHotPost";
 import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { likeArticle } from "../../../api/likeArticle";
+import { userIdState } from "../../recoil/userId";
+import { useRecoilState } from "recoil";
 
 // import { likeArticle } from "../../../api/likeArticle";
 // import { getArticleDetailData } from "../../../api/getArticleDetailData";
@@ -15,22 +17,23 @@ export default function HotPostCard(props) {
 
   const [thisArticleSeq, setThisArticleSeq] = useState(null);
   const [thisUserId, setThisUserId] = useState("");
+  const [userId, setUserId] = useRecoilState(userIdState);
 
-  const newData = {
-    userId: "test1",
-  };
+  // const newData = {
+  //   userId: "test1",
+  // };
   // console.log(thisArticleSeq);
 
   useEffect(() => {
-    hotPosts(newData);
+    hotPosts();
   }, []);
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
       setData(response?.data[props.idx]);
       setThisArticleSeq(Number(response?.data[props.idx]?.articleSeq));
-      // console.log(response?.data[props.idx]?.articleSeq);
-      // console.log(response.data[0]);
+      // console.log(response?.data[props.idx]?.liked);
+      // console.log(data?.user?.profileImageUrl);
       // console.log(data?.user?.profileImageUrl);
     },
     onError: (error) => {
@@ -40,7 +43,7 @@ export default function HotPostCard(props) {
     },
   });
 
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(data?.liked);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -76,55 +79,64 @@ export default function HotPostCard(props) {
       console.log("error");
     },
   });
+
+  // 글 작성자 프로필 페이지로 이동
+  function goToProfile() {
+    setUserId(data?.user?.userId);
+    setCenterContent("profile");
+  }
   return (
     <>
       {data && (
-        <Wrapper
-          clickActive={clickActive}
-          onClick={() => {
-            goToArticleDetail();
-          }}>
-          <ProfileWrapper>
-            <img id="profile-image" src="{data?.user?.profileImageUrl}" alt="프로필사진" />
+        <Wrapper>
+          <ProfileWrapper
+            onClick={() => {
+              goToProfile();
+            }}>
+            <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
             <span>{data?.user?.nickname}</span>
           </ProfileWrapper>
-          <ReceiptContainer>
+          <ReceiptContainer
+            clickActive={clickActive}
+            onClick={() => {
+              goToArticleDetail();
+            }}>
             <h1>{data?.articleText}</h1>
             <hr></hr>
             <div id="price">
               <span>금액</span>
               <span>{data?.amount?.toLocaleString()}원</span>
             </div>
-            <CountInfoWrapper>
-              <div className="likeIcon" onClick={handleLike}>
-                {liked ? (
-                  <span
-                    id="filledIcon"
-                    className="material-symbols-outlined"
-                    onClick={() => {
-                      clickLike();
-                      console.log("click1");
-                    }}>
-                    favorite
-                  </span>
-                ) : (
-                  <span
-                    className="material-symbols-outlined"
-                    onClick={() => {
-                      clickLike();
-                      console.log("click2");
-                    }}>
-                    favorite
-                  </span>
-                )}
-              </div>
-              <span>{data?.likeCnt}</span>
-              <div>
-                <span className="material-symbols-outlined">chat_bubble</span>
-              </div>
-              <span>{data?.commentCnt}</span>
-            </CountInfoWrapper>
           </ReceiptContainer>
+
+          <CountInfoWrapper>
+            <Like>
+              {data?.liked ? (
+                <span
+                  className="material-symbols-rounded active"
+                  onClick={() => {
+                    clickLike();
+                    console.log("click1");
+                  }}>
+                  favorite
+                </span>
+              ) : (
+                <span
+                  className="material-symbols-rounded"
+                  onClick={() => {
+                    clickLike();
+                    console.log("click2");
+                  }}>
+                  favorite
+                </span>
+              )}
+            </Like>
+            <span>{data?.likeCnt}</span>
+            <div>
+              <span className="material-symbols-rounded">comment</span>
+            </div>
+            <span>{data?.commentCnt}</span>
+          </CountInfoWrapper>
         </Wrapper>
       )}
     </>
