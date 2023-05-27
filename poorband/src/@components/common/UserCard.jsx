@@ -5,6 +5,7 @@ import { Avatar, Button, IconButton, ListItem, ListItemAvatar, ListItemButton, L
 import MoodBadIcon from '@mui/icons-material/MoodBad';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
+import { TIER } from "../../../core/tierImage";
 
 
 export default function UserCard(props) {
@@ -26,7 +27,7 @@ export default function UserCard(props) {
                   <MainNotificationText primary={ nickname } />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
-                  <PlusNotificationText primary={ userTier } />
+                  <TierImg id="tier-img" src={ TIER[userTier] } alt="티어" />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
                   <PlusNotificationText style={{ color: "#878787" }} primary={ userId } />
@@ -78,6 +79,12 @@ const MainNotificationText = muiStyled(ListItemText) ({
   },
 });
 
+const TierImg = styled.img`
+  margin-left: 0.6rem;
+  width: 2rem;
+  height: 2rem;
+`;
+
 const PlusNotificationText = muiStyled(ListItemText) ({
   marginLeft: '0.6rem',
 
@@ -99,21 +106,6 @@ const IntroductionContent = styled.div`
   font-weight: 500;
   letter-spacing: 0.03em;
 `;
-
-const TimeNotificationText = muiStyled(ListItemText) ({
-  marginLeft: '0.6rem',
-
-  '& p': { 
-    color: '#8799A5',
-    fontSize: '1rem',
-    fontFamily: [
-      'Roboto',
-    ].join(','),
-    fontStyle: 'normal',
-    fontWeight: 500,
-    letterSpacing: '0.03em',
-  },
-});
 
 const FollowButton = muiStyled(Button) ({
   width: '3.4rem',
