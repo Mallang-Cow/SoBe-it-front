@@ -9,6 +9,5 @@ export async function articeWrite(formData) {
         }
     });
 
-
   return data;
 }

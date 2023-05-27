@@ -11,14 +11,16 @@ import ProgressBar from "./ProgressBar";
 import { userIdState } from "../../recoil/userId";
 import { useRecoilState } from "recoil";
 import { deleteArticle } from "../../../api/deleteArticle";
+import { prevPageState } from "../../recoil/prevPage";
 
 export default function ArticleCard(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed, onPage } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
   const [time, setTime] = useState([]);
   const [userId, setUserId] = useRecoilState(userIdState);
   const nowTime = new Date();
+  const [prevPage, setPrevPage] = useRecoilState(prevPageState);
 
   // 글 정보 가져오기
   const {
@@ -27,9 +29,9 @@ export default function ArticleCard(props) {
     isError,
     error,
   } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(Number(articleSeq)), {
-    onSuccess: () => {
-      setThisArticleSeq(Number(article?.articleSeq));
-      setThisUserId(article?.user?.userId);
+    onSuccess: (response) => {
+      setThisArticleSeq(Number(response?.articleSeq));
+      setThisUserId(response?.user?.userId);
     },
     onError: () => {
       console.log("Error");
@@ -57,6 +59,7 @@ export default function ArticleCard(props) {
   function goToArticleDetail() {
     // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
     if (clickActive) {
+      setPrevPage(onPage);
       setArticleSeq(thisArticleSeq);
       setCenterContent("detail");
       window.scrollTo(0, 0);
@@ -118,8 +121,9 @@ export default function ArticleCard(props) {
   const { mutate: deleteArt } = useMutation(deleteArticle, {
     onSuccess: (response) => {
       console.log(response);
-      setCenterContent("home");
-      setReloadFeed(true);
+
+      if (onPage === "detail") setCenterContent("home"); // 상세 페이지에서 삭제한다면 홈으로 이동
+      else if (onPage === "home") setReloadFeed(true); // 리로드
     },
     onError: (response) => {
       console.log(response);

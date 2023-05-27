@@ -10,7 +10,7 @@ import ReplyLikeNotificationCard from "./ReplyLikeNotificationCard";
 import FollowNotificationCard from "./FollowNotificationCard";
 
 export default function Notifications(props) {
-  const { setArticleSeq, setCenterContent } = props;
+  const { setArticleSeq, setCenterContent, setUserId } = props;
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -50,13 +50,15 @@ export default function Notifications(props) {
           <FollowNotificationCard 
             key={ notification.notificationSeq }
             type={ notification.type }
-            followingUserNickname={ notification.followingUserNickname }
+            followingUserNickName={ notification.followingUserNickName }
             followingUserId={ notification.followingUserId }
             following={ notification.following }
             content = { notification.content }
             url={ notification.url }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setUserId={ setUserId }
           />
         );
       case 3: // 댓글 좋아요 알림
@@ -69,6 +71,8 @@ export default function Notifications(props) {
             notArticleSeq={ notification.notArticleSeq }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setArticleSeq={ setArticleSeq }
           />
         );
       case 4: // 게시글 좋아요 알림
@@ -80,6 +84,8 @@ export default function Notifications(props) {
             articleContent={ notification.articleContent }
             notArticleSeq={ notification.notArticleSeq }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setArticleSeq={ setArticleSeq }
           />
         );
       default:
