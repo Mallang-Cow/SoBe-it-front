@@ -10,7 +10,7 @@ import ReplyLikeNotificationCard from "./ReplyLikeNotificationCard";
 import FollowNotificationCard from "./FollowNotificationCard";
 
 export default function Notifications(props) {
-  const { setArticleSeq, setCenterContent } = props;
+  const { setArticleSeq, setCenterContent, setUserId } = props;
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
@@ -57,6 +57,8 @@ export default function Notifications(props) {
             url={ notification.url }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
+            setCenterContent={ setCenterContent }
+            setUserId={ setUserId }
           />
         );
       case 3: // 댓글 좋아요 알림
