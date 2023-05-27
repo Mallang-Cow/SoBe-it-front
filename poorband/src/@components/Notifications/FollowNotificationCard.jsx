@@ -89,7 +89,9 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
     }
   });
 
-  const handleFollow = () => {
+  const handleFollow = (event) => {
+    event.stopPropagation(); // 이벤트 버블링 중단
+    
     console.log("팔로우 또는 언팔로우할 사용자 아이디 : " + followingUserId);
 
     const handleUserId = {
