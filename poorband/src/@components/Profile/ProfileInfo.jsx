@@ -6,7 +6,7 @@ import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { useMutation } from "react-query";
 
 export default function ProfileInfo(props) {
-  const {setShowEdit, userId}=props;
+  const { setShowEdit, userId } = props;
   const [showFollowing, setShowFollowing] = useState(false);
   const [showFollower, setShowFollower] = useState(false);
   const [data, setData] = useState();
@@ -16,13 +16,13 @@ export default function ProfileInfo(props) {
   }, [data]);
 
   useEffect(() => {
-    targegtUserId({userId:userId});
+    targegtUserId({ userId: userId });
   }, [userId]);
 
-  console.log("useEffect")
-  console.log(userId)
+  console.log("useEffect");
+  console.log(userId);
 
-  const {mutate: targegtUserId} = useMutation (getProfileInfoData,{
+  const { mutate: targegtUserId } = useMutation(getProfileInfoData, {
     onSuccess: (response) => {
       console.log(response);
       setData(response);
@@ -31,48 +31,60 @@ export default function ProfileInfo(props) {
       console.log("error");
     },
   });
+  console.log(data);
 
   return (
     <ProfileInfoWrapper>
-      {/*프로필 이미지, 닉네임, 티어, ID, 한줄소개 불러오기*/}
       <img id="profile-img" src={data?.profileImg} alt="프로필 사진" />
-        <ProfileHeaderWrapper>
-          <div id="name-container">
-            <span className="bold">{data?.nickname}</span>
-            <img id="tier-img" src={TIER[data?.user?.userTier]} alt="티어" />
-            <span className="bold">@{data?.userId}</span>
-          </div>
-          {/*자신의 프로필인 경우, '프로필 편집' 버튼 보여주기*/}
-          {data?.status === 1 && (
-            <button onClick={() => setShowEdit(true)}>프로필 편집</button>
-          )}
-        </ProfileHeaderWrapper>
-
-        <span>{data?.introDetail}</span>
+      <ProfileTextWrapper>
+        <ProfileContextWrapper>
+          <NameWrapper>
+            <div id="name-container">
+              <p className="nickname">{data?.nickname}</p>
+              <p className="userId">@{data?.userId}</p>
+              <img id="tier-img" src={TIER[data?.user?.userTier]} alt="티어" />
+            </div>
+            {/*자신의 프로필인 경우, '프로필 편집' 버튼 보여주기*/}
+            {data?.status === 1 && <button onClick={() => setShowEdit(true)}>프로필 편집</button>}
+            {/* {data?.status === 2 && <button onClick={() => setShowEdit(true)}>팔로우</button>} */}
+            {/* {data?.status === 2 && <button onClick={() => setShowEdit(true)}>팔로잉</button>} */}
+          </NameWrapper>
+          <InformationWrapper>
+            <p>
+              안녕하세요. 민지입니다. 지금은 12시 50분!!안녕하세요. 민지입니다. 지금은 12시 50분!!안녕하세요.
+              민지입니다. 지금은 12시 50분!! 안녕하세요.
+            </p>
+          </InformationWrapper>
+        </ProfileContextWrapper>
 
         <ProfileFollowWrapper>
           {/*팔로잉 수(클릭시, Following로 이동), 팔로워 수(클릭시, Follower로 이동) 불러오기*/}
-          <div onClick={() => {setShowFollowing(true)}}>
-            <span >팔로잉 </span>
-            <span className="bold">{data?.followingCnt}</span>
-          </div>
+          <FollowWrapper
+            onClick={() => {
+              setShowFollowing(true);
+            }}>
+            <p>팔로잉</p>
+            <p className="followCnt">{data?.followingCnt}</p>
+          </FollowWrapper>
 
-          <div onClick={() => {setShowFollower(true)}}>
-            <span >팔로워 </span>
-            <span className="bold">{data?.followerCnt}</span>
-          </div>
-        </ProfileFollowWrapper>     
+          <FollowWrapper
+            onClick={() => {
+              setShowFollower(true);
+            }}>
+            <p>팔로워</p>
+            <p className="followCnt">{data?.followerCnt}</p>
+          </FollowWrapper>
+        </ProfileFollowWrapper>
+      </ProfileTextWrapper>
     </ProfileInfoWrapper>
   );
 }
 const ProfileInfoWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
+  ${({ theme }) => theme.fonts.regular};
   display: flex;
   align-items: center;
   padding: 3rem;
-  * {
-    margin: 0.5rem;
-  }
 
   hr {
     margin: 0;
@@ -91,24 +103,27 @@ const ProfileInfoWrapper = styled.section`
   align-items: center;
 
   #profile-img {
-    width: 3rem;
-    height: 3rem;
+    width: 10rem;
+    height: 10rem;
     border-radius: 1rem;
+    background-color: black;
   }
 
   #name-container {
-    width: 100%;
+    flex: auto;
     display: flex;
     align-items: center;
+    margin: 0;
   }
-  span.bold {
-    font: ${({ theme }) => theme.fonts.bold};
+  p {
+    ${({ theme }) => theme.fonts.regular};
   }
-  span.grey {
-    font: ${({ theme }) => theme.fonts.medium};
-    color: ${({ theme }) => theme.colors.grey};
-    width: fit-content;
-    block-size: fit-content;
+  p.nickname {
+    font-size: 2rem;
+  }
+  p.userId {
+    font-size: 1.6rem;
+    color: ${({ theme }) => theme.colors.darkgrey_2};
   }
 
   #tier-img {
@@ -117,8 +132,62 @@ const ProfileInfoWrapper = styled.section`
   }
 `;
 
-const ProfileHeaderWrapper = styled.section`
+const ProfileTextWrapper = styled.div`
+  height: 10rem;
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  flex: auto;
+  width: 53.9rem;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const ProfileContextWrapper = styled.div`
+  p {
+    text-overflow: hidden;
+  }
+  margin-bottom: 0.5rem;
+`;
+
+const FollowWrapper = styled.div`
+  font-size: 1.6rem;
+  display: flex;
+  p {
+    margin-right: 1rem;
+    color: ${({ theme }) => theme.colors.darkgrey_1};
+  }
+  p.followCnt {
+    color: ${({ theme }) => theme.colors.black};
+  }
+`;
+
+const NameWrapper = styled.section`
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  button {
+    border: 1px solid ${({ theme }) => theme.colors.mainpurple};
+    background-color: white;
+
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.mainpurple};
+    appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
+    text-align: center;
+
+    border-radius: 3rem;
+    height: 3rem;
+    width: 10rem;
+    cursor: pointer;
+  }
+  button:active {
+    outline: none;
+  }
+`;
+
+const InformationWrapper = styled.div`
+  font-size: 1.6rem;
+  color: ${({ theme }) => theme.colors.darkgrey_2};
+  overflow: hidden;
 `;
 
 const ProfileFollowWrapper = styled.section`
