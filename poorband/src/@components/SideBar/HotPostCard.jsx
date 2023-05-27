@@ -19,7 +19,7 @@ export default function HotPostCard(props) {
   const newData = {
     userId: "test1",
   };
-  console.log(thisArticleSeq);
+  // console.log(thisArticleSeq);
 
   useEffect(() => {
     hotPosts(newData);
@@ -29,7 +29,7 @@ export default function HotPostCard(props) {
     onSuccess: (response) => {
       setData(response?.data[props.idx]);
       setThisArticleSeq(Number(response?.data[props.idx]?.articleSeq));
-      console.log(response?.data[props.idx]?.articleSeq);
+      // console.log(response?.data[props.idx]?.articleSeq);
       // console.log(response.data[0]);
       // console.log(data?.user?.profileImageUrl);
     },
@@ -69,7 +69,7 @@ export default function HotPostCard(props) {
   // 좋아요 정보 Post 전송
   const { mutate: like } = useMutation(likeArticle, {
     onSuccess: (response) => {
-      console.log(response);
+      // console.log(response);
       hotPosts(thisArticleSeq);
     },
     onError: () => {

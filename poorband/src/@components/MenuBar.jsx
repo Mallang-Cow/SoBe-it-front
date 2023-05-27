@@ -25,11 +25,11 @@ export default function MenuBar(props) {
   //   userId: "test5",
   // };
 
-  useEffect(() => {
-    // myInfo();
-    console.log(centerContent);
-    console.log(nowUser.userSeq);
-  }, []);
+  // useEffect(() => {
+  //   // myInfo();
+  //   console.log(centerContent);
+  //   console.log(nowUser.userSeq);
+  // }, []);
 
   // const { mutate: myInfo } = useMutation(getMyInfo, {
   //   onSuccess: (response) => {
