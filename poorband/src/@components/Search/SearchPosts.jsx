@@ -2,11 +2,12 @@ import ArticleCard from "../common/ArticleCard";
 import { styled } from "styled-components";
 import { useInView } from "react-intersection-observer";
 import React, { useState, useEffect, useCallback } from "react";
-
+import axios from "axios";
 
 export default function SearchPosts(props) {
   const { setCenterContent, setArticleSeq, setUserId, reloadFeed, setReloadFeed, searchWord } = props;
   const [articles, setArticles] = useState([]);
+  const [articleType, setArticleType] = useState();
   const [lastArticleId, setLastArticleId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [ref, inView] = useInView();
@@ -26,6 +27,7 @@ export default function SearchPosts(props) {
           },
         })
         .then((res) => {
+          console.log("getItems() 호출성공!!!");
           const newArticles = res.data;
 
           newArticles.length > 2 ? setScrollFlag(true) : setScrollFlag(false);
@@ -50,6 +52,7 @@ export default function SearchPosts(props) {
 
     // 최초 렌더링 후 한 번만 실행
     useEffect(() => {
+      console.log("최초 렌더링 후 한 번만 실행");
       setLoading(true);
       getItems(null, false);
     }, []);
