@@ -6,7 +6,7 @@ import { signout } from "../../api/userAPI";
 import { ACCESS_TOKEN } from "../../api/ApiService";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 import { getHotPost } from "../../api/getHotPost";
-import { getProfileInfo } from "../../api/getProfileInfo";
+import { getProfileInfo } from "../../api/getMyInfo";
 import { getChallenge } from "../../api/getChallenge";
 import { userIdState } from "../recoil/userId";
 import { useRecoilState } from "recoil";
@@ -36,7 +36,7 @@ export default function MenuBar(props) {
     profileInfo(newData);
   }, []);
 
-  const { mutate: profileInfo } = useMutation(getProfileInfo, {
+  const { mutate: profileInfo } = useMutation(getMyInfo, {
     onSuccess: (response) => {
       setData(response.data);
       console.log("성공");
