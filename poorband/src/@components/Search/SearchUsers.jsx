@@ -4,7 +4,7 @@ import { searchUser } from "../../../api/searchAPI";
 import UserCard from "../common/UserCard";
 
 export default function SearchUsers(props) {
-  const { searchWord } = props;
+  const { searchWord, setCenterContent, setUserId } = props;
   const [searchUserResult, setSearchUserResult] = useState([]);
   const [isError, setIsError] = useState(false);
 
@@ -48,6 +48,8 @@ export default function SearchUsers(props) {
           introduction={ resultUser.introduction }
           profileImgUrl={ resultUser.profileImgUrl }
           status={ resultUser.status }
+          setCenterContent={ setCenterContent }
+          setUserId={ setUserId }
         />
       )) }
 

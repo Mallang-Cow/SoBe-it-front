@@ -10,8 +10,14 @@ import { TIER } from "../../../core/tierImage";
 import { followUser, unFollowUser } from "../../../api/followAPI";
 
 export default function UserCard(props) {
-  const { userId, nickname, userTier, introduction, profileImgUrl, status } = props;
+  const { userId, nickname, userTier, introduction, profileImgUrl, status, setCenterContent, setUserId } = props;
   const [isFollowing, setIsFollowing] = useState(status);
+
+  // 나를 팔로우한 사용자 프로필 페이지로 이동
+  function goToProfile() {
+    setUserId(userId);
+    setCenterContent("profile");
+  }
 
   // 사용자 프로필 이미지
   let avatarImg = null;
@@ -77,7 +83,7 @@ export default function UserCard(props) {
   }
 
   return (
-    <NotificationCardButton disableRipple>
+    <NotificationCardButton onClick={ goToProfile } disableRipple>
       <ListItem>        
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
           {/* <Avatar style={{ width: "6rem", height: "6rem" }}> */}
