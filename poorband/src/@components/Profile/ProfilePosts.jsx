@@ -14,38 +14,35 @@ export default function ProfilePosts(props) {
 
   const [ref, inView] = useInView();
 
-  const getItems = useCallback(
-    async () => {
-      await axios
-        .get(`http://localhost:9000/article/list`, {
-          headers: {
-            Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
-          },
-          params: {
-            lastArticleId: lastArticleId, // Long
-            userId: userId, // String
-          },
-        })
-        .then((res) => {
-          const newArticles = res.data;
-          setArticles(prevState => [...prevState, ...newArticles])
+  const getItems = useCallback(async () => {
+    await axios
+      .get(`http://localhost:9000/article/list`, {
+        headers: {
+          Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+        params: {
+          lastArticleId: lastArticleId, // Long
+          userId: userId, // String
+        },
+      })
+      .then((res) => {
+        const newArticles = res.data;
+        setArticles((prevState) => [...prevState, ...newArticles]);
 
-          // set the lastArticleId as the last fetched article's id
-          const lastFetchedArticle = newArticles[newArticles.length - 1];
-          if (lastFetchedArticle) {
-            setLastArticleId(lastFetchedArticle.articleSeq);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          return;
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    },
-    [lastArticleId],
-  );
+        // set the lastArticleId as the last fetched article's id
+        const lastFetchedArticle = newArticles[newArticles.length - 1];
+        if (lastFetchedArticle) {
+          setLastArticleId(lastFetchedArticle.articleSeq);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        return;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [lastArticleId]);
 
   // 최초 렌더링 후 한 번만 실행
   useEffect(() => {
@@ -77,6 +74,7 @@ export default function ProfilePosts(props) {
                 setArticleType={setArticleType}
                 clickActive={true}
                 setReloadFeed={setReloadFeed}
+                onPage={"profile"}
               />
               <div ref={ref}></div>
             </ArticleWrapper>
@@ -90,6 +88,7 @@ export default function ProfilePosts(props) {
                 setArticleType={setArticleType}
                 clickActive={true}
                 setReloadFeed={setReloadFeed}
+                onPage={"profile"}
               />
               <div></div>
             </ArticleWrapper>

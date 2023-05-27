@@ -8,98 +8,138 @@ export default function ChallengeCard() {
   return (
     <ChallengeCardWrapper>
       <HeaderWrapper>
+        <ProfileWrapper>
           <img id="profile-img" src={ARTICLE_DETAIL.user.profileImageUrl} alt="프로필사진" />
-          <span className="bold">{ARTICLE_DETAIL.user.nickname}</span>
-          <span className="bold">진행중/도전과제 상태</span>
-          <button>공유/구현x</button>
-          <button>삭제하기</button>
+          <p className="nickname">{ARTICLE_DETAIL.user.nickname}</p>
+          <p className="userId">@userId</p>
+          <img id="tier-img" src={TIER["BRONZE"]} alt="티어" />
+        </ProfileWrapper>
+
+        <OptionWrapper>
+          <p className="bold">진행중</p>
+          <button>
+            <span class="material-symbols-rounded">close</span>
+          </button>
+        </OptionWrapper>
       </HeaderWrapper>
 
-      <ChallengeTitle>도전과제 제목</ChallengeTitle>
+      <ChallengeTitle>
+        <p> 도전과제 제목</p>
+      </ChallengeTitle>
 
-      <BarWrapper>
-        <ChallengeDate>
-          <span>기간</span>
-          <span>2023-05-12~2023-05-18</span>
-        </ChallengeDate>
+      <ChallengeDate>
+        <p className="name">기간</p>
+        <p className="value">2023-05-12 ~ 2023-05-18</p>
+      </ChallengeDate>
 
-        {/* 날짜 경과 그래프 */}
-        <ProgressBarWrapper>
-          <ProgressBarContainer>
-            <ProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={50}></ProgressBar>
-          </ProgressBarContainer>
-          <p>달성일수 3/6</p>
-        </ProgressBarWrapper>
+      {/* 날짜 경과 그래프 */}
+      <ProgressBarWrapper>
+        <ProgressBar reverse={0} basecolor={"#C4C4C4"} barcolor={"#845EC2"} percentage={50}></ProgressBar>
+        <p className="desc">달성일수 3/6</p>
+      </ProgressBarWrapper>
+      <ChallengeDate>
+        <p className="name">목표 금액</p>
+        <p className="value">{(10000).toLocaleString("en-US")}원</p>
+      </ChallengeDate>
+      <ChallengeDate>
+        <p className="name">잔여 금액</p>
+        <p className="value">{(5000).toLocaleString("en-US")}원</p>
+      </ChallengeDate>
 
-        <RemainWrapper>
-          <div id="remain-container">
-            <span className="bold">목표 금액</span>
-            <span className="gray">매일 10000원</span>
-            <span className="bold">잔여 금액</span>
-            <span className="gray">3100원</span>
-          </div>
-        </RemainWrapper>
-
-        {/* 소비(잔여금액)와 도전금액 비교 그래프 */}
-        <ProgressBarWrapper>
-          <ProgressBarContainer>
-            <ProgressBar baseColor={"#E7E7E7"} barColor={"#845EC2"} percentage={31}></ProgressBar>
-          </ProgressBarContainer>
-          <p>잔여금액 31%</p>
-        </ProgressBarWrapper>
-      </BarWrapper>
-    </ChallengeCardWrapper>  
+      {/* 소비(잔여금액)와 도전금액 비교 그래프 */}
+      <ProgressBarWrapper>
+        <ProgressBar reverse={0} basecolor={"#C4C4C4"} barcolor={"#845EC2"} percentage={50}></ProgressBar>
+        <p className="desc">잔여금액 50%</p>
+      </ProgressBarWrapper>
+    </ChallengeCardWrapper>
   );
 }
 const ChallengeCardWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
-  padding: 3rem;
-  * {
-    margin: 0.5rem;
-  }
+  padding: 2rem;
+  margin-bottom: 2rem;
+  ${({ theme }) => theme.shadows.card};
 
-  hr {
-    margin: 0;
-    background: ${({ theme }) => theme.colors.lightgrey_1};
-    height: 0.1rem;
-    border: 0;
+  p.name {
+    color: ${({ theme }) => theme.colors.darkgrey_2};
+    ${({ theme }) => theme.fonts.regular};
+    font-size: 1.6rem;
   }
-  hr.dot {
-    margin: 0;
-    background: ${({ theme }) => theme.colors.lightgrey_1};
-    height: 0.1rem;
-    border: 0;
+  p.value {
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.fonts.bold};
+    font-size: 1.6rem;
   }
-
-  span.bold {
-    font: ${({ theme }) => theme.fonts.bold};
+  p.desc {
+    color: ${({ theme }) => theme.colors.darkgrey_1};
+    ${({ theme }) => theme.fonts.regular};
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: end;
+    text-align: right;
   }
 `;
 
 const HeaderWrapper = styled.section`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-size: 1.4rem;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+`;
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  p.nickname {
+    ${({ theme }) => theme.fonts.bold};
+    margin: 0 0.5rem 0 1rem;
+  }
+  p.userId {
+    color: ${({ theme }) => theme.colors.darkgrey_1};
+    margin: 0 0.5rem;
+  }
   #profile-img {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: 1rem;
+  }
+
+  #tier-img {
+    width: 2rem;
+    height: 2rem;
+  }
+`;
+const OptionWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-left: 1rem;
   }
 `;
 
-const ChallengeTitle = styled.h1`
+const ChallengeTitle = styled.div`
   display: flex;
+  width: 100%;
   justify-content: center;
-  font: ${({ theme }) => theme.fonts.bold};
+  ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
+  padding: 1rem 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 `;
 
 const ChallengeDate = styled.div`
   display: flex;
   justify-content: space-between;
+  padding: 1rem 0;
 `;
 
 const ProgressBarWrapper = styled.div`
-  padding: 2rem 1rem;
-  display: flex;
   width: 100%;
   justify-content: space-between;
 

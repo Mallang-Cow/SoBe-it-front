@@ -11,13 +11,15 @@ import { userIdState } from "../recoil/userId";
 import { useRecoilState } from "recoil";
 import { getNowUser } from "../../api/getNowUser";
 import { getMyInfo } from "../../api/getMyInfo";
+import { nowUserState } from "../recoil/nowUserInfo";
 
 export default function MenuBar(props) {
-  const { centerContent, setCenterContent, nowUser } = props;
+  const { centerContent, setCenterContent } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const [thisUserId, setThisUserId] = useState("");
   const [userId, setUserId] = useRecoilState(userIdState);
+  const [nowUser, setNowUser] = useRecoilState(nowUserState);
 
   const [data, setData] = useState([]);
 
@@ -51,7 +53,7 @@ export default function MenuBar(props) {
 
   // 글 작성자 프로필 페이지로 이동
   function goToProfile() {
-    setUserId(nowUser.userId);
+    setUserId(nowUser?.userId);
     setCenterContent("profile");
   }
 
