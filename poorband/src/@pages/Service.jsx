@@ -105,10 +105,10 @@ export default function Service() {
             setCenterContent={setCenterContent}
             setUserId={setUserId}
             articleSeq={Number(articleSeq)}
-            clickActive={true}
-            setArticleSeq={ setArticleSeq }
-            searchWord={ searchWord }
-            setSearchWord={ setSearchWord }
+            clickactive={"true"}
+            setArticleSeq={setArticleSeq}
+            searchWord={searchWord}
+            setSearchWord={setSearchWord}
           />
         </SideBarWrapper>
       </ServiceWrapper>
