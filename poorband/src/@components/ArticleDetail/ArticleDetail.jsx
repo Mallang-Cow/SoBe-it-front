@@ -76,12 +76,6 @@ export default function ArticleDetail(props) {
         {commentList?.map((x) => (
           <CommentCard comment={x} setReload={setReload} />
         ))}
-
-        <CommentCard />
-        <ReCommentWrapper>
-          <Temp></Temp>
-          <CommentCard />
-        </ReCommentWrapper>
       </ContentWrapper>
     </>
   );
