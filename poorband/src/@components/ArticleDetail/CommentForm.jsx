@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import { writeComment } from "../../../api/writeComment";
 import { useMutation } from "react-query";
@@ -21,9 +21,12 @@ export default function CommentForm(props) {
       alert("댓글을 작성해주세요.");
     } else {
       setData({ article_seq: articleSeq, reply_text: text, parent_reply_seq: 0, is_updated: 0 });
-      //data && writeReply(data);
     }
   }
+
+  useEffect(() => {
+    data && writeReply(data);
+  }, [data]);
 
   // 작성 POST
   const { mutate: writeReply } = useMutation(writeComment, {
