@@ -5,8 +5,7 @@ import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { useMutation } from "react-query";
 
 export default function ProfileInfo(props) {
-  const { setShowEdit, userId } = props;
-  const [showFollowing, setShowFollowing] = useState(false);
+  const { setCenterContent, setShowEdit, userId } = props;
   const [showFollower, setShowFollower] = useState(false);
   const [data, setData] = useState();
 
@@ -28,6 +27,11 @@ export default function ProfileInfo(props) {
     },
   });
   console.log(data);
+
+  const showFollowing = () => {
+    console.log("팔로잉 목록 보여 주기");
+    setCenterContent("following");
+  }
 
   return (
     <ProfileInfoWrapper>
@@ -54,7 +58,7 @@ export default function ProfileInfo(props) {
           {/*팔로잉 수(클릭시, Following로 이동), 팔로워 수(클릭시, Follower로 이동) 불러오기*/}
           <FollowWrapper
             onClick={() => {
-              setShowFollowing(true);
+              showFollowing();
             }}>
             <p>팔로잉</p>
             <p className="followCnt">{data?.followingCnt}</p>
