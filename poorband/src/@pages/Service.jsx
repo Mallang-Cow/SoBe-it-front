@@ -33,7 +33,7 @@ export default function Service() {
   } = useQuery(["nowUserInfo"], () => getNowUser(), {
     onSuccess: (response) => {
       setNowUser(response);
-      console.log(response);
+      // console.log(response);
     },
     onError: () => {
       console.log("Error");
@@ -99,6 +99,7 @@ export default function Service() {
             setCenterContent={ setCenterContent } 
             setUserId={ setUserId } 
             articleSeq={Number(articleSeq)}
+            clickActive={true}
             setArticleSeq={ setArticleSeq }
             searchWord={ searchWord }
             setSearchWord={ setSearchWord }

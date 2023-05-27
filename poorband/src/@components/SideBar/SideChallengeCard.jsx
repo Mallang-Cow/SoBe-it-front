@@ -3,21 +3,44 @@ import { styled } from "styled-components";
 import ChallengeProgressBar from "./ChallengeProgressBar";
 import { getChallenge } from "../../../api/getChallenge";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { nowUserState } from "../../recoil/nowUserInfo";
+import { useRecoilState } from "recoil";
 
 export default function SideChallengeCard(props) {
-  const [data, setData] = useState([]);
+  // const { nowUser } = props;
 
-  const newData = {
-    userId: "test5",
-  };
+  const [data, setData] = useState([]);
+  const [percentage, setPercentage] = useState(0);
+  // const [thisNowUser, setThisNowUser] = useState("");
+
+  const [newData, setNewData] = useState([]);
+  const [nowUser] = useRecoilState(nowUserState);
 
   useEffect(() => {
-    challenge(newData);
-  }, []);
+    setNewData({
+      userId: nowUser?.userId,
+    });
+  }, [nowUser]);
+
+  useEffect(() => {
+    // setThisNowUser(nowUser);
+    // console.log(newData);
+
+    // console.log(nowUser?.userId);
+    newData && challenge(newData);
+  }, [newData]);
 
   const { mutate: challenge } = useMutation(getChallenge, {
     onSuccess: (response) => {
-      setData(response.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+      // console.log(response);
+      setData(response?.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+
+      setPercentage(
+        response?.data[response.data.length - 1]?.consumption / response?.data[response.data.length - 1]?.goalAmount,
+      ); // progress bar의 percentage
+      // console.log(response.data[response.data.length - 1]);
+      // console.log(response.data[response.data.length - 1].goalAmount);
+      // console.log(percentage);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
@@ -25,10 +48,9 @@ export default function SideChallengeCard(props) {
       }
     },
   });
-
   return (
     <>
-      {data && (
+      {data !== null && (
         <Wrapper>
           <TitleWrapper>
             <hr></hr>
@@ -45,7 +67,10 @@ export default function SideChallengeCard(props) {
 
             <ProgressBarWrapper>
               <ProgressBarContainer>
-                <ChallengeProgressBar basecolor={"#E7E7E7"} barcolor={"#845EC2"} percentage={70}></ChallengeProgressBar>
+                <ChallengeProgressBar
+                  basecolor={"#E7E7E7"}
+                  barcolor={"#845EC2"}
+                  percentage={percentage}></ChallengeProgressBar>
               </ProgressBarContainer>
             </ProgressBarWrapper>
           </BarWrapper>
