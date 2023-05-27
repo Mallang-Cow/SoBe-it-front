@@ -5,6 +5,7 @@ import MenuBar from "../@components/MenuBar";
 import SideBar from "../@components/SideBar/SideBar";
 import Statistics from "../@components/Statistics/Statistics";
 import Profile from "../@components/Profile/Profile";
+import Following from "../@components/Following";
 import Notifications from "../@components/Notifications/Notifications";
 import SearchResults from "../@components/Search/SearchResults";
 import ArticleDetail from "../@components/ArticleDetail/ArticleDetail";
@@ -73,7 +74,7 @@ export default function Service() {
               setArticleSeq={setArticleSeq}
             />
           )}
-          {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
+          {centerContent === "following" && <Following setCenterContent={ setCenterContent } setUserId={ setUserId } userId={ userId } />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "search" && (
             <SearchResults

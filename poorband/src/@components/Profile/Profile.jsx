@@ -17,9 +17,9 @@ export default function Profile(props) {
 
         {/* 프로필 편집 시 편집 창으로 바뀌기 */}
         {!showEdit ? (
-          <ProfileInfo showEdit={showEdit} setShowEdit={setShowEdit} setUserId={setUserId} userId={userId} />
+          <ProfileInfo setCenterContent={ setCenterContent } showEdit={ showEdit } setShowEdit={ setShowEdit } userId={ userId } setUserId={ setUserId } />
         ) : (
-          <ProfileEdit showEdit={showEdit} setShowEdit={setShowEdit} setUserId={setUserId} userId={userId} />
+          <ProfileEdit showEdit={ showEdit } setShowEdit={ setShowEdit } userId={ userId } setUserId={ setUserId } />
         )}
 
         {/* 메뉴 */}
