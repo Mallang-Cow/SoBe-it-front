@@ -44,7 +44,7 @@ export default function Service() {
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} nowUser={nowUser} />
+          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} />
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}
@@ -66,17 +66,23 @@ export default function Service() {
             <Notifications setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
           )}
           {centerContent === "profile" && (
-            <Profile setCenterContent={setCenterContent} setUserId={setUserId} userId={userId} />
+            <Profile
+              setCenterContent={setCenterContent}
+              setUserId={setUserId}
+              userId={userId}
+              setArticleSeq={setArticleSeq}
+            />
           )}
           {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "search" && (
-            <SearchResults 
-              setCenterContent={ setCenterContent } 
-              setUserId={ setUserId } 
-              setArticleSeq={ setArticleSeq }
-              searchWord={ searchWord }
-              setSearchWord={ setSearchWord } />
+            <SearchResults
+              setCenterContent={setCenterContent}
+              setUserId={setUserId}
+              setArticleSeq={setArticleSeq}
+              searchWord={searchWord}
+              setSearchWord={setSearchWord}
+            />
           )}
           {centerContent === "detail" && (
             <ArticleDetail
@@ -95,9 +101,9 @@ export default function Service() {
         </CenterWrapper>
 
         <SideBarWrapper>
-          <SideBar            
-            setCenterContent={ setCenterContent } 
-            setUserId={ setUserId } 
+          <SideBar
+            setCenterContent={setCenterContent}
+            setUserId={setUserId}
             articleSeq={Number(articleSeq)}
             clickActive={true}
             setArticleSeq={ setArticleSeq }

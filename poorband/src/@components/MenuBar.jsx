@@ -19,9 +19,9 @@ export default function MenuBar(props) {
   const navigate = useNavigate();
   const [thisUserId, setThisUserId] = useState("");
   const [userId, setUserId] = useRecoilState(userIdState);
+  const [nowUser, setNowUser] = useRecoilState(nowUserState);
 
   const [data, setData] = useState([]);
-
   const [nowUser] = useRecoilState(nowUserState);
 
   // const newData = {
@@ -54,7 +54,7 @@ export default function MenuBar(props) {
 
   // 글 작성자 프로필 페이지로 이동
   function goToProfile() {
-    setUserId(nowUser.userId);
+    setUserId(nowUser?.userId);
     setCenterContent("profile");
   }
 
