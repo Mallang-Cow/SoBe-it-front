@@ -51,7 +51,7 @@ export default function MenuBar(props) {
 
   // 글 작성자 프로필 페이지로 이동
   function goToProfile() {
-    setUserId(thisUserId);
+    setUserId(nowUser.userId);
     setCenterContent("profile");
   }
 
