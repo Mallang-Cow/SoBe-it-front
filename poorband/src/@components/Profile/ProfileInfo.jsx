@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { ARTICLE_DETAIL } from "../../../core/articleData";
+import React, { useEffect, useState } from "react";
 import { TIER } from "../../../core/tierImage";
 import { styled } from "styled-components";
 import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { useMutation } from "react-query";
 
 export default function ProfileInfo(props) {
-  const {setShowEdit, userId}=props;
+  const {setShowEdit, userId, setUserId}=props;
   const [showFollowing, setShowFollowing] = useState(false);
   const [showFollower, setShowFollower] = useState(false);
   const [data, setData] = useState();
@@ -44,7 +43,7 @@ export default function ProfileInfo(props) {
           </div>
           {/*자신의 프로필인 경우, '프로필 편집' 버튼 보여주기*/}
           {data?.status === 1 && (
-            <button onClick={() => setShowEdit(true)}>프로필 편집</button>
+            <button setUserId={setUserId} userId={userId} onClick={() => setShowEdit(true)}>프로필 편집</button>
           )}
         </ProfileHeaderWrapper>
 
