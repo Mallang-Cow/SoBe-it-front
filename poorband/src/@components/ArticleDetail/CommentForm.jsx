@@ -1,7 +1,43 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { styled } from "styled-components";
+import { writeComment } from "../../../api/writeComment";
+import { useMutation } from "react-query";
 
-export default function CommentForm() {
+export default function CommentForm(props) {
+  const { articleSeq, setReload } = props;
+  const [data, setData] = useState({ article_seq: 0, reply_text: "", parent_reply_seq: 0, is_updated: 0 });
+  const [text, setText] = useState("");
+
+  const textRef = useRef(null);
+
+  // 글 작성
+  function clickSubmit() {
+    console.log(textRef.current.value);
+    if (textRef.current.value === "") {
+      alert("댓글을 작성해주세요.");
+    } else {
+      setData({ article_seq: articleSeq, reply_text: text, parent_reply_seq: 0, is_updated: 0 });
+      //data && writeReply(data);
+    }
+  }
+
+  // 작성 POST
+  const { mutate: writeReply } = useMutation(writeComment, {
+    onSuccess: (response) => {
+      console.log(response);
+      setReload(true);
+      setText("");
+    },
+    onError: (response) => {
+      console.log(response);
+      console.log("error");
+    },
+  });
+
+  function getText(e) {
+    setText(e.target.value);
+  }
+
   return (
     <Wrapper>
       <ProfileContainer>
@@ -10,9 +46,14 @@ export default function CommentForm() {
         <p className="id">아이디</p>
         <img src="" alt="티어" className="tier-img" />
       </ProfileContainer>
-      <textarea type="text" placeholder="댓글을 작성하세요." />
+      <textarea type="text" placeholder="댓글을 작성하세요." onChange={getText} value={text} ref={textRef} />
       <ButtonContainer>
-        <button>작성하기</button>
+        <button
+          onClick={() => {
+            clickSubmit();
+          }}>
+          작성하기
+        </button>
       </ButtonContainer>
     </Wrapper>
   );
