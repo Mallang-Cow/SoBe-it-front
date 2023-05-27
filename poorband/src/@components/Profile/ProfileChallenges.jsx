@@ -86,6 +86,7 @@ const NextTierCnt = styled.div`
   margin-top: 1rem;
   display: flex;
   justify-content: end;
+  margin-bottom: 2rem;
 
   font-size: 1.4rem;
 

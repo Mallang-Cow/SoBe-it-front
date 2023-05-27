@@ -10,7 +10,7 @@ export default function ChallengeCardMake(props) {
   const [cTitle, setCTitle] = useState("");
   const [cStartDate, setCStartDate] = useState(new Date());
   const [cEndDate, setCEndDate] = useState(new Date());
-  const [cRoutine, setCRoutine] = useState("DAILY");
+  const [cRoutine, setCRoutine] = useState("daily");
   const [cGoalAmount, setCGoalAmount] = useState(null);
 
   const [newChallenge, setNewChallenge] = useState({
