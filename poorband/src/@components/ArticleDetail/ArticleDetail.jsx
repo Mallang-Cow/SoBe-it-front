@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 export default function ArticleDetail(props) {
   const { articleSeq, setCenterContent, setArticleSeq, setUserId, backPage } = props;
   const [articleType, setArticleType] = useState(1);
-  const [clickActive, setClickActive] = useState(false);
+  const [clickactive, setClickactive] = useState(false);
   const [commentList, setCommentList] = useState();
   const [reload, setReload] = useState(false);
   const [thisArticleSeq, setThisArticleSeq] = useState();
@@ -63,7 +63,7 @@ export default function ArticleDetail(props) {
           <ArticleCard
             articleSeq={Number(articleSeq)}
             setArticleType={setArticleType}
-            clickActive={clickActive}
+            clickactive={clickactive}
             setCenterContent={setCenterContent}
             setArticleSeq={setArticleSeq}
             setUserId={setUserId}

@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil";
 // import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
 export default function HotPostCard(props) {
-  const { clickActive, setCenterContent, setArticleSeq } = props;
+  const { clickactive, setCenterContent, setArticleSeq } = props;
 
   const [data, setData] = useState([]);
 
@@ -57,8 +57,8 @@ export default function HotPostCard(props) {
   }
 
   function goToArticleDetail() {
-    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
-    if (clickActive) {
+    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickactive=false)
+    if (clickactive) {
       setArticleSeq(thisArticleSeq);
       setCenterContent("detail");
     }
@@ -97,7 +97,7 @@ export default function HotPostCard(props) {
             <span>{data?.user?.nickname}</span>
           </ProfileWrapper>
           <ReceiptContainer
-            clickActive={clickActive}
+            clickactive={clickactive}
             onClick={() => {
               goToArticleDetail();
             }}>
@@ -144,7 +144,7 @@ export default function HotPostCard(props) {
 }
 
 const Wrapper = styled.div`
-  cursor: ${({ clickActive }) => clickActive && "pointer"};
+  cursor: ${({ clickactive }) => clickactive && "pointer"};
 
   padding: 2rem 1rem;
   * {

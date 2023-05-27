@@ -14,7 +14,7 @@ import { deleteArticle } from "../../../api/deleteArticle";
 import { prevPageState } from "../../recoil/prevPage";
 
 export default function ArticleCard(props) {
-  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickActive, setReloadFeed, onPage } = props;
+  const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickactive, setReloadFeed, onPage } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
   const [time, setTime] = useState([]);
@@ -57,8 +57,8 @@ export default function ArticleCard(props) {
 
   // 상세 페이지로 이동
   function goToArticleDetail() {
-    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickActive=false)
-    if (clickActive) {
+    // 상세 페이지의 경우 디테일 페이지 이동 클릭 비활성화 (clickactive=false)
+    if (clickactive) {
       setPrevPage(onPage);
       setArticleSeq(thisArticleSeq);
       setCenterContent("detail");
@@ -171,7 +171,7 @@ export default function ArticleCard(props) {
         {/* 더보기 아이콘 넣기 */}
       </ProfileContainer>
       <Body
-        clickActive={clickActive}
+        clickactive={clickactive}
         onClick={() => {
           goToArticleDetail();
         }}>
@@ -419,7 +419,7 @@ const CategoryContainer = styled.div`
 `;
 
 const Body = styled.div`
-  cursor: ${({ clickActive }) => clickActive && "pointer"};
+  cursor: ${({ clickactive }) => clickactive && "pointer"};
 `;
 const ContextContainer = styled.div`
   display: flex;
