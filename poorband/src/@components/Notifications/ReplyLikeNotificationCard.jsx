@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
@@ -6,8 +7,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
+import { deleteOneNotification } from "../../../api/notificationAPI";
 
-export default function ReplyLikeNotificationCard({ type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq }) {
+export default function ReplyLikeNotificationCard({ notificationSeq, type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq, onDelete }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
 
@@ -43,9 +45,34 @@ export default function ReplyLikeNotificationCard({ type, content, articleConten
     else setTime(["seconds", nowDate.getSeconds() - notificationDate.getSeconds()]); // 초 차이
   }, []);
 
+  const { mutate: deleteOneNotificationMutation } = useMutation(deleteOneNotification, {
+    onSuccess: (response) => {
+      if (response) {
+        console.log("댓글 좋아요 알림 삭제 성공");
+        onDelete(notificationSeq);
+      }
+      else {
+        console.log("댓글 좋아요 알림 삭제 실패");
+      }
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("댓글 좋아요 알림 삭제 과정에 오류가 발생했습니다.");
+      }
+    },
+  });
+
   const deleteNotification = (event) => {
     event.stopPropagation(); // 이벤트 버블링 중단
     console.log("삭제 버튼 클릭");
+
+    const notificationDeleteDTO = {
+      notificationSeq: notificationSeq,
+      type: type,
+    };
+
+    console.log(notificationDeleteDTO);
+    deleteOneNotificationMutation(notificationDeleteDTO);
   };
 
   return (

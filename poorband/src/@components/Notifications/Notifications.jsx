@@ -76,6 +76,7 @@ export default function Notifications(props) {
         return (
           <ReplyLikeNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -84,6 +85,7 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 4: // 게시글 좋아요 알림
