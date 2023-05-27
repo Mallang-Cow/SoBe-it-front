@@ -117,7 +117,7 @@ export default function ChallengeCardMake(props) {
             <p className="name">금액</p>
             <GoalAmountInput
               type="text"
-              placeholder="금액을 입력하시오."
+              placeholder="금액을 입력하세요."
               onChange={(e) => handleAmountChange(e)}
               value={addComma(cGoalAmount) || ""}
             />
@@ -246,12 +246,13 @@ const RadioBox = styled.div`
   display: flex;
   align-items: center;
   flex: auto;
-  justify-content: start;
+  justify-content: space-evenly;
   ${({ theme }) => theme.fonts.regular};
   font-size: 1.6rem;
   label {
     display: flex;
     align-items: center;
+    flex: auto;
   }
   p {
     margin-left: 0.5rem;
@@ -273,6 +274,7 @@ const CCEtcWrapper = styled.section`
 const Price = styled.div`
   display: flex;
   align-items: center;
+  width: 42%;
 `;
 
 const GoalAmountInput = styled.input`
