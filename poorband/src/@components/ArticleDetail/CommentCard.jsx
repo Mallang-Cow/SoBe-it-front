@@ -28,7 +28,7 @@ export default function CommentCard(props) {
   // 댓글 삭제
   function delComment() {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      deleteReply({ comment: thisArticleSeq });
+      deleteReply({ articleSeq: Number(comment?.reply_seq) });
     }
   }
 
@@ -36,7 +36,7 @@ export default function CommentCard(props) {
   const { mutate: deleteReply } = useMutation(deleteComment, {
     onSuccess: (response) => {
       console.log(response);
-      //queryClient.invalidateQueries("");
+      setReload(true);
     },
     onError: (response) => {
       console.log(response);
@@ -55,7 +55,13 @@ export default function CommentCard(props) {
 
         {comment?._reply_writer && (
           <CloseContainer className="close">
-            <span className="material-symbols-rounded">close</span>{" "}
+            <span
+              className="material-symbols-rounded"
+              onClick={() => {
+                delComment();
+              }}>
+              close
+            </span>
           </CloseContainer>
         )}
       </ProfileContainer>
