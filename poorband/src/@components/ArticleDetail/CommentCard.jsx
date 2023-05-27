@@ -46,7 +46,7 @@ export default function CommentCard(props) {
   // 댓글 삭제
   function delComment() {
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
-      deleteReply({ articleSeq: Number(comment?.reply_seq) });
+      deleteReply({ replySeq: Number(comment?.reply_seq) });
     }
   }
 

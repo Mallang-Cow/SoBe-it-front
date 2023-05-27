@@ -20,8 +20,8 @@ export default function CommentForm(props) {
     if (textRef.current.value === "") {
       alert("댓글을 작성해주세요.");
     } else {
-      setData({ article_seq: articleSeq, reply_text: text, parent_reply_seq: 0, is_updated: 0 });
-      //data && writeReply(data);
+      setData({ article_seq: articleSeq, reply_text: textRef.current.value, parent_reply_seq: 0, is_updated: 0 });
+      data && writeReply(data);
     }
   }
 
