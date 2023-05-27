@@ -21,6 +21,7 @@ export default function Service() {
   const [articleSeq, setArticleSeq] = useState(0);
   const [reloadFeed, setReloadFeed] = useState(false);
   const [nowUser, setNowUser] = useRecoilState(nowUserState);
+  const [searchWord, setSearchWord] = useState("");
 
   // 접속 유저 세팅
   // 유저 정보 가져오기
@@ -32,6 +33,7 @@ export default function Service() {
   } = useQuery(["nowUserInfo"], () => getNowUser(), {
     onSuccess: (response) => {
       setNowUser(response);
+      console.log(response);
     },
     onError: () => {
       console.log("Error");
@@ -42,7 +44,7 @@ export default function Service() {
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} setUserId={setUserId} />
+          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} nowUser={nowUser} />
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}
@@ -69,7 +71,12 @@ export default function Service() {
           {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "search" && (
-            <SearchResults setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
+            <SearchResults 
+              setCenterContent={ setCenterContent } 
+              setUserId={ setUserId } 
+              setArticleSeq={ setArticleSeq }
+              searchWord={ searchWord }
+              setSearchWord={ setSearchWord } />
           )}
           {centerContent === "detail" && (
             <ArticleDetail
@@ -88,11 +95,13 @@ export default function Service() {
         </CenterWrapper>
 
         <SideBarWrapper>
-          <SideBar
+          <SideBar            
+            setCenterContent={ setCenterContent } 
+            setUserId={ setUserId } 
             articleSeq={Number(articleSeq)}
-            setCenterContent={setCenterContent}
-            setArticleSeq={setArticleSeq}
-            setUserId={setUserId}
+            setArticleSeq={ setArticleSeq }
+            searchWord={ searchWord }
+            setSearchWord={ setSearchWord }
           />
         </SideBarWrapper>
       </ServiceWrapper>
