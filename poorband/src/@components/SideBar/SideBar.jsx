@@ -33,7 +33,7 @@ export default function SideBar(props) {
               setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
-              clickActive={true}
+              clickActive={clickActive}
             />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
@@ -42,7 +42,7 @@ export default function SideBar(props) {
               setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
-              clickActive={true}
+              clickActive={clickActive}
             />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
@@ -51,7 +51,7 @@ export default function SideBar(props) {
               setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
-              clickActive={true}
+              clickActive={clickActive}
             />
           </HotPostCardWrapper>
         </HotPostWrapper>

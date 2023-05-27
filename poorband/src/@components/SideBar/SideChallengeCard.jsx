@@ -5,19 +5,32 @@ import { getChallenge } from "../../../api/getChallenge";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export default function SideChallengeCard(props) {
+  const { nowUser } = props;
+
   const [data, setData] = useState([]);
+  const [percentage, setPercentage] = useState(0);
 
   const newData = {
-    userId: "test5",
+    // userId: "test1",
+    userId: nowUser?.userId,
   };
 
   useEffect(() => {
+    // console.log(nowUser?.userId);
     challenge(newData);
   }, []);
 
   const { mutate: challenge } = useMutation(getChallenge, {
     onSuccess: (response) => {
+      // console.log(response);
       setData(response.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
+
+      setPercentage(
+        response?.data[response.data.length - 1]?.consumption / response?.data[response.data.length - 1]?.goalAmount,
+      ); // progress bar의 percentage
+      // console.log(response.data[response.data.length - 1]);
+      // console.log(response.data[response.data.length - 1].goalAmount);
+      // console.log(percentage);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
@@ -25,7 +38,6 @@ export default function SideChallengeCard(props) {
       }
     },
   });
-
   return (
     <>
       {data && (
@@ -45,7 +57,10 @@ export default function SideChallengeCard(props) {
 
             <ProgressBarWrapper>
               <ProgressBarContainer>
-                <ChallengeProgressBar basecolor={"#E7E7E7"} barcolor={"#845EC2"} percentage={70}></ChallengeProgressBar>
+                <ChallengeProgressBar
+                  basecolor={"#E7E7E7"}
+                  barcolor={"#845EC2"}
+                  percentage={percentage}></ChallengeProgressBar>
               </ProgressBarContainer>
             </ProgressBarWrapper>
           </BarWrapper>
