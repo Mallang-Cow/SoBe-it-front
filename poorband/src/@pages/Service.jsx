@@ -21,6 +21,7 @@ export default function Service() {
   const [articleSeq, setArticleSeq] = useState(0);
   const [reloadFeed, setReloadFeed] = useState(false);
   const [nowUser, setNowUser] = useRecoilState(nowUserState);
+  const [searchWord, setSearchWord] = useState("");
 
   // 접속 유저 세팅
   // 유저 정보 가져오기
@@ -70,7 +71,12 @@ export default function Service() {
           {centerContent === "following" && <Following setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
           {centerContent === "search" && (
-            <SearchResults setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
+            <SearchResults 
+              setCenterContent={ setCenterContent } 
+              setUserId={ setUserId } 
+              setArticleSeq={ setArticleSeq }
+              searchWord={ searchWord }
+              setSearchWord={ setSearchWord } />
           )}
           {centerContent === "detail" && (
             <ArticleDetail
@@ -89,13 +95,14 @@ export default function Service() {
         </CenterWrapper>
 
         <SideBarWrapper>
-          <SideBar
+          <SideBar            
+            setCenterContent={ setCenterContent } 
+            setUserId={ setUserId } 
             articleSeq={Number(articleSeq)}
-            setCenterContent={setCenterContent}
-            setArticleSeq={setArticleSeq}
-            setUserId={setUserId}
-            nowUser={nowUser}
             clickActive={true}
+            setArticleSeq={ setArticleSeq }
+            searchWord={ searchWord }
+            setSearchWord={ setSearchWord }
           />
         </SideBarWrapper>
       </ServiceWrapper>

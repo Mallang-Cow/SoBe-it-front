@@ -1,34 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChallengeCard from "./ChallengeCard";
 import { styled } from "styled-components";
 import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { TIER } from "../../../core/tierImage";
 import ChallengeCardMakeBtn from "./ChallengeCardMakeBtn";
 import ChallengeCardMake from "./ChallengeCardMake";
+import { getChallengeCntData } from "../../../api/getChallengeCntData";
+import { useMutation } from "react-query";
+import { getChallengeData } from "../../../api/getChallengeData";
 
-export default function ProfileChallenges() {
+export default function ProfileChallenges(props) {
+  const{userId}=props;
   const[showChallengeMake, setShowChallengeMake] = useState(false)
+  const[data, setData] = useState();
+
+  useEffect(() => {
+    data && console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    cntUserId({userId:userId});
+  }, [userId]);
   
-  const specificUserId = "test3";
+  const {mutate: cntUserId} = useMutation (getChallengeCntData,{
+    onSuccess: (response) => {
+      console.log(response);
+      setData(response);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
+
+  useEffect(() => {
+    challengeUserId({userId:userId});
+  }, [userId]);
+
+  const {mutate: challengeUserId} = useMutation (getChallengeData,{
+    onSuccess: (response) => {
+      console.log(response);
+      setData(response);
+    },
+    onError: () => {
+      console.log("error");
+    },
+  });
 
   return (
     <ProfileChallengesWrapper>
       {/* 자기 페이지인 경우 도전과제 추가 버튼 & 도전과제 현황 보여주기 */}
-      {ARTICLE_DETAIL.user.userId === specificUserId && (
+      {data?.status === 1 && (
         <ChallengeMineWrapper>
           {!showChallengeMake?<ChallengeCardMakeBtn showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>:<ChallengeCardMake showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>}
           
           <ChallengeCnt>
             <div>
               <span>성공한 도전과제</span>
-              <span className="bold">9개/12개</span>
+              <span className="bold">{data?.successGoalAmountCnt}개/{data?.goalAmountCnt}개</span>
             </div>
           </ChallengeCnt>
 
           <NextTierCnt>
             <div>
               <span>다음 등급까지</span>
-              <img id="tier-img" src={TIER[ARTICLE_DETAIL.user.userTier]} alt="티어" />
+              <img id="tier-img" src={TIER[data?.user.userTier]} alt="티어" />
               <span className="bold">3개</span>
             </div>
           </NextTierCnt>

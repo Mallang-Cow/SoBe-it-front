@@ -5,7 +5,8 @@ import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
 
 export default function SideBar(props) {
-  const { setCenterContent, setArticleSeq, setUserId, clickActive } = props;
+
+  const { setCenterContent, articleSeq, setArticleSeq, setUserId, clickActive, nowUser, searchWord, setSearchWord } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
 
@@ -13,7 +14,12 @@ export default function SideBar(props) {
     <>
       <Wrapper>
         <SearchBarWrapper>
-          <SearchBar />
+          <SearchBar 
+            setCenterContent={ setCenterContent }
+            // setUserId={ setUserId } 
+            // setArticleSeq={ setArticleSeq }
+            searchWord={ searchWord }
+            setSearchWord={ setSearchWord } />
           {/* 진행중인 도전과제 있을 경우 */}
         </SearchBarWrapper>
         <ChallengeWrapper>

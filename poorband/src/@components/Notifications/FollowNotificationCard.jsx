@@ -7,9 +7,11 @@ import ClearIcon from '@mui/icons-material/Clear';
 import MoodBadIcon from '@mui/icons-material/MoodBad';
 import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
+import { TIER } from "../../../core/tierImage";
 import { followUser, unFollowUser } from "../../../api/followAPI";
+import { deleteOneNotification } from "../../../api/notificationAPI";
 
-export default function FollowNotificationCard({ type, followingUserNickName, followingUserId, following, content, url, imageUrl, timestamp, setCenterContent, setUserId }) {
+export default function FollowNotificationCard({ notificationSeq, type, followingUserNickName, followingUserId, following, content, userTier, url, imageUrl, timestamp, setCenterContent, setUserId, onDelete }) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
   const [isFollowing, setIsFollowing] = useState(following);
@@ -45,10 +47,35 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
       setTime(["minutes", nowDate.getMinutes() - notificationDate.getMinutes()]); // 분 차이
     else setTime(["seconds", nowDate.getSeconds() - notificationDate.getSeconds()]); // 초 차이
   }, []);
+
+  const { mutate: deleteOneNotificationMutation } = useMutation(deleteOneNotification, {
+    onSuccess: (response) => {
+      if (response) {
+        console.log("팔로우 알림 삭제 성공");
+        onDelete(notificationSeq);
+      }
+      else {
+        console.log("팔로우 알림 삭제 실패");
+      }
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("팔로우 알림 삭제 과정에 오류가 발생했습니다.");
+      }
+    },
+  });
   
   const deleteNotification = (event) => {
     event.stopPropagation(); // 이벤트 버블링 중단
     console.log("삭제 버튼 클릭");
+
+    const notificationDeleteDTO = {
+      notificationSeq: notificationSeq,
+      type: type,
+    };
+
+    console.log(notificationDeleteDTO);
+    deleteOneNotificationMutation(notificationDeleteDTO);
   };
 
   // 팔로우
@@ -127,7 +154,8 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
                   <MainNotificationText primary={ followingUserNickName } />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
-                  <PlusNotificationText primary="UserTier" />
+                  {/* <PlusNotificationText primary={ userTier } /> */}
+                  <TierImg id="tier-img" src={ TIER[userTier] } alt="티어" />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
                   <PlusNotificationText style={{ color: "#878787" }} primary={ `@${followingUserId}` } />
@@ -202,6 +230,12 @@ const MainNotificationText = muiStyled(ListItemText) ({
     letterSpacing: '0.03em',
   },
 });
+
+const TierImg = styled.img`
+  margin-left: 0.6rem;
+  width: 2rem;
+  height: 2rem;
+`;
 
 const PlusNotificationText = muiStyled(ListItemText) ({
   marginLeft: '0.6rem',

@@ -27,6 +27,12 @@ export default function Notifications(props) {
     }
   };
 
+  const handleDeleteNotification = (notificationSeq) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.notificationSeq !== notificationSeq)
+    );
+  };
+
   const renderNotificationCard = (notification) => {
     const { type } = notification; // 비구조화 할당 문법 : notification 객체에서 type 속성 추출  // const type = notification.type과 동일
 
@@ -35,6 +41,7 @@ export default function Notifications(props) {
         return (
           <ReplyNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -43,28 +50,33 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 2: // 팔로우 알림
         return (
           <FollowNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             followingUserNickName={ notification.followingUserNickName }
             followingUserId={ notification.followingUserId }
             following={ notification.following }
             content = { notification.content }
+            userTier={ notification.userTier }
             url={ notification.url }
             imageUrl={ notification.imageUrl }
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setUserId={ setUserId }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 3: // 댓글 좋아요 알림
         return (
           <ReplyLikeNotificationCard 
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -73,12 +85,14 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       case 4: // 게시글 좋아요 알림
         return (
           <ArticleLikeNotificationCard
             key={ notification.notificationSeq }
+            notificationSeq={ notification.notificationSeq }
             type={ notification.type }
             content={ notification.content }
             articleContent={ notification.articleContent }
@@ -86,6 +100,7 @@ export default function Notifications(props) {
             timestamp={ notification.timestamp }
             setCenterContent={ setCenterContent }
             setArticleSeq={ setArticleSeq }
+            onDelete={ handleDeleteNotification }
           />
         );
       default:
