@@ -41,17 +41,17 @@ export default function ArticleEditForm(props) {
     isError,
     error,
   } = useQuery(["articleDetail", articleSeq], () => getArticleDetailData(articleSeq), {
-    onSuccess: () => {
+    onSuccess: (response) => {
       // 처음 로딩 시 초기값 설정
       if (!init) {
-        setCategory(article?.expenditureCategory);
-        setImageUrl(article?.imageUrl);
-        setconsumeText(article?.articleText);
-        setconsumeDate(new Date(article?.consumptionDate));
-        setfinancialText(article?.financialText);
-        setStatus(article?.status);
-        setArticleType(article?.articleType);
-        setAmount(article?.amount);
+        setCategory(response?.expenditureCategory);
+        setImageUrl(response?.imageUrl);
+        setconsumeText(response?.articleText);
+        setconsumeDate(new Date(response?.consumptionDate));
+        setfinancialText(response?.financialText);
+        setStatus(response?.status);
+        setArticleType(response?.articleType);
+        setAmount(response?.amount);
         setInit(true);
       }
     },

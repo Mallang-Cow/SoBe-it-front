@@ -89,6 +89,7 @@ export default function Feed(props) {
                 setArticleType={setArticleType}
                 clickActive={true}
                 setReloadFeed={setReloadFeed}
+                onPage={"home"}
               />
               <div ref={ref}></div>
             </ArticleWrapper>
@@ -102,6 +103,7 @@ export default function Feed(props) {
                 setArticleType={setArticleType}
                 clickActive={true}
                 setReloadFeed={setReloadFeed}
+                onPage={"home"}
               />
               <div></div>
             </ArticleWrapper>
