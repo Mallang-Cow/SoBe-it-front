@@ -32,6 +32,7 @@ export default function Service() {
   } = useQuery(["nowUserInfo"], () => getNowUser(), {
     onSuccess: (response) => {
       setNowUser(response);
+      console.log(response);
     },
     onError: () => {
       console.log("Error");
@@ -42,12 +43,7 @@ export default function Service() {
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <MenuBar
-            centerContent={centerContent}
-            setCenterContent={setCenterContent}
-            setUserId={setUserId}
-            userId={userId}
-          />
+          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} setUserId={setUserId} />
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}

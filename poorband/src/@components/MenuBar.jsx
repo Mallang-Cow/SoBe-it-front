@@ -6,10 +6,11 @@ import { signout } from "../../api/userAPI";
 import { ACCESS_TOKEN } from "../../api/ApiService";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 import { getHotPost } from "../../api/getHotPost";
-import { getProfileInfo } from "../../api/getMyInfo";
 import { getChallenge } from "../../api/getChallenge";
 import { userIdState } from "../recoil/userId";
 import { useRecoilState } from "recoil";
+import { getNowUser } from "../../api/getNowUser";
+import { getMyInfo } from "../../api/getMyInfo";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent } = props;
@@ -26,21 +27,14 @@ export default function MenuBar(props) {
   };
 
   useEffect(() => {
-    // setUserId(thisUserId);
-    // setThisUserId(setUserId);
-
-    console.log(userId);
-    // console.log(userIdState);
-    console.log(props.userId);
-    console.log(thisUserId);
-    profileInfo(newData);
+    myInfo();
   }, []);
 
-  const { mutate: profileInfo } = useMutation(getMyInfo, {
+  const { mutate: myInfo } = useMutation(getMyInfo, {
     onSuccess: (response) => {
       setData(response.data);
       console.log("성공");
-      console.log(response.data);
+      console.log(response.data.nickname);
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
