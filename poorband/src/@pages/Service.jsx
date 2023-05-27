@@ -43,7 +43,7 @@ export default function Service() {
     <>
       <ServiceWrapper>
         <MenuBarWrapper>
-          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} setUserId={setUserId} />
+          <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} nowUser={nowUser} />
         </MenuBarWrapper>
 
         {/* menu 값에 따라 가운데 내용 바뀌기 */}

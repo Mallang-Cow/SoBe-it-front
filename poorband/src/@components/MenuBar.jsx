@@ -13,8 +13,7 @@ import { getNowUser } from "../../api/getNowUser";
 import { getMyInfo } from "../../api/getMyInfo";
 
 export default function MenuBar(props) {
-  const { centerContent, setCenterContent } = props;
-  console.log(props.userSeq);
+  const { centerContent, setCenterContent, nowUser } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const [thisUserId, setThisUserId] = useState("");
@@ -22,26 +21,28 @@ export default function MenuBar(props) {
 
   const [data, setData] = useState([]);
 
-  const newData = {
-    userId: "test5",
-  };
+  // const newData = {
+  //   userId: "test5",
+  // };
 
   useEffect(() => {
-    myInfo();
+    // myInfo();
+    console.log(centerContent);
+    console.log(nowUser.userSeq);
   }, []);
 
-  const { mutate: myInfo } = useMutation(getMyInfo, {
-    onSuccess: (response) => {
-      setData(response.data);
-      console.log("성공");
-      console.log(response.data.nickname);
-    },
-    onError: (error) => {
-      if (error.message === "Request failed with status code 500") {
-        console.log("프로필 정보 가져오기 실패");
-      }
-    },
-  });
+  // const { mutate: myInfo } = useMutation(getMyInfo, {
+  //   onSuccess: (response) => {
+  //     setData(response.data);
+  //     console.log("성공");
+  //     console.log(response.data.nickname);
+  //   },
+  //   onError: (error) => {
+  //     if (error.message === "Request failed with status code 500") {
+  //       console.log("프로필 정보 가져오기 실패");
+  //     }
+  //   },
+  // });
 
   const handleMenuItemClick = (index) => {
     setActiveIndex(index);
@@ -103,11 +104,11 @@ export default function MenuBar(props) {
           }}>
           <ProfileInfoWrapper>
             <ProfileImgWrapper>
-              <img id="profile-image" src={data?.profileImg} alt="프로필사진" />
+              <img id="profile-image" src={nowUser?.profileImgUrl} alt="프로필사진" />
             </ProfileImgWrapper>
             <ProfileNameWrapper>
-              <p>{data?.nickname}</p>
-              <p id="username">{data?.userId}</p>
+              <p>{nowUser?.nickname}</p>
+              <p id="username">{nowUser?.userId}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
           <ProfileMenuWrapper>
