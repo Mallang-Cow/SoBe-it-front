@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
 
 export default function SideBar(props) {
-  const { setCenterContent, setArticleSeq, setUserId, clickActive } = props;
+  const { setCenterContent, setArticleSeq, setUserId, clickActive, nowUser } = props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
 
@@ -20,7 +20,7 @@ export default function SideBar(props) {
           <TitleContainer>
             <h2>Challenge</h2>
           </TitleContainer>
-          <SideChallengeCard />
+          <SideChallengeCard nowUser={nowUser} />
         </ChallengeWrapper>
         {/* 인기게시글 리스트 - 진행중인 도전과제 있으면 3개, 없으면 5개정도..? */}
         <HotPostWrapper>
@@ -84,25 +84,16 @@ const TitleContainer = styled.div`
 const SearchBarWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
-
-  border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const ChallengeWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
-
-  border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const HotPostWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
-
-  border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const HotPostCardWrapper = styled.div`

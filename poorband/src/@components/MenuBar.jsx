@@ -6,37 +6,43 @@ import { signout } from "../../api/userAPI";
 import { ACCESS_TOKEN } from "../../api/ApiService";
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 import { getHotPost } from "../../api/getHotPost";
+import { getChallenge } from "../../api/getChallenge";
+import { userIdState } from "../recoil/userId";
+import { useRecoilState } from "recoil";
+import { getNowUser } from "../../api/getNowUser";
+import { getMyInfo } from "../../api/getMyInfo";
 
 export default function MenuBar(props) {
-  const { centerContent, setCenterContent, setUserId } = props;
+  const { centerContent, setCenterContent, nowUser } = props;
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const [thisUserId, setThisUserId] = useState("");
+  const [userId, setUserId] = useRecoilState(userIdState);
 
   const [data, setData] = useState([]);
-  const newData = {
-    userId: "test1",
-  };
 
-  useEffect(() => {
-    hotPosts(newData);
-  }, []);
+  // const newData = {
+  //   userId: "test5",
+  // };
 
-  const { mutate: hotPosts } = useMutation(getHotPost, {
-    onSuccess: (response) => {
-      setData(response.data[0]);
-      setThisUserId(response.data[0]?.user?.userId);
+  // useEffect(() => {
+  //   // myInfo();
+  //   console.log(centerContent);
+  //   console.log(nowUser.userSeq);
+  // }, []);
 
-      console.log(response.data[0]?.user?.userId);
-      // console.log(response.data[0]);
-      // console.log(data?.user?.userName);
-    },
-    onError: (error) => {
-      if (error.message === "Request failed with status code 500") {
-        console.log("인기 게시물 가져오기 실패");
-      }
-    },
-  });
+  // const { mutate: myInfo } = useMutation(getMyInfo, {
+  //   onSuccess: (response) => {
+  //     setData(response.data);
+  //     console.log("성공");
+  //     console.log(response.data.nickname);
+  //   },
+  //   onError: (error) => {
+  //     if (error.message === "Request failed with status code 500") {
+  //       console.log("프로필 정보 가져오기 실패");
+  //     }
+  //   },
+  // });
 
   const handleMenuItemClick = (index) => {
     setActiveIndex(index);
@@ -45,7 +51,7 @@ export default function MenuBar(props) {
 
   // 글 작성자 프로필 페이지로 이동
   function goToProfile() {
-    setUserId(thisUserId);
+    setUserId(nowUser.userId);
     setCenterContent("profile");
   }
 
@@ -98,11 +104,11 @@ export default function MenuBar(props) {
           }}>
           <ProfileInfoWrapper>
             <ProfileImgWrapper>
-              <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
+              <img id="profile-image" src={nowUser?.profileImgUrl} alt="프로필사진" />
             </ProfileImgWrapper>
             <ProfileNameWrapper>
-              <p>{data?.user?.nickname}</p>
-              <p id="username">{data?.user?.userName}</p>
+              <p>{nowUser?.nickname}</p>
+              <p id="username">{nowUser?.userId}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
           <ProfileMenuWrapper>

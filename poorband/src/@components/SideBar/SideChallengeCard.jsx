@@ -8,7 +8,7 @@ export default function SideChallengeCard(props) {
   const [data, setData] = useState([]);
 
   const newData = {
-    userId: "test1",
+    userId: "test5",
   };
 
   useEffect(() => {
@@ -27,37 +27,41 @@ export default function SideChallengeCard(props) {
   });
 
   return (
-    <Wrapper>
-      <TitleWrapper>
-        <hr></hr>
-        <p>{data?.title}</p>
-        <hr></hr>
-      </TitleWrapper>
-      <BarWrapper>
-        <PeriodWrapper>
-          <span>기간</span>
-          <span>
-            {data?.startDate} - {data?.endDate}
-          </span>
-        </PeriodWrapper>
+    <>
+      {data && (
+        <Wrapper>
+          <TitleWrapper>
+            <hr></hr>
+            <p>{data?.title}</p>
+            <hr></hr>
+          </TitleWrapper>
+          <BarWrapper>
+            <PeriodWrapper>
+              <span>기간</span>
+              <span>
+                {data?.startDate} - {data?.endDate}
+              </span>
+            </PeriodWrapper>
 
-        <ProgressBarWrapper>
-          <ProgressBarContainer>
-            <ChallengeProgressBar basecolor={"#E7E7E7"} barcolor={"#845EC2"} percentage={70}></ChallengeProgressBar>
-          </ProgressBarContainer>
-        </ProgressBarWrapper>
-      </BarWrapper>
-      <RemainWrapper>
-        <RemainDetailWrapper>
-          <span className="bold">지출</span>
-          <span className="gray">{data?.consumption?.toLocaleString()}원</span>
-        </RemainDetailWrapper>
-        <RemainDetailWrapper>
-          <span className="bold">잔여</span>
-          <span className="gray">{(data?.goalAmount - data?.consumption)?.toLocaleString()}원</span>
-        </RemainDetailWrapper>
-      </RemainWrapper>
-    </Wrapper>
+            <ProgressBarWrapper>
+              <ProgressBarContainer>
+                <ChallengeProgressBar basecolor={"#E7E7E7"} barcolor={"#845EC2"} percentage={70}></ChallengeProgressBar>
+              </ProgressBarContainer>
+            </ProgressBarWrapper>
+          </BarWrapper>
+          <RemainWrapper>
+            <RemainDetailWrapper>
+              <span className="bold">지출</span>
+              <span className="gray">{data?.consumption?.toLocaleString()}원</span>
+            </RemainDetailWrapper>
+            <RemainDetailWrapper>
+              <span className="bold">잔여</span>
+              <span className="gray">{(data?.goalAmount - data?.consumption)?.toLocaleString()}원</span>
+            </RemainDetailWrapper>
+          </RemainWrapper>
+        </Wrapper>
+      )}
+    </>
   );
 }
 
