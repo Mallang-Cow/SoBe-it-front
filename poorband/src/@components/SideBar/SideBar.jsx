@@ -5,8 +5,8 @@ import SearchBar from "./SearchBar";
 import { styled } from "styled-components";
 
 export default function SideBar(props) {
-
-  const { setCenterContent, articleSeq, setArticleSeq, setUserId, clickActive, nowUser, searchWord, setSearchWord } = props;
+  const { setCenterContent, articleSeq, setArticleSeq, setUserId, clickactive, nowUser, searchWord, setSearchWord } =
+    props;
   const [thisArticleSeq, setThisArticleSeq] = useState(0);
   const [thisUserId, setThisUserId] = useState("");
 
@@ -14,12 +14,13 @@ export default function SideBar(props) {
     <>
       <Wrapper>
         <SearchBarWrapper>
-          <SearchBar 
-            setCenterContent={ setCenterContent }
-            // setUserId={ setUserId } 
+          <SearchBar
+            setCenterContent={setCenterContent}
+            // setUserId={ setUserId }
             // setArticleSeq={ setArticleSeq }
-            searchWord={ searchWord }
-            setSearchWord={ setSearchWord } />
+            searchWord={searchWord}
+            setSearchWord={setSearchWord}
+          />
           {/* 진행중인 도전과제 있을 경우 */}
         </SearchBarWrapper>
         <ChallengeWrapper>
@@ -39,7 +40,7 @@ export default function SideBar(props) {
               setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
-              clickActive={clickActive}
+              clickactive={clickactive}
             />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
@@ -48,7 +49,7 @@ export default function SideBar(props) {
               setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
-              clickActive={clickActive}
+              clickactive={clickactive}
             />
           </HotPostCardWrapper>
           <HotPostCardWrapper>
@@ -57,7 +58,7 @@ export default function SideBar(props) {
               setArticleSeq={setArticleSeq}
               setCenterContent={setCenterContent}
               setUserId={setUserId}
-              clickActive={clickActive}
+              clickactive={clickactive}
             />
           </HotPostCardWrapper>
         </HotPostWrapper>

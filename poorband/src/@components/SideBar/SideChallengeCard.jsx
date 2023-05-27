@@ -9,11 +9,11 @@ import { useRecoilState } from "recoil";
 export default function SideChallengeCard(props) {
   // const { nowUser } = props;
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [percentage, setPercentage] = useState(0);
   // const [thisNowUser, setThisNowUser] = useState("");
 
-  const [newData, setNewData] = useState([]);
+  const [newData, setNewData] = useState(null);
   const [nowUser] = useRecoilState(nowUserState);
 
   useEffect(() => {
@@ -23,11 +23,9 @@ export default function SideChallengeCard(props) {
   }, [nowUser]);
 
   useEffect(() => {
-    // setThisNowUser(nowUser);
-    // console.log(newData);
-
-    // console.log(nowUser?.userId);
-    newData && challenge(newData);
+    if (newData !== null) {
+      challenge(newData);
+    }
   }, [newData]);
 
   const { mutate: challenge } = useMutation(getChallenge, {
@@ -35,16 +33,20 @@ export default function SideChallengeCard(props) {
       // console.log(response);
       setData(response?.data[response.data.length - 1]); // 사이드바 가장 최근 도전 과제 한 개만 사용.
 
-      setPercentage(
-        response?.data[response.data.length - 1]?.consumption / response?.data[response.data.length - 1]?.goalAmount,
-      ); // progress bar의 percentage
-      // console.log(response.data[response.data.length - 1]);
-      // console.log(response.data[response.data.length - 1].goalAmount);
-      // console.log(percentage);
+      const consumption = response?.data[response.data.length - 1]?.consumption;
+      const goalAmount = response?.data[response.data.length - 1]?.goalAmount;
+      const newPercentage =
+        typeof consumption === "number" && typeof goalAmount === "number" ? consumption / goalAmount : 0;
+      setPercentage(newPercentage); // progress bar의 percentage
+      // console.log(consumption);
+      // console.log(goalAmount);
+      // console.log(newPercentage);
     },
     onError: (error) => {
-      if (error.message === "Request failed with status code 500") {
+      if (error.response && error.response.status === 500) {
         console.log("도전 정보 가져오기 실패");
+      } else {
+        console.log("오류 발생:", error.message);
       }
     },
   });
