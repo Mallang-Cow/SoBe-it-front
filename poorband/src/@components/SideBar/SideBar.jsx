@@ -84,25 +84,16 @@ const TitleContainer = styled.div`
 const SearchBarWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
-
-  border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const ChallengeWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
-
-  border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const HotPostWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.lightgrey_1};
   margin: 1rem 2rem;
-
-  border-radius: 1px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.22);
 `;
 
 const HotPostCardWrapper = styled.div`
