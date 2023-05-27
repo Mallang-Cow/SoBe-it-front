@@ -59,9 +59,15 @@ export default function FollowNotificationCard({ type, followingUserNickName, fo
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
             <div>
               <div style={{ display: "flex", flexDirection: "row", marginBottom: "0.6rem", alignItems: "center" }}>
-                <MainNotificationText primary={ followingUserNickName } />
-                <PlusNotificationText primary="UserTier" />
-                <PlusNotificationText style={{ color: "#878787" }} primary={ `@${followingUserId}` } />
+                <NotificationTextWrapper>
+                  <MainNotificationText primary={ followingUserNickName } />
+                </NotificationTextWrapper>
+                <NotificationTextWrapper>
+                  <PlusNotificationText primary="UserTier" />
+                </NotificationTextWrapper>
+                <NotificationTextWrapper>
+                  <PlusNotificationText style={{ color: "#878787" }} primary={ `@${followingUserId}` } />
+                </NotificationTextWrapper>
               </div>
               
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
@@ -114,6 +120,11 @@ const NotificationIconButton = muiStyled(IconButton) ({
     border: 'none',
     outline: 'none',
   },
+});
+
+const NotificationTextWrapper = styled('div')({
+  display: 'inline-block',
+  width: 'fit-content',
 });
 
 const MainNotificationText = muiStyled(ListItemText) ({
