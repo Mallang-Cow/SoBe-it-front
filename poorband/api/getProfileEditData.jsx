@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export async function getProfileInfoData(formData) {
-    console.log("formData: " + formData);
+export async function getProfileEditData(formData) {
+    {/*console.log("formData: " + formData);*/}
     try {
         const data = await axios.post(`http://localhost:9000/profile/save`, formData, {
             headers: {

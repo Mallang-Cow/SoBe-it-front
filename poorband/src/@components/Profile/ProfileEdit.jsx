@@ -4,7 +4,8 @@ import { TIER } from "../../../core/tierImage";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
-import { getProfileInfoData } from "../../../api/getProfileEditData";
+import { getProfileInfoData } from "../../../api/getProfileInfoData";
+import { getProfileEditData } from "../../../api/getProfileEditData";
 
 
 export default function ProfileEdit(props) {
@@ -17,40 +18,21 @@ export default function ProfileEdit(props) {
   const [init, setInit] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // 변경될 프로필 정보
-  const newProfileData = {
-    profileEditDTO:{
-      nickname:nickname,
-      introduction:introduction,
-      profileImageUrl: profileImageUrl
-  }};
-
-  console.log("newProfileData = " + newProfileData);
-
-  const formData = new FormData();
-  const json = JSON.stringify(newProfileData.profileEditDTO);
-  const blob = new Blob([json], {type: 'application/json'});
-
-  console.log("formData = " + formData);
-
-  formData.append('file', file);
-  formData.append('profileEditDTO', blob);
-
   // 프로필 정보 가져오기
   const {
     data: profileData,
     isLoading,
     isError,
     error,
-  } = useQuery(["profileInfo", userId], () => getProfileInfoData(userId),{
+  } = useQuery(["profileInfo", userId], () => getProfileInfoData({userId:userId}),{
     onSuccess: (response) => {
       console.log("아이디: " + response?.userId);
 
       //처음 로딩시 초기값 설정
       if(!init){
         setNickname(response?.nickname);
-        setIntroduction(response?.introduction);
-        setProfileImageUrl(response?.profileImageUrl);
+        setIntroduction(response?.introDetail);
+        setProfileImageUrl(response?.profileImg);
         setInit(true);
       }
     },
@@ -64,7 +46,7 @@ export default function ProfileEdit(props) {
    * @param {*} event 
    **/
   const nicknameChange = (event) => {
-    setNickname((perv)=>({...perv, nickname:event.target.value}));
+    setNickname(event.target.value);
   };
 
   /**
@@ -72,7 +54,7 @@ export default function ProfileEdit(props) {
    * @param {*} event 
    **/
   const introductionChange = (event) => {
-    setIntroduction((perv)=>({...perv, introduction:event.target.value}));
+    setIntroduction(event.target.value);
   };
 
   /**
@@ -100,18 +82,37 @@ export default function ProfileEdit(props) {
       return;
     }
 
-    if (
-      newProfileData.nickname && 
-      newProfileData.introduction && 
-      newProfileData.profileImageUrl
-    ) {
+    // 변경될 프로필 정보
+    const newProfileData = {
+      profileEditDTO:{
+        nickname:nickname,
+        introduction:introduction,
+        profileImageUrl: profileImageUrl
+    }};
+  
+    console.log("newProfileData = " + newProfileData);
+  
+    const formData = new FormData();
+    const json = JSON.stringify(newProfileData.profileEditDTO);
+    const blob = new Blob([json], {type: 'application/json'});
+  
+    console.log("formData = " + formData);
+  
+    formData.append('file', file);
+    formData.append('profileEditDTO', blob);
+
+    {
+      console.log("nickname : " + nickname);
+      console.log("introduction : " + introduction);
+      console.log("profileImageUrl : " + profileImageUrl);
       // API 호출
-      editProfile(newProfileData); 
+      editProfile(formData); 
     }
   }
 
-  const { mutate: editProfile } = useMutation(getProfileInfoData, {
+  const { mutate: editProfile } = useMutation(getProfileEditData, {
     onSuccess: (response) => {
+      console.log(response)
       setIsSuccess(true);
     },
     onError: () => {
@@ -130,15 +131,15 @@ export default function ProfileEdit(props) {
   return (
     <ProfileEditWrapper>
       {/*ID 불러오기 & 닉네임, 한줄소개 수정가능 & 프로필 사진은 보류*/}
-      {/*{profileImageUrl && (
+      {profileImageUrl && (
         <ImageContainer>
           <img src={profileImageUrl} alt="프로필 사진" />
         </ImageContainer>
-      )}*/}
+      )}
       {/*<FileLabel htmlFor="file">
         <span className="material-symbols-outlined">image</span>
       </FileLabel>*/}
-      {/*<input
+      <input
         className="imgInput"
         type="file"
         name="file"
@@ -146,7 +147,7 @@ export default function ProfileEdit(props) {
         accept="image/*"
         onChange={profileImageUrlChange}
         //style={{ display: "none" }}
-      />*/}
+      />
 
       <NicknameText
         type="text"
@@ -165,10 +166,12 @@ export default function ProfileEdit(props) {
         placeholder="자기소개를 작성하세요." 
         onChange={introductionChange}
       />
-            
-      {/*저장하기 -> 변경된 정보 저장하고 ProfileInfo로 & 취소하기 -> 변경하지 않고 ProfileInfo로*/}
-      <SubmitButton className="submit" onClick={submitNewProfileData}>저장하기</SubmitButton>
-      <CancelButton className="cancel" onClick={() => setShowEdit(false)}>취소하기</CancelButton>
+      <ButtonWrapper>
+        {/*저장하기 -> 변경된 정보 저장하고 ProfileInfo로 & 취소하기 -> 변경하지 않고 ProfileInfo로*/}
+        <SubmitButton className="submit" onClick={submitNewProfileData}>저장하기</SubmitButton>
+        <CancelButton className="cancel" onClick={() => setShowEdit(false)}>취소하기</CancelButton>
+      </ButtonWrapper>
+      
 
     </ProfileEditWrapper>
   );
@@ -225,11 +228,10 @@ const ProfileEditWrapper = styled.section`
 
 const ImageContainer = styled.div`
   display: flex;
-  justify-content: center;
   margin: 0.5rem;
   img {
-    width: 30rem;
-    height: 30rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 1rem;
   }
 `;
@@ -245,7 +247,7 @@ const FileLabel = styled.label`
   }
 `;
 const NicknameText = styled.input`
-  width: 18rem;
+  width: 12rem;
   height: 3rem;
   padding: 0 0.8rem;
   border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
@@ -255,14 +257,18 @@ const NicknameText = styled.input`
 `;
 
 const IntroductionText = styled.textarea`
-  width: 50%;
-  height: 8rem;
+  width: 30%;
+  height: 4rem;
   padding: 1rem;
   border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
   text-align: left;
   border-radius: 0.5rem;
   ${({ theme }) => theme.fonts.regular};
   resize: none;
+`;
+
+const ButtonWrapper = styled.section`
+  display: flex;
 `;
 
 const SubmitButton = styled.button`
