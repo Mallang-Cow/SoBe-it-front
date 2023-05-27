@@ -16,6 +16,7 @@ export default function Service() {
   const [centerContent, setCenterContent] = useState("home");
   const [userId, setUserId] = useRecoilState(userIdState);
   const [articleSeq, setArticleSeq] = useState(0);
+  const [reloadFeed, setReloadFeed] = useState(false);
 
   return (
     <>
@@ -28,7 +29,7 @@ export default function Service() {
 
         <CenterWrapper>
           {centerContent === "home" && (
-            <Home setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} />
+            <Home setCenterContent={setCenterContent} setUserId={setUserId} setArticleSeq={setArticleSeq} reloadFeed={reloadFeed} setReloadFeed={setReloadFeed} />
           )}
           {centerContent === "statistics" && (
             <Statistics setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} />

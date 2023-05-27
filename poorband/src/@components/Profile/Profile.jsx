@@ -6,9 +6,9 @@ import ProfileChallenges from "./ProfileChallenges";
 import { styled } from "styled-components";
 
 export default function Profile(props) {
-  const {setCenterContent, setArticleSeq, setUserId, userId} = props;
+  const { setCenterContent, setArticleSeq, setUserId, userId, reloadFeed, setReloadFeed } = props;
   const [showEdit, setShowEdit]=useState(false)
-  const [showChallenges, setShowChallenges] = useState(false);
+  const [showElement, setShowElement] = useState(true); // true면 작성글, false면 도전과제
 
   return (
     <>
@@ -21,11 +21,17 @@ export default function Profile(props) {
         {/* 메뉴 */}
         {/* 메뉴 선택함에따라 다른 내용 보이기 -> 길어진다면 컴포넌트 분리 */}
         <BtnProfileWrapper>
-          <Button1 showChallenges={showChallenges} onClick={() => {setShowChallenges(false); }}>작성한 글</Button1>
-          <Button2 showChallenges={showChallenges} onClick={() => {setShowChallenges(true); }}>도전 과제</Button2>
+          <Button1 showElement={showElement} onClick={() => {setShowElement(true); }}>작성한 글</Button1>
+          <Button2 showElement={showElement} onClick={() => {setShowElement(false); }}>도전 과제</Button2>
         </BtnProfileWrapper>
 
-        {!showChallenges?<ProfilePosts setCenterContent={setCenterContent} setArticleSeq={setArticleSeq} setUserId={setUserId} userId={userId}/>:<ProfileChallenges setUserId={setUserId} userId={userId}/>}
+        {showElement?<ProfilePosts 
+                            setCenterContent={setCenterContent}
+                            setArticleSeq={setArticleSeq}
+                            setUserId={setUserId} 
+                            userId={userId}
+                            reloadFeed={reloadFeed}
+                            setReloadFeed={setReloadFeed} /> : <ProfileChallenges setUserId={setUserId} userId={userId}/>}
       </ProfileWrapper>
     </>
   );
@@ -66,7 +72,7 @@ const Button1=styled.button`
   /* identical to box height */
 
   text-align: center;
-  color: ${props => props.showChallenges ? '#C4C4C4' : '#000000'};
+  color: ${props => props.showElement ? '#000000' : '#C4C4C4'};
   padding-left: 17vh;
   padding-right: 17vh;
   display: flex;
@@ -87,7 +93,7 @@ const Button2=styled.button`
   /* identical to box height */
 
   text-align: center;
-  color: ${props => props.showChallenges ? '#000000' : '#C4C4C4'};
+  color: ${props => props.showElement ? '#C4C4C4' : '#000000'};
   padding-left: 17vh;
   padding-right: 17vh;
   display: flex;
