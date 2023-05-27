@@ -119,7 +119,7 @@ export default function ProfileEdit(props) {
       {/*<FileLabel htmlFor="file">
         <span className="material-symbols-outlined">image</span>
       </FileLabel>*/}
-      {/* <input
+      <input
         className="imgInput"
         type="file"
         name="file"
@@ -127,8 +127,8 @@ export default function ProfileEdit(props) {
         accept="image/*"
         onChange={profileImageUrlChange}
         //style={{ display: "none" }}
-      /> */}
-      hello
+      />
+
       <FormWrapper>
         <NameLineWrapper>
           <NameWrapper>
