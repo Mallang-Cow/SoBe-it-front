@@ -7,7 +7,9 @@ import { theme } from '../../style/theme';
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 
 
-export default function UserCard() {
+export default function UserCard(props) {
+  const { userId, nickname, userTier, introduction, profileImgUrl, status } = props;
+
   return (
     <NotificationCardButton disableRipple>
       <ListItem>        
@@ -21,20 +23,19 @@ export default function UserCard() {
             <div>
               <div style={{ display: "flex", flexDirection: "row", marginBottom: "0.6rem", alignItems: "center" }}>
                 <NotificationTextWrapper>
-                  <MainNotificationText primary="NickName" />
+                  <MainNotificationText primary={ nickname } />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
-                  <PlusNotificationText primary="UserTier" />
+                  <PlusNotificationText primary={ userTier } />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
-                  <PlusNotificationText style={{ color: "#878787" }} primary="UserId" />
+                  <PlusNotificationText style={{ color: "#878787" }} primary={ userId } />
                 </NotificationTextWrapper>
               </div>
               
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 {/* <SubNotificationText secondary="Follow Content" /> */}
-                <FollowContent>Follow Content</FollowContent>
-                <TimeNotificationText secondary="Time" />
+                <IntroductionContent style={{ color: "#878787" }}>{ introduction }</IntroductionContent>
               </div>
             </div>
 
@@ -91,7 +92,7 @@ const PlusNotificationText = muiStyled(ListItemText) ({
   },
 });
 
-const FollowContent = styled.div`
+const IntroductionContent = styled.div`
   font-size: 1.4rem;
   font-family: 'Roboto';
   font-style: normal;
