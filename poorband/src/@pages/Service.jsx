@@ -76,7 +76,7 @@ export default function Service() {
             />
           )}
           {centerContent === "following" && <Following setCenterContent={ setCenterContent } setUserId={ setUserId } userId={ userId } />}
-          {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} />}
+          {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} userId={ userId } />}
           {centerContent === "search" && (
             <SearchResults
               setCenterContent={setCenterContent}
