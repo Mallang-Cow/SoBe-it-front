@@ -6,5 +6,5 @@ export async function getLatestChallenge(newData) {
       Authorization: `Bearer ${window.sessionStorage.getItem("ACCESS_TOKEN")}`,
     },
   });
-  return data;
+  return data.data;
 }

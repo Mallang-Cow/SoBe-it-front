@@ -23,12 +23,9 @@ export default function SideBar(props) {
           />
           {/* 진행중인 도전과제 있을 경우 */}
         </SearchBarWrapper>
-        <ChallengeWrapper>
-          <TitleContainer>
-            <h2>Challenge</h2>
-          </TitleContainer>
-          <SideChallengeCard />
-        </ChallengeWrapper>
+
+        <SideChallengeCard />
+
         {/* 인기게시글 리스트 - 진행중인 도전과제 있으면 3개, 없으면 5개정도..? */}
         <HotPostWrapper>
           <TitleContainer>
@@ -69,9 +66,9 @@ export default function SideBar(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  background-color: white;
-  padding: 1rem 0;
-
+  margin-left: 1rem;
+  margin-top: 4rem;
+  background-color: ${({ theme }) => theme.fonts.white};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -89,24 +86,24 @@ const TitleContainer = styled.div`
 `;
 
 const SearchBarWrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.lightgrey_1};
-  margin: 1rem 2rem;
+  background-color: ${({ theme }) => theme.colors.darkpurple};
+  margin-bottom: 1rem;
+  height: 4.5rem;
 `;
 
 const ChallengeWrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.lightgrey_1};
-  margin: 1rem 2rem;
+  background-color: ${({ theme }) => theme.colors.darkpurple};
+  margin-bottom: 1rem;
 `;
 
 const HotPostWrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.lightgrey_1};
-  margin: 1rem 2rem;
+  background-color: ${({ theme }) => theme.colors.darkpurple};
+  margin-bottom: 1rem;
+  padding: 0 1rem;
 `;
 
 const HotPostCardWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
-  margin: 1rem 2rem;
-
+  margin-bottom: 1rem;
   border-radius: 1px;
-  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.12), 0 1px 1px 0 rgba(0, 0, 0, 0.22);
 `;

@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 export default function SearchBar(props) {
   const { setCenterContent, searchWord, setSearchWord } = props;
   const [inputText, setInputText] = useState(""); // 입력된 텍스트 상태 추가
+  const [isFocused, setIsFocused] = useState(false);
 
   // 검색
   const handleSearch = () => {
@@ -16,44 +17,69 @@ export default function SearchBar(props) {
   // 검색 단어 감지
   const handleChange = (event) => {
     setInputText(event.target.value);
-  }
+  };
+
+  function check() {}
 
   return (
-    <>
-      <Container>
-        <article>
-          <form onSubmit={(event) => {
-            event.preventDefault();
-            handleSearch(); // 검색 버튼 클릭 또는 엔터 시 검색 처리
-          }}>
-            <input id="text" type="text" name="search" placeholder="search"
-                   value={ inputText } onChange={ handleChange } />                   
-            <input id="submit" type="submit" value="검색"></input>
-          </form>
-        </article>
-      </Container>
-    </>
+    <Container>
+      <Input
+        type="text"
+        name="search"
+        placeholder="search"
+        value={inputText}
+        onChange={handleChange}
+        onFocus={() => {
+          //setIsFocused(true);
+        }}
+        onBlur={() => {
+          //setIsFocused(false);
+        }}
+      />
+      {/* //{isFocused && ( */}
+      <Button
+        onClick={() => {
+          handleSearch();
+        }}>
+        <span class="material-symbols-rounded">search</span>
+      </Button>
+      {/* )} */}
+    </Container>
   );
 }
 
 const Container = styled.li`
-  padding: 1.8rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 0 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  ${({ theme }) => theme.fonts.regular};
+  font-size: 1.6rem;
 
-  input {
-    height: 3rem;
-    border: 1px #cccccc solid;
-  }
-
-  #text {
-    width: 15rem;
-    margin-right: 1rem;
-  }
-
-  #submit {
-  }
-
-  input:focus {
-    border-color: #0982f0;
+  button:focus,
+  :focus-visible {
     outline: none;
+  }
+`;
+
+const Input = styled.input`
+  flex: auto;
+  font-size: 1.6rem;
+  height: 100%;
+`;
+const Button = styled.button`
+  background-color: ${({ theme }) => theme.colors.mainpurple};
+  width: 3.5rem;
+  height: 80%;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 3rem;
+    color: ${({ theme }) => theme.colors.white};
   }
 `;

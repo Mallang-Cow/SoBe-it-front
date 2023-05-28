@@ -113,15 +113,9 @@ export default function MenuBar(props) {
               <p id="username">{nowUser?.userId}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
-          <ProfileMenuWrapper>
-            <button>
-              <span className="material-symbols-outlined">more_vert</span>
-            </button>
-          </ProfileMenuWrapper>
         </LinkContainer>
-        <LogoutWrapper>
-          <span className="material-symbols-outlined">logout</span>
-          <button onClick={logout}>로그아웃</button>
+        <LogoutWrapper onClick={logout}>
+          <span className="material-symbols-rounded">logout</span>
         </LogoutWrapper>
       </BottomWrapper>
     </Wrapper>
@@ -132,11 +126,12 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: start;
   height: 100%;
 
-  padding: 3rem 2rem 0 0;
+  padding: 4rem 0 3rem 0;
 
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const fadeInAnimation = keyframes`
@@ -150,30 +145,32 @@ const fadeInAnimation = keyframes`
 
 const HeaderWrapper = styled.section`
   display: grid;
-
-  height: 10rem;
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.8rem;
+  width: 100%;
   ${({ theme }) => theme.fonts.bold};
 `;
 const LogoWrapper = styled.div`
-  padding: 2rem 0;
+  margin-bottom: 3rem;
 `;
+
 const MenuWrapper = styled.section`
-  background-color: white;
   font-size: 2rem;
 
   border-radius: 1px;
+
+  :hover {
+    background-color: ${({ theme }) => theme.colors.lightpurple};
+  }
 `;
 
 const MenuItem = styled.div`
   display: flex;
   align-items: center;
   place-content: flex-start;
-  padding: 2rem 1.2rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkgrey_1};
+  padding: 2rem 0;
+  font-size: 1.8rem;
+  ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.darkgrey_2};
   transition: color 0.3s ease-in-out;
   cursor: pointer;
 
@@ -181,7 +178,6 @@ const MenuItem = styled.div`
     active.toString() === "true" &&
     css`
       color: ${({ theme }) => theme.colors.mainpurple};
-      background-color: ${({ theme }) => theme.colors.lightpurple};
     `}
 `;
 
@@ -198,25 +194,25 @@ const Text = styled.div``;
 const sidebarNavItems = [
   {
     display: "Home",
-    icon: <span className="material-symbols-outlined">home</span>,
+    icon: <span className="material-symbols-rounded">home</span>,
     to: "/home",
     section: "home",
   },
   {
     display: "Statistics",
-    icon: <span className="material-symbols-outlined">pie_chart</span>,
+    icon: <span className="material-symbols-rounded">pie_chart</span>,
     to: "/statistics",
     section: "statistics",
   },
   {
     display: "Notifications",
-    icon: <span className="material-symbols-outlined">notifications</span>,
+    icon: <span className="material-symbols-rounded">notifications</span>,
     to: "/notifications",
     section: "notifications",
   },
   {
     display: "Settings",
-    icon: <span className="material-symbols-outlined">settings</span>,
+    icon: <span className="material-symbols-rounded">settings</span>,
     to: "/settings",
     section: "settings",
   },
@@ -224,17 +220,17 @@ const sidebarNavItems = [
 
 const BottomWrapper = styled.section`
   font-size: 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   ${({ theme }) => theme.fonts.regular};
+  width: 100%;
 `;
 
 const LinkContainer = styled.section`
   display: flex;
   justify-content: space-between;
-
-  img:hover {
-    background-color: #845ec2;
-  }
-  background-color: white;
+  flex: auto;
 
   #profile-image {
     display: block;
@@ -253,8 +249,16 @@ const ProfileInfoWrapper = styled.section`
 `;
 
 const ProfileNameWrapper = styled.section`
+  display: flex;
+
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: start;
+  ${({ theme }) => theme.fonts.bold};
+  font-size: 1.6rem;
   #username {
-    ${({ theme }) => theme.fonts.light};
+    ${({ theme }) => theme.fonts.regular};
+    font-size: 1.4rem;
   }
 `;
 const ProfileMenuWrapper = styled.section`
@@ -264,10 +268,9 @@ const ProfileMenuWrapper = styled.section`
 
 const LogoutWrapper = styled.section`
   display: flex;
-  align-items: flex-start;
-  padding: 2rem 0;
-
-  button {
-    padding: 0 2rem;
+  align-items: center;
+  padding: 1rem;
+  span {
+    font-size: 2.5rem;
   }
 `;

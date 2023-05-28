@@ -6,12 +6,13 @@ import { getArticleDetailData } from "../../../api/getArticleDetailData";
 import { likeArticle } from "../../../api/likeArticle";
 import { userIdState } from "../../recoil/userId";
 import { useRecoilState } from "recoil";
+import { TIER } from "../../../core/tierImage";
 
 // import { likeArticle } from "../../../api/likeArticle";
 // import { getArticleDetailData } from "../../../api/getArticleDetailData";
 
 export default function HotPostCard(props) {
-  const { clickactive, setCenterContent, setArticleSeq } = props;
+  const { clickactive, setCenterContent, setArticleSeq, idx } = props;
 
   const [data, setData] = useState([]);
 
@@ -30,8 +31,8 @@ export default function HotPostCard(props) {
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
-      setData(response?.data[props.idx]);
-      setThisArticleSeq(Number(response?.data[props.idx]?.articleSeq));
+      setData(response?.data[idx]);
+      setThisArticleSeq(Number(response?.data[idx]?.articleSeq));
       // console.log(response?.data[props.idx]?.liked);
       // console.log(data?.user?.profileImageUrl);
       // console.log(data?.user?.profileImageUrl);
@@ -94,19 +95,21 @@ export default function HotPostCard(props) {
               goToProfile();
             }}>
             <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
-            <span>{data?.user?.nickname}</span>
+            <p className="nickname">{data?.user?.nickname}</p>
+            <img id="tier-image" src={TIER[data?.user?.userTier]} alt="티어" />
           </ProfileWrapper>
           <ReceiptContainer
             clickactive={clickactive}
             onClick={() => {
               goToArticleDetail();
             }}>
-            <h1>{data?.articleText}</h1>
-            <hr></hr>
-            <div id="price">
-              <span>금액</span>
-              <span>{data?.amount?.toLocaleString()}원</span>
-            </div>
+            <TextContainer>
+              <p>{data?.articleText}</p>{" "}
+            </TextContainer>
+            <PriceContainer>
+              <p className="regular">금액</p>
+              <p className="bold">{data?.amount?.toLocaleString()}원</p>
+            </PriceContainer>
           </ReceiptContainer>
 
           <CountInfoWrapper>
@@ -131,11 +134,11 @@ export default function HotPostCard(props) {
                 </span>
               )}
             </Like>
-            <span>{data?.likeCnt}</span>
+            <p>{data?.likeCnt}</p>
             <div>
               <span className="material-symbols-rounded">comment</span>
             </div>
-            <span>{data?.commentCnt}</span>
+            <p>{data?.commentCnt}</p>
           </CountInfoWrapper>
         </Wrapper>
       )}
@@ -144,68 +147,83 @@ export default function HotPostCard(props) {
 }
 
 const Wrapper = styled.div`
-  cursor: ${({ clickactive }) => clickactive && "pointer"};
-
-  padding: 2rem 1rem;
-  * {
-    margin: 0.5rem;
-  }
+  cursor: pointer;
   ${({ theme }) => theme.fonts.regular};
+  background-color: ${({ theme }) => theme.colors.white};
   font-size: 1.2rem;
+  padding: 1.5rem;
 `;
 
 const ProfileWrapper = styled.div`
-  background-color: white;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  p {
+    ${({ theme }) => theme.fonts.bold};
+    font-size: 1.4rem;
+    margin-left: 0.5rem;
+  }
 
   #profile-image {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 1rem;
+    background-color: red;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
   }
 
-  h2 {
-    text-align: center;
-    font-size: 2rem;
-  }
-
-  hr {
-    border-top: 1px dashed red;
-    margin: 0;
-    background: ${({ theme }) => theme.colors.lightgrey_2};
-    height: 0.1rem;
-    border: 0;
+  #tier-image {
+    margin-left: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 `;
 
-const ReceiptContainer = styled.div`
-  #price {
-    display: flex;
-    justify-content: flex-end;
+const ReceiptContainer = styled.div``;
+const TextContainer = styled.div`
+  margin-bottom: 1rem;
+  padding: 1rem 0;
+  ${({ theme }) => theme.fonts.bold};
+  font-size: 1.4rem;
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.lightgrey_1};
+`;
+const PriceContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.4rem;
+  .regular {
+    ${({ theme }) => theme.fonts.regular};
+    color: ${({ theme }) => theme.colors.darkgrey_2};
   }
-
-  #filledIcon {
-    fill: 1;
-    color: red;
+  .bold {
+    ${({ theme }) => theme.fonts.bold};
   }
 `;
+
 const CountInfoWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-top: 1rem;
+
+  p {
+    font-size: 1.2rem;
+    margin: 0 0.5rem;
+  }
+  span.material-symbols-rounded {
+    font-size: 2rem;
+    color: ${({ theme }) => theme.colors.black};
+  }
 `;
 const Like = styled.div`
   display: flex;
-  margin: 0 2rem 0 0;
   align-items: center;
-
-  p {
-    font-size: 1.4rem;
-    margin-left: 1rem;
-  }
   span.material-symbols-rounded:hover {
+    font-size: 2rem;
     color: ${({ theme }) => theme.colors.red};
   }
   span.active.material-symbols-rounded {
+    font-size: 2rem;
     color: ${({ theme }) => theme.colors.red};
   }
 `;
