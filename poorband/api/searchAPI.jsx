@@ -1,5 +1,5 @@
 import { call } from './ApiService'
 
-export function searchUser(searchUserDTO) {
-  return call("/search/users", "POST", searchUserDTO);
+export function searchUser(searchText) {
+  return call("/search/users", "POST", searchText);
 }
