@@ -35,7 +35,7 @@ export default function UserCard(props) {
       console.log("팔로우 : " + response);
 
       if (response === "success") {
-        setIsFollowing(true); // 팔로우 상태 변경
+        setIsFollowing(2); // 팔로우 상태 변경
       }
       else {
         console.log("팔로우 실패");
@@ -54,7 +54,7 @@ export default function UserCard(props) {
       console.log("언팔로우 : " + response);
 
       if (response === "success") {
-        setIsFollowing(false); // 팔로우 상태 변경
+        setIsFollowing(0); // 팔로우 상태 변경
       }
       else {
         console.log("언팔로우 실패");
