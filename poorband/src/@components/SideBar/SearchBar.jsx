@@ -41,7 +41,7 @@ export default function SearchBar(props) {
         onClick={() => {
           handleSearch();
         }}>
-        검색
+        <span class="material-symbols-rounded">search</span>
       </Button>
       {/* )} */}
     </Container>
@@ -71,8 +71,15 @@ const Input = styled.input`
 `;
 const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.mainpurple};
-  width: 5rem;
+  width: 3.5rem;
   height: 80%;
   border-radius: 0.5rem;
-  color: ${({ theme }) => theme.colors.white};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-size: 3rem;
+    color: ${({ theme }) => theme.colors.white};
+  }
 `;
