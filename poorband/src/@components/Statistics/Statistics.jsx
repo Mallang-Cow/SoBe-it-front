@@ -89,7 +89,5 @@ const MenuWrapper = styled.menu`
   width: 100%;
   justify-content: space-evenly;
   margin-top: 1.5rem;
-  :hover {
-    background-color: ${({ theme }) => theme.colors.lightpurple};
-  }
+  cursor: pointer;
 `;
