@@ -11,21 +11,25 @@ import { getChallengeData } from "../../../api/getChallengeData";
 
 export default function ProfileChallenges(props) {
   const{userId}=props;
-  const[showChallengeMake, setShowChallengeMake] = useState(false)
+  const[showChallengeMake, setShowChallengeMake] = useState(false);
+  const[cntData, setCntData] = useState();
   const[data, setData] = useState();
 
-  useEffect(() => {
-    data && console.log(data);
-  }, [data]);
+
 
   useEffect(() => {
-    cntUserId({userId:userId});
+    cntData && console.log(cntData);
+  }, [cntData]);
+
+  useEffect(() => {
+    challengeCnt({userId:userId});
   }, [userId]);
   
-  const {mutate: cntUserId} = useMutation (getChallengeCntData,{
+  // 도전과제 카운트 가져오기
+  const {mutate: challengeCnt} = useMutation (getChallengeCntData,{
     onSuccess: (response) => {
       console.log("response: " + response);
-      setData(response);
+      setCntData(response);
     },
     onError: () => {
       console.log("error");
@@ -33,10 +37,15 @@ export default function ProfileChallenges(props) {
   });
 
   useEffect(() => {
-    challengeUserId({userId:userId});
+    data && console.log(data);
+  }, [data]);
+
+  useEffect(() => {
+    challengeData({userId:userId});
   }, [userId]);
 
-  const {mutate: challengeUserId} = useMutation (getChallengeData,{
+  //도전과제 정보 가져오기
+  const {mutate: challengeData} = useMutation (getChallengeData,{
     onSuccess: (response) => {
       console.log(response);
       setData(response);
@@ -51,14 +60,17 @@ export default function ProfileChallenges(props) {
       {/* 자기 페이지인 경우 도전과제 추가 버튼 & 도전과제 현황 보여주기 */}
       {data?.status === 1 && (
         <ChallengeMineWrapper>
-          {!showChallengeMake?<ChallengeCardMakeBtn showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>:<ChallengeCardMake showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>}
+          {!showChallengeMake?
+            <ChallengeCardMakeBtn showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>
+            :<ChallengeCardMake showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>
+          }
           
           <ChallengeCnt>
             <div>
               <span>성공한 도전과제</span>
               <span className="bold">
-                {data?.successGoalAmountCnt}개/
-                {data?.goalAmountCnt}개
+                {cntData?.successGoalAmountCnt}개/
+                {cntData?.goalAmountCnt}개
               </span>
             </div>
           </ChallengeCnt>
