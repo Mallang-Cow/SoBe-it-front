@@ -4,10 +4,10 @@ import UserCard from "../@components/common/UserCard";
 import { followerList } from "../../api/followAPI";
 
 export default function Follower(props) {
-  const { userId } = props;
+  const { userId, setUserId, setCenterContent } = props;
   const [followerListResult, setfollowerListResult] = useState([]);
   const [isError, setIsError] = useState(false);
-  console.log(userId);
+  console.log(userId + "의 팔로워 목록");
 
   const { mutate: followerListMutation, isLoading } = useMutation(followerList, {
     onSuccess: (response) => {
@@ -42,7 +42,17 @@ export default function Follower(props) {
 
       {/* 팔로워 리스트 가져오기 */}
       { followerListResult.map((resultFollower) => (
-        <UserCard />
+        <UserCard 
+          key={ resultFollower.userSeq }
+          userId={ resultFollower.userId }
+          nickname={ resultFollower.nickname }
+          userTier={ resultFollower.userTier }
+          introduction={ resultFollower.introduction }
+          profileImgUrl={ resultFollower.profileImgUrl }
+          status={ resultFollower.status }
+          setCenterContent={ setCenterContent }
+          setUserId={ setUserId }
+        />
       )) }
 
       {/* 500 에러가 발생한 경우 에러 메시지 표시 */}
