@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { styled } from "styled-components";
 import UserCard from "../@components/common/UserCard";
 import { followingList } from "../../api/followAPI";
 
@@ -35,7 +36,22 @@ export default function Following(props) {
 
   return (
     <>
-      <div>Following</div>
+      <HeaderContainer>
+        <div style={{ display: "flex", flexDirection: "column", width: "100%", textAlign: "center" }}>
+          <div style={{ marginBottom: "2rem" }}>팔로잉</div>
+          <div style={{ display: "flex", flexDirection: "row" }}>
+            <span
+              className="material-symbols-rounded"
+              onClick={() => {
+                goBack();
+              }}>
+              arrow_back
+            </span>
+            <header>{ `@${ userId }` }</header>
+          </div>
+        </div>
+      </HeaderContainer>
+
       {/* 로딩 중인 경우 로딩 표시 */}
       { isLoading && 
         <div>Loading...</div> }
@@ -61,3 +77,25 @@ export default function Following(props) {
     </>
   );
 }
+
+const HeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  padding: 4rem 3rem 2rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+
+  ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 2.4rem;
+
+  span {
+    font-size: 3rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+`;
