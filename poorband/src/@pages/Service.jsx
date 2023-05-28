@@ -75,8 +75,12 @@ export default function Service() {
               setArticleSeq={setArticleSeq}
             />
           )}
-          {centerContent === "following" && <Following setCenterContent={ setCenterContent } setUserId={ setUserId } userId={ userId } />}
-          {centerContent === "follower" && <Follower setCenterContent={setCenterContent} setUserId={setUserId} userId={ userId } />}
+          {centerContent === "following" && (
+            <Following setCenterContent={setCenterContent} setUserId={setUserId} userId={userId} />
+          )}
+          {centerContent === "follower" && (
+            <Follower setCenterContent={setCenterContent} setUserId={setUserId} userId={userId} />
+          )}
           {centerContent === "search" && (
             <SearchResults
               setCenterContent={setCenterContent}

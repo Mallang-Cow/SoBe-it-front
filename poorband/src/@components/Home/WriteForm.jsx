@@ -426,7 +426,7 @@ const Button1 = styled.button`
     left: 0;
     width: 0;
     height: 3px;
-    background: ${({ theme }) => theme.colors.darkpurple_2};
+    background: ${({ theme }) => theme.colors.mainpurple};
     transition: width 0.3s;
 
     ${(props) =>
@@ -443,7 +443,7 @@ const Button2 = styled.button`
   font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   line-height: 1.25rem;
   /* identical to box height */
 
@@ -466,7 +466,7 @@ const Button2 = styled.button`
     left: 0;
     width: 0;
     height: 3px;
-    background: ${({ theme }) => theme.colors.darkpurple_2};
+    background: ${({ theme }) => theme.colors.mainpurple};
     transition: width 0.3s;
 
     ${(props) =>
