@@ -173,7 +173,6 @@ const ChallengeDate = styled.div`
 
 const ProgressBarWrapper = styled.div`
   width: 100%;
-  background-color: red;
 
   p {
     ${({ theme }) => theme.fonts.bold};

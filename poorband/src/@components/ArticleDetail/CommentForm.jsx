@@ -8,9 +8,10 @@ import { TIER } from "../../../core/tierImage";
 
 export default function CommentForm(props) {
   const { articleSeq, setReload } = props;
-  const [data, setData] = useState({ article_seq: 0, reply_text: "", parent_reply_seq: 0, is_updated: 0 });
+  const [data, setData] = useState();
   const [text, setText] = useState("");
   const [nowUser] = useRecoilState(nowUserState);
+  const [clicked, setClicked] = useState(0);
 
   const textRef = useRef(null);
 
@@ -34,6 +35,7 @@ export default function CommentForm(props) {
       console.log(response);
       setReload(true);
       setText("");
+      setClicked(0);
     },
     onError: (response) => {
       console.log(response);
@@ -50,7 +52,7 @@ export default function CommentForm(props) {
       <ProfileContainer>
         <img src={nowUser?.profileImgUrl} alt="프사" className="profile-img" />
         <p className="nickname">{nowUser?.nickname}</p>
-        <p className="id">{nowUser?.userId}</p>
+        <p className="id">@{nowUser?.userId}</p>
         <img src={TIER[nowUser?.userTier]} alt="티어" className="tier-img" />
       </ProfileContainer>
       <textarea type="text" placeholder="댓글을 작성하세요." onChange={getText} value={text} ref={textRef} />

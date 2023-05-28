@@ -60,6 +60,7 @@ export default function CommentCard(props) {
       alert("댓글 삭제에 실패했습니다.");
     },
   });
+
   return (
     <Wrapper>
       <ProfileContainer>
@@ -67,7 +68,7 @@ export default function CommentCard(props) {
           <LinkContainer>
             <img src={comment?.profile_image_url} alt="프사" className="profile-img" />
             <p className="nickname">{comment?.nickname}</p>
-            <p className="id">@아이디</p>
+            <p className="id">@{comment?.user_id}</p>
           </LinkContainer>
           <img src={TIER[comment?.user_tier]} alt="티어" className="tier-img" />
           {time && (
