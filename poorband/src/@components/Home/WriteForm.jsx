@@ -292,10 +292,7 @@ export default function WriteForm(props) {
           {isConsumeWrite === 2 && (
             <PermissionFormWrapper>
               <TopWrapper>
-                <Image
-                  src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw"
-                  alt=""
-                />
+                <Image src={nowUser.profileImgUrl} alt="" />
               </TopWrapper>
 
               <InputText
@@ -483,7 +480,6 @@ const ButtonWrapper = styled.section`
   width: 699px;
   height: 5rem;
   margin-bottom: 0.6rem;
-  margin-top: 1.5rem;
   /* padding-bottom: 1.5rem; */
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 

@@ -34,6 +34,7 @@ export default function ArticleEditForm(props) {
     isAllowed: "false",
   };
 
+  console.log(file);
   // 글 정보 가져와기
   const {
     data: article,
