@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { styled as muiStyled } from '@mui/material/styles';
+import { styled as muiStyled } from "@mui/material/styles";
 import { styled } from "styled-components";
-import { Button, List } from '@mui/material';
-import { theme } from '../../style/theme';
+import { Button, List } from "@mui/material";
+import { theme } from "../../style/theme";
 import { selectAllNotification } from "../../../api/notificationAPI";
 import ArticleLikeNotificationCard from "./ArticleLikeNotificationCard";
 import ReplyNotificationCard from "./ReplyNotificationCard";
@@ -31,7 +31,7 @@ export default function Notifications(props) {
 
   const handleDeleteNotification = (notificationSeq) => {
     setNotifications((prevNotifications) =>
-      prevNotifications.filter((notification) => notification.notificationSeq !== notificationSeq)
+      prevNotifications.filter((notification) => notification.notificationSeq !== notificationSeq),
     );
   };
 
@@ -41,68 +41,68 @@ export default function Notifications(props) {
     switch (type) {
       case 1: // 댓글 알림
         return (
-          <ReplyNotificationCard 
-            key={ notification.notificationSeq }
-            notificationSeq={ notification.notificationSeq }
-            type={ notification.type }
-            content={ notification.content }
-            articleContent={ notification.articleContent }
-            notArticleSeq={ notification.notArticleSeq }
-            imageUrl={ notification.imageUrl }
-            timestamp={ notification.timestamp }
-            setCenterContent={ setCenterContent }
-            setArticleSeq={ setArticleSeq }
-            onDelete={ handleDeleteNotification }
+          <ReplyNotificationCard
+            key={notification.notificationSeq}
+            notificationSeq={notification.notificationSeq}
+            type={notification.type}
+            content={notification.content}
+            articleContent={notification.articleContent}
+            notArticleSeq={notification.notArticleSeq}
+            imageUrl={notification.imageUrl}
+            timestamp={notification.timestamp}
+            setCenterContent={setCenterContent}
+            setArticleSeq={setArticleSeq}
+            onDelete={handleDeleteNotification}
           />
         );
       case 2: // 팔로우 알림
         return (
-          <FollowNotificationCard 
-            key={ notification.notificationSeq }
-            notificationSeq={ notification.notificationSeq }
-            type={ notification.type }
-            followingUserNickName={ notification.followingUserNickName }
-            followingUserId={ notification.followingUserId }
-            following={ notification.following }
-            content = { notification.content }
-            userTier={ notification.userTier }
-            url={ notification.url }
-            imageUrl={ notification.imageUrl }
-            timestamp={ notification.timestamp }
-            setCenterContent={ setCenterContent }
-            setUserId={ setUserId }
-            onDelete={ handleDeleteNotification }
+          <FollowNotificationCard
+            key={notification.notificationSeq}
+            notificationSeq={notification.notificationSeq}
+            type={notification.type}
+            followingUserNickName={notification.followingUserNickName}
+            followingUserId={notification.followingUserId}
+            following={notification.following}
+            content={notification.content}
+            userTier={notification.userTier}
+            url={notification.url}
+            imageUrl={notification.imageUrl}
+            timestamp={notification.timestamp}
+            setCenterContent={setCenterContent}
+            setUserId={setUserId}
+            onDelete={handleDeleteNotification}
           />
         );
       case 3: // 댓글 좋아요 알림
         return (
-          <ReplyLikeNotificationCard 
-            key={ notification.notificationSeq }
-            notificationSeq={ notification.notificationSeq }
-            type={ notification.type }
-            content={ notification.content }
-            articleContent={ notification.articleContent }
-            notArticleSeq={ notification.notArticleSeq }
-            imageUrl={ notification.imageUrl }
-            timestamp={ notification.timestamp }
-            setCenterContent={ setCenterContent }
-            setArticleSeq={ setArticleSeq }
-            onDelete={ handleDeleteNotification }
+          <ReplyLikeNotificationCard
+            key={notification.notificationSeq}
+            notificationSeq={notification.notificationSeq}
+            type={notification.type}
+            content={notification.content}
+            articleContent={notification.articleContent}
+            notArticleSeq={notification.notArticleSeq}
+            imageUrl={notification.imageUrl}
+            timestamp={notification.timestamp}
+            setCenterContent={setCenterContent}
+            setArticleSeq={setArticleSeq}
+            onDelete={handleDeleteNotification}
           />
         );
       case 4: // 게시글 좋아요 알림
         return (
           <ArticleLikeNotificationCard
-            key={ notification.notificationSeq }
-            notificationSeq={ notification.notificationSeq }
-            type={ notification.type }
-            content={ notification.content }
-            articleContent={ notification.articleContent }
-            notArticleSeq={ notification.notArticleSeq }
-            timestamp={ notification.timestamp }
-            setCenterContent={ setCenterContent }
-            setArticleSeq={ setArticleSeq }
-            onDelete={ handleDeleteNotification }
+            key={notification.notificationSeq}
+            notificationSeq={notification.notificationSeq}
+            type={notification.type}
+            content={notification.content}
+            articleContent={notification.articleContent}
+            notArticleSeq={notification.notArticleSeq}
+            timestamp={notification.timestamp}
+            setCenterContent={setCenterContent}
+            setArticleSeq={setArticleSeq}
+            onDelete={handleDeleteNotification}
           />
         );
       default:
@@ -113,10 +113,9 @@ export default function Notifications(props) {
   const { mutate: deleteAllNotifications, isLoading: isDeletingAll } = useMutation(deleteAllNotification, {
     onSuccess: (response) => {
       if (response) {
-        console.log("알림 전체 삭제 성공")
+        console.log("알림 전체 삭제 성공");
         setNotifications([]); // 알림 상태 초기화
-      }
-      else {
+      } else {
         console.log("알림 전체 삭제 실패");
       }
     },
@@ -133,17 +132,17 @@ export default function Notifications(props) {
         <header>Notifications</header>
       </HeaderContainer>
 
-      <List dense={ false }>
+      <List dense={false}>
         {/* 전체 삭제 버튼 */}
-        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-          <DeleteAllNotificationButton onClick={ deleteAllNotifications } disabled={ isDeletingAll }>
-            { isDeletingAll ? "삭제 중..." : "전체 알림 삭제" }
+        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end", paddingRight: "1.6rem" }}>
+          <DeleteAllNotificationButton onClick={deleteAllNotifications} disabled={isDeletingAll}>
+            {isDeletingAll ? "삭제 중..." : "전체 알림 삭제"}
           </DeleteAllNotificationButton>
         </div>
 
         {/* 알림 전체 불러오기 */}
         {/* 알림 목록 렌더링 */}
-        { notifications.map((notification) => renderNotificationCard(notification)) }
+        {notifications.map((notification) => renderNotificationCard(notification))}
       </List>
     </div>
   );
@@ -170,28 +169,26 @@ const HeaderContainer = styled.div`
   }
 `;
 
-const DeleteAllNotificationButton = muiStyled(Button) ({
-  marginTop: '0rem',
-  marginRight: '0.8rem',
-  marginBottom: '0.4rem',
-  marginLeft: '0rem',
-  textAlign: 'center',
+const DeleteAllNotificationButton = muiStyled(Button)({
+  marginTop: "0rem",
+  marginRight: "0.8rem",
+  marginBottom: "0.4rem",
+  marginLeft: "0rem",
+  textAlign: "center",
   color: theme.colors.lightgrey_2,
-  fontSize: '1.4rem',
-  fontFamily: [
-    'Spoqa Han Sans Neo',
-  ].join(','),
-  fontStyle: 'normal',
+  fontSize: "1.4rem",
+  fontFamily: ["Spoqa Han Sans Neo"].join(","),
+  fontStyle: "normal",
   fontWeight: 500,
-  letterSpacing: '0.012rem',
-  '&:hover': {
+  letterSpacing: "0.012rem",
+  "&:hover": {
     backgroundColor: theme.colors.lightgrey_1,
   },
-  '&:active': {
-    backgroundColor: 'none',
+  "&:active": {
+    backgroundColor: "none",
   },
-  '&:focus': {
-    border: 'none',
-    outline: 'none',
+  "&:focus": {
+    border: "none",
+    outline: "none",
   },
 });

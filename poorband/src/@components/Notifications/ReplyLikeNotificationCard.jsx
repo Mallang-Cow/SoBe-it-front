@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
-import { styled as muiStyled } from '@mui/material/styles';
+import { styled as muiStyled } from "@mui/material/styles";
 import { styled } from "styled-components";
-import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
-import ClearIcon from '@mui/icons-material/Clear';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { theme } from '../../style/theme';
+import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { theme } from "../../style/theme";
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 import { deleteOneNotification } from "../../../api/notificationAPI";
 
-export default function ReplyLikeNotificationCard({ notificationSeq, type, content, articleContent, notArticleSeq, imageUrl, timestamp, setCenterContent, setArticleSeq, onDelete }) {
+export default function ReplyLikeNotificationCard({
+  notificationSeq,
+  type,
+  content,
+  articleContent,
+  notArticleSeq,
+  imageUrl,
+  timestamp,
+  setCenterContent,
+  setArticleSeq,
+  onDelete,
+}) {
   const [time, setTime] = useState([]);
   const nowDate = new Date();
 
@@ -22,11 +33,10 @@ export default function ReplyLikeNotificationCard({ notificationSeq, type, conte
   // 사용자 프로필 이미지
   let avatarImg = null;
   if (imageUrl) {
-    avatarImg = <img src={ imageUrl } alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%" }} />;
-  }
-  else {
-//    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
-    avatarImg = <FavoriteBorderIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }}/>;
+    avatarImg = <img src={imageUrl} alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%" }} />;
+  } else {
+    //    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
+    avatarImg = <FavoriteBorderIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }} />;
   }
 
   // 알림 시간 구하기
@@ -50,8 +60,7 @@ export default function ReplyLikeNotificationCard({ notificationSeq, type, conte
       if (response) {
         console.log("댓글 좋아요 알림 삭제 성공");
         onDelete(notificationSeq);
-      }
-      else {
+      } else {
         console.log("댓글 좋아요 알림 삭제 실패");
       }
     },
@@ -76,102 +85,97 @@ export default function ReplyLikeNotificationCard({ notificationSeq, type, conte
   };
 
   return (
-    <NotificationCardButton onClick={ goToArticleDetail } disableRipple>
-      <ListItem secondaryAction={
-        <NotificationIconButton edge="end" aria-label="delete" onClick={ deleteNotification } disableRipple>
-          <ClearIcon />
-        </NotificationIconButton>
-      }>
-        
+    <NotificationCardButton onClick={goToArticleDetail} disableRipple>
+      <ListItem
+        secondaryAction={
+          <NotificationIconButton edge="end" aria-label="delete" onClick={deleteNotification} disableRipple>
+            <span class="material-symbols-rounded">close</span>
+          </NotificationIconButton>
+        }>
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
           {/* <Avatar style={{ width: "6rem", height: "6rem" }}> */}
-            { avatarImg }
+          {avatarImg}
           {/* </Avatar> */}
         </ListItemAvatar>
 
         <div style={{ marginLeft: "2rem" }}>
-          <div style={{ display: "flex", flexDirection: "row", marginBottom: '0.6rem', alignItems: 'center' }}>
-            <MainNotificationText primary={ content } />
-            <TimeNotificationText primary={ time && (
-              <p className="grey">
-                {time[1]}
-                {time[0] === "year" && "년"}
-                {time[0] === "month" && "월"}
-                {time[0] === "date" && "일"}
-                {time[0] === "hours" && "시간"}
-                {time[0] === "minutes" && "분"}
-                {time[0] === "secounds" && "초"} 전
-              </p>
-            )} />
+          <div style={{ display: "flex", flexDirection: "row", marginBottom: "0.6rem", alignItems: "center" }}>
+            <MainNotificationText primary={content} />
+            <TimeNotificationText
+              primary={
+                time && (
+                  <p className="grey">
+                    {time[1]}
+                    {time[0] === "year" && "년"}
+                    {time[0] === "month" && "월"}
+                    {time[0] === "date" && "일"}
+                    {time[0] === "hours" && "시간"}
+                    {time[0] === "minutes" && "분"}
+                    {time[0] === "secounds" && "초"} 전
+                  </p>
+                )
+              }
+            />
           </div>
-          <SubNotificationText secondary={ articleContent } />
+          <SubNotificationText secondary={articleContent} />
         </div>
       </ListItem>
     </NotificationCardButton>
   );
 }
 
-const NotificationCardButton = muiStyled(ListItemButton) ({
-  '&:hover': {
+const NotificationCardButton = muiStyled(ListItemButton)({
+  "&:hover": {
     backgroundColor: theme.colors.lightpurple,
   },
-  '&:active': {
-    backgroundColor: 'none',
+  "&:active": {
+    backgroundColor: "none",
   },
-  '%:focus': {
-    backgroundColor: 'none',
+  "%:focus": {
+    backgroundColor: "none",
   },
 });
 
-const NotificationIconButton = muiStyled(IconButton) ({
-  '&:hover': {
+const NotificationIconButton = muiStyled(IconButton)({
+  "&:hover": {
     backgroundColor: theme.colors.lightpurple,
   },
-  '&:active': {
-    backgroundColor: 'none',
+  "&:active": {
+    backgroundColor: "none",
   },
-  '&:focus': {
-    border: 'none',
-    outline: 'none',
-  },
-});
-
-const MainNotificationText = muiStyled(ListItemText) ({
-  '& span': { 
-    fontSize: '1.6rem',
-    fontFamily: [
-      'Roboto',
-    ].join(','),
-    fontStyle: 'normal',
-    fontWeight: 500,
-    letterSpacing: '0.03em',
+  "&:focus": {
+    border: "none",
+    outline: "none",
   },
 });
 
-const TimeNotificationText = muiStyled(ListItemText) ({
-  marginLeft: '0.6rem',
-
-  '& span': { 
-    color: '#85929E',
-    fontSize: '1.2rem',
-    fontFamily: [
-      'Roboto',
-    ].join(','),
-    fontStyle: 'normal',
+const MainNotificationText = muiStyled(ListItemText)({
+  "& span": {
+    fontFamily: "Spoqa Han Sans Neo",
+    fontSize: "1.6rem",
     fontWeight: 500,
-    letterSpacing: '0.03em',
+    letterSpacing: "0.03em",
   },
 });
 
-const SubNotificationText = muiStyled(ListItemText) ({
-  '& p': { 
-    color: '#8799A5',
-    fontSize: '1.4rem',
-    fontFamily: [
-      'Roboto',
-    ].join(','),
-    fontStyle: 'normal',
+const TimeNotificationText = muiStyled(ListItemText)({
+  marginLeft: "0.6rem",
+
+  "& span": {
+    color: theme.colors.lightgrey_2,
+    fontSize: "1.4rem",
+    fontFamily: "Spoqa Han Sans Neo",
     fontWeight: 500,
-    letterSpacing: '0.03em',
+    letterSpacing: "0.03em",
+  },
+});
+
+const SubNotificationText = muiStyled(ListItemText)({
+  "& p": {
+    color: theme.colors.darkgrey_1,
+    fontSize: "1.6rem",
+    fontFamily: "Spoqa Han Sans Neo",
+    fontWeight: 500,
+    letterSpacing: "0.03em",
   },
 });
