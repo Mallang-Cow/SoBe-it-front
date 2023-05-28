@@ -17,6 +17,7 @@ export default function ProfileChallenges(props) {
   const[showChallengeMake, setShowChallengeMake] = useState(false);
   const[cntData, setCntData] = useState();
   const[data, setData] = useState();
+  const[challenges, setChallenges] = useState()
 
   useEffect(() => {
     console.log(userId);
@@ -41,8 +42,9 @@ export default function ProfileChallenges(props) {
   //도전과제 정보 가져오기
   const {mutate: challengeData} = useMutation (getChallengeData,{
     onSuccess: (response) => {
-      console.log("challengeData" + response);
-      setData(response);
+      console.log("challengeData" + response.data[0]);
+      setChallenges(response.data);
+
     },
     onError: () => {
       console.log("error");
@@ -83,10 +85,30 @@ export default function ProfileChallenges(props) {
           </NextTierCnt>
         </ChallengeMineWrapper>
       )}
+
       {/* 도전과제 리스트 불러오기 */}
-      <ChallengeCard />
-      <ChallengeCard />
-      <ChallengeCard />
+      <ChallengeCardListWrapper>
+      {(Array.isArray(challenges) ? challenges : []).map((challenge, idx) => (
+          <React.Fragment key={idx}>
+              <ChallegeWrapper>
+                  <ChallengeCard
+                      profileImg={challenge.profileImg}
+                      nickName={challenge.nickName}
+                      userId={challenge.userId}
+                      title={challenge.title}
+                      goalAmount={challenge.goalAmount}
+                      userTier={challenge.userTier}
+                      isSuccess={challenge.isSuccess}
+                      startDate={challenge.startDate}
+                      endDate={challenge.endDate}
+                      consumption={challenge.consumption}
+                  />
+              </ChallegeWrapper>
+          </React.Fragment>
+      ))}
+
+      </ChallengeCardListWrapper>
+      
     </ProfileChallengesWrapper>
   );
 }
@@ -119,6 +141,10 @@ const ChallengeMineWrapper = styled.section`
 
 `;
 
+const ChallengeCardListWrapper = styled.section`
+  
+`;
+
 const ChallengeCnt = styled.div`  
   display: flex;
   justify-content: right;
@@ -132,4 +158,8 @@ const NextTierCnt = styled.div`
     width: 1rem;
     height: 1rem;
   }
+`;
+
+const ChallegeWrapper = styled.section`
+  margin: 2.5rem 0;
 `;
