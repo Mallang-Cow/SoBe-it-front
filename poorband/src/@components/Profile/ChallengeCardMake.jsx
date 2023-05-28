@@ -3,6 +3,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { styled } from "styled-components";
 import { ko } from "date-fns/esm/locale";
+import { useMutation } from "react-query";
+import { addNewChallnge } from "../../../api/addChallenge";
 
 export default function ChallengeCardMake(props) {
   const { setShowChallengeMake } = props;
@@ -10,17 +12,9 @@ export default function ChallengeCardMake(props) {
   const [cTitle, setCTitle] = useState("");
   const [cStartDate, setCStartDate] = useState(new Date());
   const [cEndDate, setCEndDate] = useState(new Date());
-  const [cRoutine, setCRoutine] = useState("daily");
+  const [cRoutine, setCRoutine] = useState(1);
   const [cGoalAmount, setCGoalAmount] = useState(null);
 
-  const [newChallenge, setNewChallenge] = useState({
-    title: cTitle,
-    startDate: cStartDate,
-    endDate: cEndDate,
-    routine: cRoutine,
-    goalAmount: cGoalAmount,
-    isSuccess: "진행중",
-  });
 
   let getToday = new Date();
   let year = getToday.getFullYear(); // 년도
@@ -56,18 +50,33 @@ export default function ChallengeCardMake(props) {
   };
 
   function submitNewChallenge() {
-    if (
-      newChallenge.title &&
-      newChallenge.startDate &&
-      newChallenge.endDate &&
-      newChallenge.routine &&
-      newChallenge.goalAmount &&
-      newChallenge.isSuccess
-    ) {
+    const addChallengeData = {
+      newGoalAmountRequestDTO : {
+        title: cTitle.cTitle,
+        startDate: cStartDate,
+        endDate: cEndDate,
+        routine: cRoutine,
+        goalAmount: cGoalAmount
+      }
+    };
+
+    if (cTitle&&cStartDate&&cEndDate&&cRoutine&&cGoalAmount) {
       //API 호출
+      addChallenge(addChallengeData.newGoalAmountRequestDTO);
     }
     setShowChallengeMake(false);
   }
+
+  const { mutate: addChallenge } = useMutation(addNewChallnge, {
+    onSuccess: (response) => {
+      console.log(response);
+      
+    },
+    onError: (error) => {
+      console.log(error);
+
+    }
+  });
 
   return (
     <>
@@ -103,12 +112,12 @@ export default function ChallengeCardMake(props) {
           <p className="name">반복</p>
           <RadioBox>
             <label>
-              <input type="radio" value="daily" checked={cRoutine === "daily"} onChange={handleRoutine} />
+              <input type="radio" value="daily" checked={cRoutine === 1} onChange={handleRoutine} />
               <p>매일</p>
             </label>
 
             <label>
-              <input type="radio" value="all" checked={cRoutine === "all"} onChange={handleRoutine} />
+              <input type="radio" value="all" checked={cRoutine === 2} onChange={handleRoutine} />
               <p>전체 기간</p>
             </label>
           </RadioBox>
