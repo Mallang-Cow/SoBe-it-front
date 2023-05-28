@@ -34,6 +34,7 @@ export default function ArticleEditForm(props) {
     isAllowed: "false",
   };
 
+  console.log(file);
   // 글 정보 가져와기
   const {
     data: article,
@@ -341,7 +342,7 @@ const EditFormWrapper = styled.section`
     height: 100%;
     border-radius: 0.3rem;
     border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
-    font-size: 1.1rem;
+
     text-align: center;
     color: #707070;
     cursor: pointer;

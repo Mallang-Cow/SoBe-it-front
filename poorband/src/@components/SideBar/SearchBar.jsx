@@ -22,28 +22,23 @@ export default function SearchBar(props) {
   function check() {}
 
   return (
-    <Container>
-      <Input
-        type="text"
-        name="search"
-        placeholder="search"
-        value={inputText}
-        onChange={handleChange}
-        onFocus={() => {
-          //setIsFocused(true);
-        }}
-        onBlur={() => {
-          //setIsFocused(false);
-        }}
-      />
-      {/* //{isFocused && ( */}
-      <Button
-        onClick={() => {
-          handleSearch();
-        }}>
-        <span class="material-symbols-rounded">search</span>
-      </Button>
-      {/* )} */}
+    <Container
+      onFocus={() => {
+        setIsFocused(true);
+      }}
+      onBlur={() => {
+        setIsFocused(false);
+      }}>
+      <Input type="text" name="search" placeholder="Search" value={inputText} onChange={handleChange} />
+
+      {isFocused && (
+        <Button
+          onMouseDown={() => {
+            handleSearch();
+          }}>
+          <span class="material-symbols-rounded">search</span>
+        </Button>
+      )}
     </Container>
   );
 }
@@ -52,11 +47,14 @@ const Container = styled.li`
   width: 100%;
   height: 100%;
   display: flex;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   justify-content: space-between;
   align-items: center;
   ${({ theme }) => theme.fonts.regular};
   font-size: 1.6rem;
+  ::placeholder {
+    ${({ theme }) => theme.fonts.medium};
+  }
 
   button:focus,
   :focus-visible {

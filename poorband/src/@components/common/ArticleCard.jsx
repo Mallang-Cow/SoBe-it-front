@@ -145,7 +145,7 @@ export default function ArticleCard(props) {
               {article?.user.nickname}
             </p>
             <p className="bold" id="userId">
-              {article?.user?.userId}
+              @{article?.user?.userId}
             </p>
           </LinkContainer>
 
@@ -342,7 +342,7 @@ const ProfileContainer = styled.div`
     align-items: center;
   }
   p.bold {
-    font: ${({ theme }) => theme.fonts.bold};
+    ${({ theme }) => theme.fonts.bold};
     margin: 0 0.5rem;
   }
   img {

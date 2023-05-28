@@ -1,21 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WriteForm from "./WriteForm";
 import Feed from "./Feed";
 import { styled } from "styled-components";
 
 export default function Home(props) {
   const { setCenterContent, setArticleSeq, setUserId, reloadFeed, setReloadFeed } = props;
+  const [position, setPosition] = useState(false);
+  const handleScroll = () => {
+    if (scrollY > 50) setPosition(true);
+    else setPosition(false);
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      window.addEventListener("scroll", handleScroll);
+    }, 100);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
       <HomeWrapper>
-        <HomeTag>Home</HomeTag>
-        <WriteForm setReloadFeed={setReloadFeed}/> 
-        <Feed setCenterContent={setCenterContent} 
-              setArticleSeq={setArticleSeq} 
-              setUserId={setUserId} 
-              reloadFeed={reloadFeed} 
-              setReloadFeed={setReloadFeed} />
+        <HomeTag position={position}>Home</HomeTag>
+        <WriteForm setReloadFeed={setReloadFeed} />
+        <Feed
+          setCenterContent={setCenterContent}
+          setArticleSeq={setArticleSeq}
+          setUserId={setUserId}
+          reloadFeed={reloadFeed}
+          setReloadFeed={setReloadFeed}
+        />
       </HomeWrapper>
     </>
   );
@@ -29,18 +46,22 @@ const HomeWrapper = styled.section`
 `;
 
 const HomeTag = styled.h2`
-  width: 639px;
-  height: 30px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  padding: 4rem 3rem 2rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border-bottom: 1px solid ${({ theme, position }) => (position ? theme.colors.lightgrey_1 : theme.colors.white)};
 
-  margin-bottom: 1.5rem;
-  margin-left: 1.875rem;
-  margin-top: 3vh;
+  ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 2.4rem;
 
-  font-family: "Spoqa Han Sans Neo";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 30px;
-  color: #000000;
+  span {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
 `;
-

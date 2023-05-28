@@ -110,7 +110,7 @@ export default function MenuBar(props) {
             </ProfileImgWrapper>
             <ProfileNameWrapper>
               <p>{nowUser?.nickname}</p>
-              <p id="username">{nowUser?.userId}</p>
+              <p id="username">@{nowUser?.userId}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
         </LinkContainer>
@@ -231,6 +231,7 @@ const LinkContainer = styled.section`
   display: flex;
   justify-content: space-between;
   flex: auto;
+  cursor: pointer;
 
   #profile-image {
     display: block;
@@ -246,11 +247,12 @@ const ProfileImgWrapper = styled.section`
 const ProfileInfoWrapper = styled.section`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const ProfileNameWrapper = styled.section`
   display: flex;
-
+  height: 100%;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: start;
@@ -270,6 +272,7 @@ const LogoutWrapper = styled.section`
   display: flex;
   align-items: center;
   padding: 1rem;
+  cursor: pointer;
   span {
     font-size: 2.5rem;
   }

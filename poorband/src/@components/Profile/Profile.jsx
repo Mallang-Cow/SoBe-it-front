@@ -12,14 +12,19 @@ export default function Profile(props) {
 
   return (
     <ProfileWrapper>
+      <ProfileTitle>Profile</ProfileTitle>
       <HeaderWrapper>
-        <ProfileTitle>@{userId}</ProfileTitle>
-
         {/* 프로필 편집 시 편집 창으로 바뀌기 */}
         {!showEdit ? (
-          <ProfileInfo setCenterContent={ setCenterContent } showEdit={ showEdit } setShowEdit={ setShowEdit } userId={ userId } setUserId={ setUserId } />
+          <ProfileInfo
+            setCenterContent={setCenterContent}
+            showEdit={showEdit}
+            setShowEdit={setShowEdit}
+            userId={userId}
+            setUserId={setUserId}
+          />
         ) : (
-          <ProfileEdit showEdit={ showEdit } setShowEdit={ setShowEdit } userId={ userId } setUserId={ setUserId } />
+          <ProfileEdit showEdit={showEdit} setShowEdit={setShowEdit} userId={userId} setUserId={setUserId} />
         )}
 
         {/* 메뉴 */}

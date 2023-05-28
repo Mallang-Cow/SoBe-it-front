@@ -16,6 +16,7 @@ export default function ProfileEdit(props) {
   const [profileImageUrl, setProfileImageUrl] = useState("");
   const [init, setInit] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [chooseFile, setChooseFile] = useState(false);
 
   // 프로필 정보 가져오기
   const { mutate: userData } = useMutation(getProfileInfoData, {
@@ -60,7 +61,7 @@ export default function ProfileEdit(props) {
   const profileImageUrlChange = (event) => {
     const file = event.target.files[0];
     setFile(file);
-    console.log(file);
+    setChooseFile(true);
     // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
   };
 
@@ -114,21 +115,23 @@ export default function ProfileEdit(props) {
 
   return (
     <ProfileEditWrapper>
-      {/*ID 불러오기 & 닉네임, 한줄소개 수정가능 & 프로필 사진은 보류*/}
-      {profileImageUrl && <img id="profile-img" src={profileImageUrl} alt="프로필 사진" />}
-      {/*<FileLabel htmlFor="file">
-        <span className="material-symbols-outlined">image</span>
-      </FileLabel>*/}
-      <input
-        className="imgInput"
-        type="file"
-        name="file"
-        id="file"
-        accept="image/*"
-        onChange={profileImageUrlChange}
-        //style={{ display: "none" }}
-      />
-
+      <FileInputContainer class="filebox">
+        <label for="file">
+          {chooseFile && file ? (
+            <img id="profile-img" src={URL.createObjectURL(file)} alt="프로필 사진" />
+          ) : (
+            <img id="profile-img" src={profileImageUrl} alt="프로필 사진" />
+          )}
+        </label>
+        <input
+          className="imgInput"
+          type="file"
+          name="file"
+          id="file"
+          accept="image/*"
+          onChange={profileImageUrlChange}
+        />
+      </FileInputContainer>
       <FormWrapper>
         <NameLineWrapper>
           <NameWrapper>
@@ -159,12 +162,23 @@ const ProfileEditWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.darkpurple};
   padding: 3rem;
   display: flex;
+`;
 
+const FileInputContainer = styled.div`
+  width: 10rem;
+  height: 10rem;
+  border-radius: 1rem;
   #profile-img {
     width: 10rem;
     height: 10rem;
     border-radius: 1rem;
-    background-color: black;
+    cursor: pointer;
+  }
+  #profile-img:hover {
+    filter: brightness(0.5);
+  }
+  input {
+    display: none;
   }
 `;
 
