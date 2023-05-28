@@ -18,7 +18,6 @@ export default function SideChallengeCard() {
     setPercentage(Number(data?.goalAmount != 0) ? Number(data?.consumption) / Number(data?.goalAmount) : 0);
   }, [data]);
 
-  console.log(data);
   const { mutate: challenge } = useMutation(getLatestChallenge, {
     onSuccess: (response) => {
       setData(response);

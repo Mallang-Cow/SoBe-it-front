@@ -246,11 +246,12 @@ const ProfileImgWrapper = styled.section`
 const ProfileInfoWrapper = styled.section`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const ProfileNameWrapper = styled.section`
   display: flex;
-
+  height: 100%;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: start;
