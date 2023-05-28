@@ -8,27 +8,25 @@ import ChallengeCardMake from "./ChallengeCardMake";
 import { getChallengeCntData } from "../../../api/getChallengeCntData";
 import { useMutation } from "react-query";
 import { getChallengeData } from "../../../api/getChallengeData";
+import { useRecoilState } from "recoil";
+import { nowUserState } from "../../recoil/nowUserInfo";
 
 export default function ProfileChallenges(props) {
+  const[ nowUser ] = useRecoilState(nowUserState);
   const{userId}=props;
   const[showChallengeMake, setShowChallengeMake] = useState(false);
   const[cntData, setCntData] = useState();
   const[data, setData] = useState();
 
-
-
   useEffect(() => {
-    cntData && console.log(cntData);
-  }, [cntData]);
-
-  useEffect(() => {
+    console.log(userId);
     challengeCnt({userId:userId});
-  }, [userId]);
+  }, []);
   
   // 도전과제 카운트 가져오기
   const {mutate: challengeCnt} = useMutation (getChallengeCntData,{
     onSuccess: (response) => {
-      console.log("response: " + response);
+      console.log("challengeCnt response: " + response);
       setCntData(response);
     },
     onError: () => {
@@ -37,17 +35,13 @@ export default function ProfileChallenges(props) {
   });
 
   useEffect(() => {
-    data && console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     challengeData({userId:userId});
-  }, [userId]);
+  }, []);
 
   //도전과제 정보 가져오기
   const {mutate: challengeData} = useMutation (getChallengeData,{
     onSuccess: (response) => {
-      console.log(response);
+      console.log("challengeData" + response);
       setData(response);
     },
     onError: () => {
@@ -58,7 +52,7 @@ export default function ProfileChallenges(props) {
   return (
     <ProfileChallengesWrapper>
       {/* 자기 페이지인 경우 도전과제 추가 버튼 & 도전과제 현황 보여주기 */}
-      {data?.status === 1 && (
+      {userId === nowUser.userId&& (
         <ChallengeMineWrapper>
           {!showChallengeMake?
             <ChallengeCardMakeBtn showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>

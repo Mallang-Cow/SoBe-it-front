@@ -5,6 +5,9 @@ import { TIER } from "../../../core/tierImage";
 import ProgressBar from "../common/ProgressBar";
 
 export default function ChallengeCard() {
+
+  
+
   return (
     <ChallengeCardWrapper>
       <HeaderWrapper>
