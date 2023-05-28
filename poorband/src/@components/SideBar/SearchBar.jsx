@@ -22,28 +22,23 @@ export default function SearchBar(props) {
   function check() {}
 
   return (
-    <Container>
-      <Input
-        type="text"
-        name="search"
-        placeholder="Search"
-        value={inputText}
-        onChange={handleChange}
-        onFocus={() => {
-          //setIsFocused(true);
-        }}
-        onBlur={() => {
-          //setIsFocused(false);
-        }}
-      />
-      {/* //{isFocused && ( */}
-      <Button
-        onClick={() => {
-          handleSearch();
-        }}>
-        <span class="material-symbols-rounded">search</span>
-      </Button>
-      {/* )} */}
+    <Container
+      onFocus={() => {
+        setIsFocused(true);
+      }}
+      onBlur={() => {
+        setIsFocused(false);
+      }}>
+      <Input type="text" name="search" placeholder="Search" value={inputText} onChange={handleChange} />
+
+      {isFocused && (
+        <Button
+          onMouseDown={() => {
+            handleSearch();
+          }}>
+          <span class="material-symbols-rounded">search</span>
+        </Button>
+      )}
     </Container>
   );
 }
