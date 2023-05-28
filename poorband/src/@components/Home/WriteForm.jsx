@@ -6,6 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 import { useMutation } from "react-query";
 import { articeWrite } from "../../../api/articleWriteApi";
+import { useRecoilState } from "recoil";
+import { nowUserState } from "../../recoil/nowUserInfo";
 
 export default function WriteForm(props) {
   const { setReloadFeed } = props;
@@ -19,6 +21,8 @@ export default function WriteForm(props) {
   const [financialText, setfinancialText] = useState("");
   const [status, setStatus] = useState("1"); // 공개여부
   const [amount, setAmount] = useState("");
+
+  const [nowUser] = useRecoilState(nowUserState);
 
   /**
    * 지출입력 or 결재받기 버튼선택
@@ -235,10 +239,7 @@ export default function WriteForm(props) {
             <ConsumeFormWrapper>
               <TopWrapper>
                 <ImageAndCategorySelect>
-                  <Image
-                    src="https://play-lh.googleusercontent.com/glrEciSE3ySHXWTRktXfIim8WWK9-ptxB3D04Dpbel6aqT4QZLauuf2ytS0fF1x0bp4=w240-h480-rw"
-                    alt=""
-                  />
+                  <Image src={nowUser.profileImgUrl} alt="" />
                   <StyledSelect1 value={category} onChange={handleCategoryChange}>
                     <option value="">카테고리 ⬇️</option>
                     <option value="1">식비😋</option>
@@ -249,7 +250,15 @@ export default function WriteForm(props) {
                     <option value="6">기타🤔</option>
                   </StyledSelect1>
                 </ImageAndCategorySelect>
-                <DatePicker selected={consumeDate} onChange={handleDateInput} locale={ko} dateFormat="yyyy-MM-dd" />
+                <DataPickerWrapper>
+                  <DatePicker
+                    selected={consumeDate}
+                    onChange={handleDateInput}
+                    locale={ko}
+                    dateFormat="yyyy-MM-dd"
+                    wrapperClassName="w-full"
+                  />
+                </DataPickerWrapper>
               </TopWrapper>
 
               <InputText
@@ -336,32 +345,23 @@ export default function WriteForm(props) {
 const WriteFormWrapper = styled.section`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.white};
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 `;
 
 // 카테고리 셀렉트
 const StyledSelect1 = styled.select`
-  option {
-    color: #ffffff;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-
-  width: 9rem;
-  height: 100%;
-  border-radius: 3rem;
-  border: 1px solid #845ec2;
-  background-color: #845ec2;
-  ${({ theme }) => theme.fonts.regular};
-  font-size: 1.1rem;
-  color: white;
-  appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
+  font-size: 1.4rem;
+  ${({ theme }) => theme.fonts.medium};
+  background-color: ${({ theme }) => theme.colors.mainpurple};
+  color: ${({ theme }) => theme.colors.white};
   text-align: center;
-  display: flex;
-  justify-content: center;
+  appearance: none;
+
+  border-radius: 3rem;
+  height: 3rem;
+  width: 10rem;
+
+  cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.darkpurple_2};
@@ -370,44 +370,25 @@ const StyledSelect1 = styled.select`
 
 // 공개여부 셀렉트
 const StyledSelect2 = styled.select`
-  option {
-    color: #845ec2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  width: 9.4rem;
-  height: 2.65rem;
+  margin-left: 1rem;
   border-radius: 3rem;
-  border: 1px solid #845ec2;
-  background-color: white;
-  ${({ theme }) => theme.fonts.regular};
-  font-size: 1.1rem;
-  color: #845ec2;
-  appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
+  height: 3rem;
+  width: 8rem;
+  ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.mainpurple};
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.mainpurple};
+  font-size: 1.4rem;
+  cursor: pointer;
+  appearance: none;
   text-align: center;
-  margin-left: auto;
-  display: flex;
-
   &:hover {
-    background-color: ${({ theme }) => theme.colors.lightpurple};
+    /* filter: brightness(0.95); */
+    background-color: ${({ theme }) => theme.colors.darkpurple};
   }
 `;
 
 const ConsumeFormWrapper = styled.section`
-  .react-datepicker-wrapper {
-    width: 10rem;
-    text-align: center;
-  }
-  .react-datepicker__input-container input {
-    width: 10rem;
-    height: 2.3rem;
-    border: 1px solid #ddd;
-    font-size: 1.1rem;
-    text-align: center;
-    color: #707070;
-  }
   display: flex;
   width: 100%;
   text-align: center;
@@ -423,13 +404,8 @@ const PermissionFormWrapper = styled.section`
 
 const Button1 = styled.button`
   ${({ theme }) => theme.fonts.bold};
-
-  font-family: "Spoqa Han Sans Neo";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 1.7rem;
-  line-height: 1.25rem;
-  /* identical to box height */
+  width: 50%;
+  font-size: 1.6rem;
 
   text-align: center;
   color: ${(props) => (props["data-isclicked"] ? "#000000" : "#C4C4C4")};
@@ -463,7 +439,7 @@ const Button1 = styled.button`
 
 const Button2 = styled.button`
   ${({ theme }) => theme.fonts.bold};
-
+  width: 50%;
   font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
@@ -507,8 +483,9 @@ const ButtonWrapper = styled.section`
   width: 699px;
   height: 5rem;
   margin-bottom: 0.6rem;
+  margin-top: 1.5rem;
   /* padding-bottom: 1.5rem; */
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 
   button {
     border: none;
@@ -518,6 +495,7 @@ const ButtonWrapper = styled.section`
 
 const ImageAndCategorySelect = styled.section`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 
@@ -538,16 +516,70 @@ const BottomWrapper = styled.section`
 const TopWrapper = styled.section`
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  height: 2.3rem;
+
+  :focus,
+  :focus-visible,
+  :hover {
+    outline: none;
+  }
+  .react-datepicker-wrapper {
+    width: 10rem;
+    text-align: center;
+    margin-left: 40.1rem;
+    margin-right: 4rem;
+  }
+  .react-datepicker__input-container input {
+    width: 10rem;
+    height: 100%;
+    border-radius: 0.3rem;
+    border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+
+    text-align: center;
+    color: #707070;
+    cursor: pointer;
+  }
+
+  .react-datepicker-wrapper {
+    margin: 0;
+    width: fit-content;
+    height: 100%;
+    text-align: center;
+  }
+  .react-datepicker__input-container {
+    margin-left: 5rem;
+    width: fit-content;
+    display: flex;
+    height: 100%;
+    justify-content: end;
+  }
+  .react-datepicker-ignore-onclickoutside {
+    width: fit-content;
+  }
+  .react-datepicker__input-container input {
+    text-align: center;
+    padding: 1rem 0;
+    width: fit-content;
+    ${({ theme }) => theme.fonts.medium};
+    font-size: 1.2rem;
+  }
+`;
+
+const DataPickerWrapper = styled.section`
+  display: flex;
+  height: 3rem;
+
+  .react-datepicker-popper {
+    //transform: translate3d(995px, 137.5px, 0px) !important;
+  }
 `;
 
 const Image = styled.img`
-  width: 2.3rem;
-  height: 2.3rem;
-  margin-right: 2rem;
-  border-radius: 0.8rem;
-  text-align: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-right: 1.5rem;
+  border-radius: 0.7rem;
 `;
 
 const FileLabel = styled.label`
@@ -571,17 +603,17 @@ const FinancialTextWrapper = styled.div`
 
 const FinancialText = styled.input`
   width: 18rem;
-  height: 2.5rem;
-  border: 1px solid #ddd;
+  height: 3rem;
+  padding: 0 0.8rem;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
   border-radius: 0.4rem;
-  text-align: center;
-  font-size: 1.25rem;
-  /* margin-top: 1.24rem; */
+  text-align: left;
+  font-size: 1.4rem;
 
   transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
 
   &:focus {
-    border: 1px solid #845ec2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+    border: 1px solid ${({ theme }) => theme.colors.mainpurple};
   }
 `;
 
@@ -591,59 +623,56 @@ const PermissionBottomDiv = styled.section`
 
 const AmountInput = styled.input`
   width: 14rem;
-  height: 2.5rem;
-  border: 1px solid #ddd;
+  height: 3rem;
+  padding: 0 0.8rem;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
   border-radius: 0.4rem;
   text-align: center;
-  font-size: 1.2rem;
-  /* margin-left: 28.5rem; */
-  color: #845ec2;
+  font-size: 1.4rem;
 
   transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
 
   &:focus {
-    border: 1px solid #845ec2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+    border: 1px solid ${({ theme }) => theme.colors.mainpurple};
   }
 `;
 
 const InputText = styled.textarea`
   width: 100%;
-  height: 6.7rem;
-  border: 1px solid #ddd;
+  height: 8rem;
+  padding: 1rem;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
   text-align: left;
-  margin-top: 1.3rem;
   border-radius: 0.5rem;
   ${({ theme }) => theme.fonts.regular};
-  transition: border 0.3s ease-in-out; /* 애니메이션 효과를 원래 상태에 적용합니다 */
-  position: relative;
-  outline: none;
-  resize: none; /* 크기 조정 방지 */
-
-  &::placeholder {
-    text-align: initial;
-  }
+  resize: none;
+  margin-top: 1rem;
 
   &:focus {
-    border: 1px solid #845ec2; /* 보라색으로 둘러싸는 효과를 줍니다 */
+    outline: none;
+    border: 1px solid ${({ theme }) => theme.colors.mainpurple};
   }
 `;
 
 const FileInputContainer = styled.label`
   display: inline-flex;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  /* background: ${({ theme }) => theme.colors.mainpurple} */
-  background: pink;
-  color: white;
-  border-radius: 4px;
-  border: none;
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.mainpurple};
+  font-size: 1.2rem;
+  ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.mainpurple};
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden; /* 텍스트 오버플로우 처리 */
   max-width: 20rem;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.darkpurple_2};
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+    color: ${({ theme }) => theme.colors.white};
   }
 
   input[type="file"] {
@@ -682,29 +711,20 @@ const SubmitAndPrivacySet = styled.section`
   .submit:hover {
     background-color: ${({ theme }) => theme.colors.darkpurple_2};
   }
-  padding-top: 0.8rem;
+  padding-top: 1rem;
 `;
 
 const SubmitButton = styled.button`
-  option {
-    color: #ffffff;
-  }
-  width: 8rem;
-  height: 2.65rem;
-  border-radius: 3rem;
-  background-color: #845ec2;
-  ${({ theme }) => theme.fonts.bold};
-  font-size: 1.1rem;
-  font-style: normal;
-  color: white;
-  appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 2rem;
-
   &:hover {
     background-color: ${({ theme }) => theme.colors.darkpurple_2};
   }
+
+  margin-left: 1rem;
+  border-radius: 3rem;
+  height: 3rem;
+  width: 8rem;
+  ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.mainpurple};
+  font-size: 1.4rem;
 `;

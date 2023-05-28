@@ -10,12 +10,14 @@ export default function Home(props) {
     <>
       <HomeWrapper>
         <HomeTag>Home</HomeTag>
-        <WriteForm setReloadFeed={setReloadFeed}/> 
-        <Feed setCenterContent={setCenterContent} 
-              setArticleSeq={setArticleSeq} 
-              setUserId={setUserId} 
-              reloadFeed={reloadFeed} 
-              setReloadFeed={setReloadFeed} />
+        <WriteForm setReloadFeed={setReloadFeed} />
+        <Feed
+          setCenterContent={setCenterContent}
+          setArticleSeq={setArticleSeq}
+          setUserId={setUserId}
+          reloadFeed={reloadFeed}
+          setReloadFeed={setReloadFeed}
+        />
       </HomeWrapper>
     </>
   );
@@ -29,18 +31,21 @@ const HomeWrapper = styled.section`
 `;
 
 const HomeTag = styled.h2`
-  width: 639px;
-  height: 30px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  padding: 4rem 2rem 0 2rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 
-  margin-bottom: 1.5rem;
-  margin-left: 1.875rem;
-  margin-top: 3vh;
+  ${({ theme }) => theme.fonts.bold};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 2.4rem;
 
-  font-family: "Spoqa Han Sans Neo";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 30px;
-  color: #000000;
+  span {
+    font-size: 3rem;
+    margin-right: 1rem;
+  }
 `;
-

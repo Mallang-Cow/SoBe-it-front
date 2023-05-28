@@ -231,6 +231,7 @@ const LinkContainer = styled.section`
   display: flex;
   justify-content: space-between;
   flex: auto;
+  cursor: pointer;
 
   #profile-image {
     display: block;
@@ -271,6 +272,7 @@ const LogoutWrapper = styled.section`
   display: flex;
   align-items: center;
   padding: 1rem;
+  cursor: pointer;
   span {
     font-size: 2.5rem;
   }
