@@ -133,7 +133,7 @@ export default function ProfileEdit(props) {
         <NameLineWrapper>
           <NameWrapper>
             <input type="text" value={nickname} name="editNickname" placeholder="닉네임" onChange={nicknameChange} />
-            <p>@{ARTICLE_DETAIL.user.userId}</p>
+            <p>@{userId}</p>
           </NameWrapper>
           {/*저장하기 -> 변경된 정보 저장하고 ProfileInfo로 & 취소하기 -> 변경하지 않고 ProfileInfo로*/}
           <ButtonWrapper>

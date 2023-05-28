@@ -110,7 +110,7 @@ export default function MenuBar(props) {
             </ProfileImgWrapper>
             <ProfileNameWrapper>
               <p>{nowUser?.nickname}</p>
-              <p id="username">{nowUser?.userId}</p>
+              <p id="username">@{nowUser?.userId}</p>
             </ProfileNameWrapper>
           </ProfileInfoWrapper>
         </LinkContainer>

@@ -96,6 +96,7 @@ export default function HotPostCard(props) {
             }}>
             <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
             <p className="nickname">{data?.user?.nickname}</p>
+            <p className="id">@{data?.user?.userId}</p>
             <img id="tier-image" src={TIER[data?.user?.userTier]} alt="티어" />
           </ProfileWrapper>
           <ReceiptContainer
@@ -163,6 +164,10 @@ const ProfileWrapper = styled.div`
     ${({ theme }) => theme.fonts.bold};
     font-size: 1.4rem;
     margin-left: 0.5rem;
+  }
+  p.id {
+    color: ${({ theme }) => theme.colors.darkgrey_1};
+    font-size: 1.4rem;
   }
 
   #profile-image {
