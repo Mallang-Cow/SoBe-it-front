@@ -3,9 +3,8 @@ import { useMutation } from "react-query";
 import { styled as muiStyled } from '@mui/material/styles';
 import { styled } from "styled-components";
 import { Avatar, Button, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
-import MoodBadIcon from '@mui/icons-material/MoodBad';
+import PersonIcon from '@mui/icons-material/Person';
 import { theme } from '../../style/theme';
-// import { SIDEBAR_DETAIL } from "../../../core/sideBarData";
 import { TIER } from "../../../core/tierImage";
 import { followUser, unFollowUser } from "../../../api/followAPI";
 
@@ -22,11 +21,14 @@ export default function UserCard(props) {
   // 사용자 프로필 이미지
   let avatarImg = null;
   if (profileImgUrl) {
-    avatarImg = <img src={ profileImgUrl } alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%" }} />;
+    avatarImg = <img src={ profileImgUrl } alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%", display: "block", borderRadius: "1rem" }} />;
   }
   else {
-//    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
-    avatarImg = <MoodBadIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }}/>;
+    avatarImg = (
+      <CustomAccountBoxIconContainer>
+        <PersonIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }}/>
+      </CustomAccountBoxIconContainer>
+    );
   }
 
   // 팔로우
@@ -134,6 +136,16 @@ const NotificationCardButton = muiStyled(ListItemButton) ({
   '%:focus': {
     backgroundColor: 'none',
   },
+});
+
+const CustomAccountBoxIconContainer = muiStyled('div')({
+  width: '6rem',
+  height: '6rem',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  border: '0.4rem solid #845EC2',
+  borderRadius: '1rem',
 });
 
 const NotificationTextWrapper = styled('div')({
