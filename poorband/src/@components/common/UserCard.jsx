@@ -103,7 +103,7 @@ export default function UserCard(props) {
                   <TierImg id="tier-img" src={ TIER[userTier] } alt="티어" />
                 </NotificationTextWrapper>
                 <NotificationTextWrapper>
-                  <PlusNotificationText style={{ color: "#878787" }} primary={ userId } />
+                  <PlusNotificationText style={{ color: "#878787" }} primary={ `@${ userId }` } />
                 </NotificationTextWrapper>
               </div>
               
