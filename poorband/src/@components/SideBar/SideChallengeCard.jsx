@@ -32,7 +32,7 @@ export default function SideChallengeCard() {
   });
   return (
     <>
-      {data !== null && (
+      {!data === null && !data === "" && (
         <Wrapper>
           <TitleContainer>
             <h2>Challenge</h2>

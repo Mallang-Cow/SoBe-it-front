@@ -39,12 +39,13 @@ export default function CommentCard(props) {
       setReload(true);
     },
     onError: () => {
-      console.log("error");
+      alert("댓글 좋아요에 실패했습니다.");
     },
   });
 
   // 댓글 삭제
   function delComment() {
+    console.log(comment);
     if (window.confirm("댓글을 삭제하시겠습니까?")) {
       deleteReply({ replySeq: Number(comment?.reply_seq) });
     }
@@ -56,8 +57,7 @@ export default function CommentCard(props) {
       setReload(true);
     },
     onError: (response) => {
-      console.log(response);
-      console.log("error");
+      alert("댓글 삭제에 실패했습니다.");
     },
   });
   return (
@@ -202,16 +202,20 @@ const FooterContainer = styled.div`
   margin: 0.5rem 0 0 0;
   display: flex;
   p {
+    margin-left: 1rem;
     font-size: 1.6rem;
     ${({ theme }) => theme.fonts.regular};
     color: ${({ theme }) => theme.colors.darkgrey_1};
   }
   span.material-symbols-rounded {
-    font-size: 3rem;
+    font-size: 2.4rem;
     color: ${({ theme }) => theme.colors.darkgrey_1};
+    cursor: pointer;
   }
-  span.active.material-symbols-rounded {
+  span.active.material-symbols-rounded,
+  span.material-symbols-rounded:hover {
     color: ${({ theme }) => theme.colors.red};
+    font-size: 2.4rem;
   }
 `;
 const Like = styled.div`
@@ -219,16 +223,22 @@ const Like = styled.div`
   margin: 0 2rem 0 0;
   align-items: center;
 
-  p {
+  /* p {
     font-size: 1.4rem;
     margin-left: 1rem;
   }
+  span.material-symbols-rounded {
+    color: ${({ theme }) => theme.colors.red};
+    font-size: 2.4rem;
+  }
   span.material-symbols-rounded:hover {
     color: ${({ theme }) => theme.colors.red};
+    font-size: 2.4rem;
   }
   span.active.material-symbols-rounded {
     color: ${({ theme }) => theme.colors.red};
-  }
+    font-size: 2.4rem;
+  } */
 `;
 
 const TimeContainer = styled.p`

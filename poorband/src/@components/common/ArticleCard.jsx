@@ -120,8 +120,6 @@ export default function ArticleCard(props) {
   // 삭제 POST
   const { mutate: deleteArt } = useMutation(deleteArticle, {
     onSuccess: (response) => {
-      console.log(response);
-
       if (onPage === "detail") setCenterContent("home"); // 상세 페이지에서 삭제한다면 홈으로 이동
       else if (onPage === "home") setReloadFeed(true); // 리로드
     },
@@ -130,7 +128,6 @@ export default function ArticleCard(props) {
       console.log("error");
     },
   });
-
   return (
     <Wrapper>
       <ProfileContainer>

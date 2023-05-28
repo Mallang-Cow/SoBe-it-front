@@ -158,18 +158,6 @@ export default function WriteForm(props) {
 
       writeArticle(formData);
     } else {
-      const newData = {
-        articleDTO: {
-          status: status,
-          expenditureCategory: category,
-          amount: Number(amount),
-          financialText: financialText,
-          articleText: consumeText,
-          articleType: isConsumeWrite,
-          isAllowed: "false",
-        },
-      };
-
       if (consumeText === "") {
         alert("글을 입력해주세요.");
         return;
@@ -180,12 +168,27 @@ export default function WriteForm(props) {
         return;
       }
 
+      const newData = {
+        articleDTO: {
+          status: status,
+          expenditureCategory: category,
+          amount: Number(amount),
+          financialText: financialText,
+          articleText: consumeText,
+          articleType: isConsumeWrite,
+          consumptionDate: formatDate(consumeDate),
+          isAllowed: "false",
+        },
+      };
+
       const formData = new FormData();
       const json1 = JSON.stringify(newData.articleDTO);
       const blob = new Blob([json1], { type: "application/json" });
       formData.append("file", file);
       formData.append("articleDTO", blob);
-
+      console.log(json1);
+      console.log(blob);
+      console.log(file);
       writeArticle(formData);
     }
   }
