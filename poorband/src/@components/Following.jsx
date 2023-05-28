@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { useRecoilState } from "recoil";
 import { styled } from "styled-components";
 import UserCard from "../@components/common/UserCard";
 import { followingList } from "../../api/followAPI";
+import { prevPageProfile } from "../recoil/prevPage";
 
 export default function Following(props) {
   const { userId, setUserId, setCenterContent } = props;
   const [followingListResult, setfollowingListResult] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [prevPage, setPrevPage] = useRecoilState(prevPageProfile);
   console.log(userId + "의 팔로잉 목록");
 
   const { mutate: followingListMutation, isLoading } = useMutation(followingList, {
@@ -33,6 +36,10 @@ export default function Following(props) {
 
     followingListMutation(profileUserId);
   }, [followingListMutation, userId]);
+
+  function goBack() {
+    prevPage && setCenterContent(prevPage);
+  }
 
   return (
     <>
