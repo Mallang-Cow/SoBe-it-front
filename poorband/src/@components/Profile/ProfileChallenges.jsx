@@ -16,7 +16,7 @@ export default function ProfileChallenges(props) {
   const{userId}=props;
   const[showChallengeMake, setShowChallengeMake] = useState(false);
   const[cntData, setCntData] = useState();
-  const[data, setData] = useState();
+  // const[data, setData] = useState();
   const[challenges, setChallenges] = useState()
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function ProfileChallenges(props) {
   // 도전과제 카운트 가져오기
   const {mutate: challengeCnt} = useMutation (getChallengeCntData,{
     onSuccess: (response) => {
-      console.log("challengeCnt response: " + response);
+      console.log("challengeCnt response: " + response.nextTier);
       setCntData(response);
     },
     onError: () => {
@@ -42,7 +42,6 @@ export default function ProfileChallenges(props) {
   //도전과제 정보 가져오기
   const {mutate: challengeData} = useMutation (getChallengeData,{
     onSuccess: (response) => {
-      console.log("challengeData" + response.data[0]);
       setChallenges(response.data);
 
     },
@@ -76,10 +75,10 @@ export default function ProfileChallenges(props) {
               <span>다음 등급까지</span>
               <img 
                 id="tier-img" 
-                src={TIER[ARTICLE_DETAIL.user.userTier]} 
+                src={TIER[cntData?.nextTier]} 
                 alt="티어" />
               <span className="bold">
-                ({data?.goalAmountCnt}-{data?.successGoalAmountCnt})개
+                {cntData?.leftCnt}개
               </span>
             </div>
           </NextTierCnt>
