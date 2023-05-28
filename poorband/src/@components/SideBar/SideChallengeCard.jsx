@@ -6,7 +6,7 @@ import { nowUserState } from "../../recoil/nowUserInfo";
 import { useRecoilState } from "recoil";
 import { getLatestChallenge } from "../../../api/getLatestChallenge";
 
-export default function SideChallengeCard(props) {
+export default function SideChallengeCard() {
   const [data, setData] = useState(null);
   const [percentage, setPercentage] = useState(0);
 
@@ -14,15 +14,14 @@ export default function SideChallengeCard(props) {
     challenge();
   }, []);
 
+  useEffect(() => {
+    setPercentage(Number(data?.goalAmount != 0) ? Number(data?.consumption) / Number(data?.goalAmount) : 0);
+  }, [data]);
+
+  console.log(data);
   const { mutate: challenge } = useMutation(getLatestChallenge, {
     onSuccess: (response) => {
-      setData(response?.data); // 사이드바 가장 최근 도전 과제 한 개만 사용.
-
-      const consumption = response?.data?.consumption;
-      const goalAmount = response?.data?.goalAmount;
-      const newPercentage =
-        typeof consumption === "number" && typeof goalAmount === "number" ? consumption / goalAmount : 0;
-      setPercentage(newPercentage); // progress bar의 percentage
+      setData(response);
     },
     onError: (error) => {
       if (error.response && error.response.status === 500) {
@@ -36,36 +35,31 @@ export default function SideChallengeCard(props) {
     <>
       {data !== null && (
         <Wrapper>
+          <TitleContainer>
+            <h2>Challenge</h2>
+          </TitleContainer>
           <TitleWrapper>
-            <hr></hr>
             <p>{data?.title}</p>
-            <hr></hr>
           </TitleWrapper>
           <BarWrapper>
             <PeriodWrapper>
-              <span>기간</span>
-              <span>
+              <p>기간</p>
+              <p>
                 {data?.startDate} - {data?.endDate}
-              </span>
+              </p>
             </PeriodWrapper>
-
             <ProgressBarWrapper>
-              <ProgressBarContainer>
-                <ChallengeProgressBar
-                  basecolor={"#E7E7E7"}
-                  barcolor={"#845EC2"}
-                  percentage={percentage}></ChallengeProgressBar>
-              </ProgressBarContainer>
+              <ChallengeProgressBar basecolor={"#E7E7E7"} barcolor={"#845EC2"} percentage={percentage} />
             </ProgressBarWrapper>
           </BarWrapper>
           <RemainWrapper>
             <RemainDetailWrapper>
-              <span className="bold">지출</span>
-              <span className="gray">{data?.consumption?.toLocaleString()}원</span>
+              <p className="name">지출</p>
+              <p>{data?.consumption?.toLocaleString()}원</p>
             </RemainDetailWrapper>
             <RemainDetailWrapper>
-              <span className="bold">잔여</span>
-              <span className="gray">{(data?.goalAmount - data?.consumption)?.toLocaleString()}원</span>
+              <p className="name">잔여</p>
+              <p>{(data?.goalAmount - data?.consumption)?.toLocaleString()}원</p>
             </RemainDetailWrapper>
           </RemainWrapper>
         </Wrapper>
@@ -75,62 +69,52 @@ export default function SideChallengeCard(props) {
 }
 
 const Wrapper = styled.div`
-  padding: 1rem 2rem;
-
+  padding: 2rem;
+  background-color: ${({ theme }) => theme.colors.darkpurple};
   ${({ theme }) => theme.fonts.bold};
   font-size: 1rem;
-
-  #remain-container {
-  }
+  margin-bottom: 1rem;
 `;
 
+const TitleContainer = styled.div`
+  text-align: center;
+  font-size: 1.8rem;
+
+  padding-bottom: 1rem;
+`;
 const TitleWrapper = styled.div`
-  hr {
-    color: ${({ theme }) => theme.colors.lightgrey_1};
-  }
-`;
-const BarWrapper = styled.div`
-  height: 5rem;
-  background-color: ${({ theme }) => theme.colors.lightgrey_1};
-`;
-const ProgressBarWrapper = styled.div`
-  padding: 1rem 0;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-
-  p {
-    ${({ theme }) => theme.fonts.bold};
-    color: ${({ theme }) => theme.colors.darkgrey_2};
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-  }
-`;
-const ProgressBarContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  p {
-    ${({ theme }) => theme.fonts.regular};
-    color: ${({ theme }) => theme.colors.black};
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
-  }
-`;
-
-const RemainWrapper = styled.section`
-  display: flex;
-  justify-content: space-between;
+  font-size: 1.4rem;
+  padding: 0.7rem 0.5rem;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
+  border-top: 1px solid ${({ theme }) => theme.colors.lightgrey_1};
 `;
 
 const PeriodWrapper = styled.section`
   display: flex;
+  font-size: 1.4rem;
+  padding: 0.7rem 0.5rem;
   justify-content: space-between;
+`;
+const BarWrapper = styled.div`
+  height: 5rem;
+`;
+const ProgressBarWrapper = styled.div`
+  padding: 0 0.5rem;
+`;
+
+const RemainWrapper = styled.section`
+  display: flex;
+  padding: 0 0.5rem;
+  justify-content: space-between;
+  p {
+    font-size: 1.4rem;
+    text-align: right;
+  }
+  p.name {
+    margin-right: 0.5rem;
+  }
 `;
 
 const RemainDetailWrapper = styled.section`
-  span {
-    padding: 0 0.4rem;
-  }
+  display: flex;
 `;

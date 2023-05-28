@@ -31,7 +31,6 @@ export default function HotPostCard(props) {
 
   const { mutate: hotPosts } = useMutation(getHotPost, {
     onSuccess: (response) => {
-      console.log(response);
       setData(response?.data[idx]);
       setThisArticleSeq(Number(response?.data[idx]?.articleSeq));
       // console.log(response?.data[props.idx]?.liked);
@@ -44,7 +43,6 @@ export default function HotPostCard(props) {
       }
     },
   });
-  console.log(data);
 
   const [liked, setLiked] = useState(data?.liked);
 

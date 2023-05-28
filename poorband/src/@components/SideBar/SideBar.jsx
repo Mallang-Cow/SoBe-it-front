@@ -23,12 +23,9 @@ export default function SideBar(props) {
           />
           {/* 진행중인 도전과제 있을 경우 */}
         </SearchBarWrapper>
-        <ChallengeWrapper>
-          <TitleContainer>
-            <h2>Challenge</h2>
-          </TitleContainer>
-          <SideChallengeCard />
-        </ChallengeWrapper>
+
+        <SideChallengeCard />
+
         {/* 인기게시글 리스트 - 진행중인 도전과제 있으면 3개, 없으면 5개정도..? */}
         <HotPostWrapper>
           <TitleContainer>
