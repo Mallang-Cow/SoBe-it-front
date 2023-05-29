@@ -7,50 +7,67 @@ import { useMutation } from "react-query";
 import { deleteChallenge } from "../../../api/deleteChallenge";
 
 export default function ChallengeCard(props) {
+  const {
+    profileImg,
+    nickName,
+    userId,
+    title,
+    goalAmount,
+    userTier,
+    isSuccess,
+    startDate,
+    endDate,
+    consumption,
+    goalAmountSeq,
+    setReloadChallenges,
+  } = props;
 
-  const { profileImg, nickName, userId, title, 
-    goalAmount, userTier, isSuccess,
-    startDate, endDate, consumption, goalAmountSeq, setReloadChallenges} = props
+  let status;
 
-    let status;
+  if (isSuccess === 1) {
+    status = "진행중";
+  } else if (isSuccess === 2) {
+    status = "성공";
+  } else if (isSuccess === 3) {
+    status = "실패";
+  }
 
-    if (isSuccess === 1) {
-      status = "진행중";
-    } else if (isSuccess === 2) {
-      status = "성공";
-    } else if (isSuccess === 3) {
-      status = "실패";
+  let remainingMoney = goalAmount - consumption;
+  if (remainingMoney < 0) {
+    remainingMoney = 0;
+  }
+
+  let convertedStartDate = new Date(startDate);
+  let convertedEndDate = new Date(endDate);
+  let period = (convertedEndDate.getTime() - convertedStartDate.getTime()) / (1000 * 3600 * 24);
+  let current = new Date();
+  let differenceInTime = current.getTime() - convertedStartDate.getTime();
+  let differenceInDays = differenceInTime / (1000 * 3600 * 24);
+  if (differenceInDays > period) {
+    differenceInDays = period;
+  }
+  let remainingPercent = ((goalAmount - consumption) / goalAmount) * 100;
+  if (remainingPercent < 0) {
+    remainingPercent = 0;
+  }
+
+  const { mutate: deleteChallengeReq } = useMutation(deleteChallenge, {
+    onSuccess: (response) => {
+      alert("삭제가 완료되었습니다.");
+      console.log(response);
+      setReloadChallenges(true);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleDeleteButton = (event) => {
+    console.log("도전과제 삭제 요청");
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      deleteChallengeReq({ goalAmountSeq: goalAmountSeq });
     }
-
-    let remainingMoney = goalAmount - consumption;
-    if (remainingMoney < 0) {
-      remainingMoney = 0;
-    }
-
-    let convertedStartDate = new Date(startDate);
-    let convertedEndDate = new Date(endDate);
-    let period = (convertedEndDate.getTime()- convertedStartDate.getTime()) / (1000 * 3600 * 24);
-    let current = new Date();
-    let differenceInTime = current.getTime() - convertedStartDate.getTime(); 
-    let differenceInDays = differenceInTime / (1000 * 3600 * 24); 
-    let remainingPercent = (consumption / goalAmount) * 100;
-
-    const { mutate : deleteChallengeReq } = useMutation( deleteChallenge, {
-      onSuccess: (response) => {
-        alert("삭제가 완료되었습니다.");
-        console.log(response);
-        setReloadChallenges(true);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-      
-    });
-
-    const handleDeleteButton = (event) => {
-      console.log("도전과제 삭제 요청");
-      deleteChallengeReq({goalAmountSeq:goalAmountSeq});
-    };
+  };
 
   return (
     <ChallengeCardWrapper>
@@ -59,10 +76,10 @@ export default function ChallengeCard(props) {
           <img id="profile-img" src={profileImg} alt="프로필사진" />
           <p className="nickname">{nickName}</p>
           <p className="userId">{userId}</p>
-          <img id="tier-img" src={TIER[{userTier}]} alt="티어" />
+          <img id="tier-img" src={TIER[{ userTier }]} alt="티어" />
         </ProfileWrapper>
 
-        <OptionWrapper>
+        <OptionWrapper status={status}>
           <p className="bold">{status}</p>
           <button onClick={handleDeleteButton}>
             <span class="material-symbols-rounded">close</span>
@@ -76,13 +93,21 @@ export default function ChallengeCard(props) {
 
       <ChallengeDate>
         <p className="name">기간</p>
-        <p className="value">{startDate} ~ {endDate}</p>
+        <p className="value">
+          {startDate} ~ {endDate}
+        </p>
       </ChallengeDate>
 
       {/* 날짜 경과 그래프 */}
       <ProgressBarWrapper>
-        <ProgressBar reverse={0} basecolor={"#C4C4C4"} barcolor={"#845EC2"} percentage={50}></ProgressBar>
-        <p className="desc">달성일수 {Math.floor(differenceInDays)}/{Math.floor(period)}</p>
+        <ProgressBar
+          reverse={0}
+          basecolor={"#C4C4C4"}
+          barcolor={"#845EC2"}
+          percentage={(Math.floor(differenceInDays) / Math.floor(period)) * 100}></ProgressBar>
+        <p className="desc">
+          달성일수 {Math.floor(differenceInDays)}/{Math.floor(period)}
+        </p>
       </ProgressBarWrapper>
       <ChallengeDate>
         <p className="name">목표 금액</p>
@@ -163,9 +188,21 @@ const ProfileWrapper = styled.div`
 const OptionWrapper = styled.div`
   display: flex;
   align-items: center;
+  ${({ theme }) => theme.fonts.medium};
+  p {
+    color: ${({ theme, status }) =>
+      (status === "진행중" && theme.colors.mainpurple) ||
+      (status === "실패" && theme.colors.red) ||
+      (status === "성공" && "blue")};
+  }
 
   button {
     margin-left: 1rem;
+  }
+  button:focus,
+  button:focus-visible,
+  button:active {
+    outline: none;
   }
 `;
 

@@ -12,9 +12,8 @@ export default function ChallengeCardMake(props) {
   const [cTitle, setCTitle] = useState("");
   const [cStartDate, setCStartDate] = useState(new Date());
   const [cEndDate, setCEndDate] = useState(new Date());
-  const [cRoutine, setCRoutine] = useState(1);
+  const [cRoutine, setCRoutine] = useState("daily");
   const [cGoalAmount, setCGoalAmount] = useState(null);
-
 
   let getToday = new Date();
   let year = getToday.getFullYear(); // 년도
@@ -51,16 +50,16 @@ export default function ChallengeCardMake(props) {
 
   function submitNewChallenge() {
     const addChallengeData = {
-      newGoalAmountRequestDTO : {
+      newGoalAmountRequestDTO: {
         title: cTitle.cTitle,
         startDate: cStartDate,
         endDate: cEndDate,
-        routine: cRoutine,
-        goalAmount: cGoalAmount
-      }
+        routine: cRoutine === "daily" ? 1 : 2,
+        goalAmount: cGoalAmount,
+      },
     };
 
-    if (cTitle&&cStartDate&&cEndDate&&cRoutine&&cGoalAmount) {
+    if (cTitle && cStartDate && cEndDate && cRoutine && cGoalAmount) {
       //API 호출
       addChallenge(addChallengeData.newGoalAmountRequestDTO);
     }
@@ -71,13 +70,12 @@ export default function ChallengeCardMake(props) {
     onSuccess: (response) => {
       console.log(response);
       setReloadChallenges(true);
-
     },
     onError: (error) => {
       console.log(error);
-
-    }
+    },
   });
+  console.log(cRoutine);
 
   return (
     <>
@@ -113,12 +111,12 @@ export default function ChallengeCardMake(props) {
           <p className="name">반복</p>
           <RadioBox>
             <label>
-              <input type="radio" value="daily" checked={cRoutine === 1} onChange={handleRoutine} />
+              <input type="radio" value="daily" checked={cRoutine === "daily"} onChange={handleRoutine} />
               <p>매일</p>
             </label>
 
             <label>
-              <input type="radio" value="all" checked={cRoutine === 2} onChange={handleRoutine} />
+              <input type="radio" value="all" checked={cRoutine === "all"} onChange={handleRoutine} />
               <p>전체 기간</p>
             </label>
           </RadioBox>
