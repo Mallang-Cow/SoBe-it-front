@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { signin } from "../../api/userAPI";
@@ -12,6 +12,25 @@ export default function Login() {
   const idRef = useRef(null);
   const passwordRef = useRef(null);
   const navigate = useNavigate();
+
+  const isLoggedIn = () => {
+    const token = sessionStorage.getItem("ACCESS_TOKEN");
+    console.log(token);
+
+    if (token && token !== "null" && token !== "") {
+      return true; // 토큰이 null과 빈 문자열이 아닌 다른 값으로 존재할 경우 true 반환
+    }
+    else {
+      return false; // 토큰이 null이고 빈 문자열일 경우 false 반환
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      console.log(isLoggedIn());
+      navigate("/");
+    }
+  }, [navigate]);
 
   const { mutate: loginUser } = useMutation(signin, {
     onSuccess: (response) => {
