@@ -7,6 +7,7 @@ import { likeArticle } from "../../../api/likeArticle";
 import { userIdState } from "../../recoil/userId";
 import { useRecoilState } from "recoil";
 import { TIER } from "../../../core/tierImage";
+import { profileImg } from "../../../core/defaultImg";
 
 // import { likeArticle } from "../../../api/likeArticle";
 // import { getArticleDetailData } from "../../../api/getArticleDetailData";
@@ -86,6 +87,10 @@ export default function HotPostCard(props) {
     setUserId(data?.user?.userId);
     setCenterContent("profile");
   }
+
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
   return (
     <>
       {data && (
@@ -94,7 +99,12 @@ export default function HotPostCard(props) {
             onClick={() => {
               goToProfile();
             }}>
-            <img id="profile-image" src={data?.user?.profileImageUrl} alt="프로필사진" />
+            <img
+              id="profile-image"
+              src={data?.user?.profileImageUrl || profileImg}
+              alt="프로필사진"
+              onError={onErrorImg}
+            />
             <p className="nickname">{data?.user?.nickname}</p>
             <p className="id">@{data?.user?.userId}</p>
             <img id="tier-image" src={TIER[data?.user?.userTier]} alt="티어" />
