@@ -15,7 +15,6 @@ export default function Login() {
 
   const isLoggedIn = () => {
     const token = sessionStorage.getItem("ACCESS_TOKEN");
-    console.log(token);
 
     if (token && token !== "null" && token !== "") {
       return true; // 토큰이 null과 빈 문자열이 아닌 다른 값으로 존재할 경우 true 반환
