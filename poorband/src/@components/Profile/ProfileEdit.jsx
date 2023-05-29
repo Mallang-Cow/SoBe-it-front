@@ -3,7 +3,7 @@ import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { TIER } from "../../../core/tierImage";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { getProfileEditData } from "../../../api/getProfileEditData";
 

@@ -30,12 +30,12 @@ export default function ProfileInfo(props) {
   const showFollowing = () => {
     console.log("팔로잉 목록 보여 주기");
     setCenterContent("following");
-  }
+  };
 
   const showFollower = () => {
     console.log("팔로워 목록 보여 주기");
     setCenterContent("follower");
-  }
+  };
 
   return (
     <ProfileInfoWrapper>
@@ -155,6 +155,7 @@ const ProfileContextWrapper = styled.div`
 const FollowWrapper = styled.div`
   font-size: 1.6rem;
   display: flex;
+  cursor: pointer;
   p {
     margin-right: 1rem;
     color: ${({ theme }) => theme.colors.darkgrey_1};

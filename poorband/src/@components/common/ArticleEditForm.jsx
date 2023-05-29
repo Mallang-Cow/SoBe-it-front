@@ -20,21 +20,21 @@ export default function ArticleEditForm(props) {
   const [amount, setAmount] = useState("");
   const [init, setInit] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [file, setFile] = useState();
 
-  const newData = {
-    articleSeq: articleSeq,
-    status: status,
-    imageUrl: imageUrl,
-    expenditureCategory: category,
-    amount: Number(amount),
-    financialText: financialText,
-    articleText: consumeText,
-    articleType: articleType,
-    consumptionDate: consumeDate,
-    isAllowed: "false",
-  };
+  // const [newData, setNewData] = {
+  //   articleSeq: articleSeq,
+  //   status: status,
+  //   imageUrl: imageUrl,
+  //   expenditureCategory: category,
+  //   amount: Number(amount),
+  //   financialText: financialText,
+  //   articleText: consumeText,
+  //   articleType: articleType,
+  //   consumptionDate: consumeDate,
+  //   isAllowed: "false",
+  // };
 
-  console.log(file);
   // 글 정보 가져와기
   const {
     data: article,
@@ -60,6 +60,12 @@ export default function ArticleEditForm(props) {
       console.log("Error");
     },
   });
+
+  // 뒤로 가기
+  function goToBackPage() {
+    setArticleSeq(articleSeq);
+    setCenterContent("detail");
+  }
 
   /**
    * @param {*} event
@@ -102,7 +108,7 @@ export default function ArticleEditForm(props) {
    * @param {*} event
    */
   const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+    setFile(event.target.files[0]);
     // 이제 file을 서버로 전송하거나 필요한 작업을 수행할 수 있습니다.
   };
 
@@ -163,20 +169,28 @@ export default function ArticleEditForm(props) {
         return;
       }
 
-      if (
-        newData.amount &&
-        newData.articleText &&
-        newData.articleType &&
-        newData.consumptionDate &&
-        newData.expenditureCategory &&
-        newData.status
-      ) {
-        // API 호출
-        newData.consumptionDate = formatDate(consumeDate);
-        writeArticle(newData);
+      const newData = {
+        articleDTO: {
+          articleSeq: articleSeq,
+          status: status,
+          expenditureCategory: category,
+          amount: Number(amount),
+          financialText: financialText,
+          articleText: consumeText,
+          articleType: isConsumeWrite,
+          consumptionDate: formatDate(consumeDate),
+          isAllowed: "false",
+        },
+      };
 
-        // console.log(newData);
-      }
+      const formData = new FormData();
+      const json = JSON.stringify(newData.articleDTO);
+      const blob = new Blob([json], { type: "application/json" });
+
+      formData.append("file", file);
+      formData.append("articleDTO", blob);
+
+      editArticle(formData);
     } else {
       if (consumeText === "") {
         alert("글을 입력해주세요.");
@@ -188,11 +202,28 @@ export default function ArticleEditForm(props) {
         return;
       }
 
-      if (newData.articleText && newData.amount && newData.status) {
-        // API 호출
-        newData.consumptionDate = formatDate(consumeDate);
-        editArticle(newData);
-      }
+      const newData = {
+        articleDTO: {
+          articleSeq: articleSeq,
+          status: status,
+          expenditureCategory: category,
+          amount: Number(amount),
+          financialText: financialText,
+          articleText: consumeText,
+          articleType: isConsumeWrite,
+          consumptionDate: formatDate(consumeDate),
+          isAllowed: "false",
+        },
+      };
+      console.log(newData);
+      const formData = new FormData();
+      const json = JSON.stringify(newData.articleDTO);
+      const blob = new Blob([json], { type: "application/json" });
+      console.log(json);
+      formData.append("file", file);
+      formData.append("articleDTO", blob);
+
+      editArticle(formData);
     }
   }
 
@@ -216,7 +247,13 @@ export default function ArticleEditForm(props) {
   return (
     <>
       <HeaderContainer>
-        <span className="material-symbols-rounded">arrow_back</span>
+        <span
+          className="material-symbols-rounded"
+          onClick={() => {
+            goToBackPage();
+          }}>
+          arrow_back
+        </span>
         {articleType === 1 ? <header>지출 내역 수정</header> : <header>결재 내역 수정</header>}
       </HeaderContainer>
 
@@ -250,26 +287,20 @@ export default function ArticleEditForm(props) {
           onChange={handleCousumeInput}
         />
 
-        {imageUrl && (
+        {imageUrl && !file && (
           <ImageContainer>
             <img src={imageUrl} alt="이미지"></img>
           </ImageContainer>
         )}
 
+        {file && (
+          <ImageContainer>
+            <img src={URL.createObjectURL(file)} alt="File Preview" />
+          </ImageContainer>
+        )}
+
         <BottomWrapper>
           <LeftWrapper>
-            <FileLabel htmlFor="file">
-              <span className="material-symbols-outlined">image</span>
-            </FileLabel>
-            <input
-              className="imgInput"
-              type="file"
-              name="file"
-              id="file"
-              accept="image/*"
-              onChange={handleFileUpload}
-              //style={{ display: "none" }}
-            />
             <FinancialText
               type="text"
               value={financialText}
@@ -287,16 +318,23 @@ export default function ArticleEditForm(props) {
           />
         </BottomWrapper>
 
-        <SubmitAndPrivacySet>
-          <StyledSelect2 value={status} onChange={handleStatusChage}>
-            <option value="1">전체공개</option>
-            <option value="2">맞팔공개</option>
-            <option value="3">비공개</option>
-          </StyledSelect2>
-          <SubmitButton className="submit" onClick={submitNewData}>
-            수정하기
-          </SubmitButton>
-        </SubmitAndPrivacySet>
+        <ButtonWrapper>
+          <FileInputContainer>
+            {file && <img src={URL.createObjectURL(file)} alt="File Preview" />}
+            {file ? file.name : "Choose File"}
+            <input type="file" name="file" accept="image/*" onChange={handleFileUpload} />
+          </FileInputContainer>
+          <SubmitAndPrivacySet>
+            <StyledSelect2 value={status} onChange={handleStatusChage}>
+              <option value="1">전체공개</option>
+              <option value="2">맞팔공개</option>
+              <option value="3">비공개</option>
+            </StyledSelect2>
+            <SubmitButton className="submit" onClick={submitNewData}>
+              수정하기
+            </SubmitButton>
+          </SubmitAndPrivacySet>
+        </ButtonWrapper>
       </EditFormWrapper>
     </>
   );
@@ -320,6 +358,7 @@ const HeaderContainer = styled.div`
   span {
     font-size: 3rem;
     margin-right: 1rem;
+    cursor: pointer;
   }
 `;
 const EditFormWrapper = styled.section`
@@ -420,7 +459,7 @@ const InputText = styled.textarea`
 const ImageContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 0.5rem;
+  margin: 1rem;
   img {
     width: 30rem;
     height: 30rem;
@@ -438,14 +477,45 @@ const BottomWrapper = styled.section`
   }
 `;
 
-const FileLabel = styled.label`
+const FileInputContainer = styled.label`
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.mainpurple};
+  font-size: 1.2rem;
+  ${({ theme }) => theme.fonts.medium};
+  color: ${({ theme }) => theme.colors.mainpurple};
+  border-radius: 0.5rem;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-right: 0.5rem;
+  justify-content: center;
+  overflow: hidden; /* 텍스트 오버플로우 처리 */
+  max-width: 20rem;
 
-  & > span {
-    font-size: 3rem;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+    color: ${({ theme }) => theme.colors.white};
+  }
+
+  input[type="file"] {
+    position: absolute;
+    top: -100px;
+  }
+
+  img {
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    max-width: 150px; /* 버튼의 최대 너비 설정 */
   }
 `;
 const LeftWrapper = styled.div`
@@ -519,4 +589,9 @@ const SubmitButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme }) => theme.colors.mainpurple};
   font-size: 1.4rem;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

@@ -5,10 +5,10 @@ import { styled } from "styled-components";
 
 export default function Home(props) {
   const { setCenterContent, setArticleSeq, setUserId, reloadFeed, setReloadFeed } = props;
-  const [position, setPosition] = useState(false);
+  const [scrollposition, setscrollposition] = useState(false);
   const handleScroll = () => {
-    if (scrollY > 50) setPosition(true);
-    else setPosition(false);
+    if (scrollY > 50) setscrollposition(true);
+    else setscrollposition(false);
   };
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function Home(props) {
   return (
     <>
       <HomeWrapper>
-        <HomeTag position={position}>Home</HomeTag>
+        <HomeTag scrollposition={scrollposition}>Home</HomeTag>
         <WriteForm setReloadFeed={setReloadFeed} />
         <Feed
           setCenterContent={setCenterContent}
@@ -54,7 +54,8 @@ const HomeTag = styled.h2`
   display: flex;
   justify-content: start;
   align-items: center;
-  border-bottom: 1px solid ${({ theme, position }) => (position ? theme.colors.lightgrey_1 : theme.colors.white)};
+  border-bottom: 1px solid
+    ${({ theme, scrollposition }) => (scrollposition ? theme.colors.lightgrey_1 : theme.colors.white)};
 
   ${({ theme }) => theme.fonts.bold};
   color: ${({ theme }) => theme.colors.black};
