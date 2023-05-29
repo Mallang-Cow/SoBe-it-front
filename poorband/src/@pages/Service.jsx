@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Home from "../@components/Home/Home";
 import MenuBar from "../@components/MenuBar";
 import SideBar from "../@components/SideBar/SideBar";
@@ -24,6 +25,7 @@ export default function Service() {
   const [reloadFeed, setReloadFeed] = useState(false);
   const [nowUser, setNowUser] = useRecoilState(nowUserState);
   const [searchWord, setSearchWord] = useState("");
+  const navigate = useNavigate();
 
   // 접속 유저 세팅
   // 유저 정보 가져오기
@@ -37,13 +39,16 @@ export default function Service() {
       setNowUser(response);
       // console.log(response);
     },
-    onError: () => {
-      console.log("Error");
+    onError: (error) => {
+      if (error.message === "Request failed with status code 403") {
+        navigate("/login");
+      }
     },
   });
 
   return (
     <>
+    {nowUser && 
       <ServiceWrapper>
         <MenuBarWrapper>
           <MenuBar centerContent={centerContent} setCenterContent={setCenterContent} />
@@ -118,6 +123,7 @@ export default function Service() {
           />
         </SideBarWrapper>
       </ServiceWrapper>
+    }
     </>
   );
 }
