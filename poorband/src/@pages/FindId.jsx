@@ -1,7 +1,11 @@
 import React, { useRef } from "react";
-import { styled } from "styled-components";
 import { useMutation } from "react-query";
 import { findId } from "../../api/userAPI";
+import { Button, Container, TextField, Typography } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
+import { theme } from '../style/theme';
+import '../style/RootContainer.css';
+import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 
 export default function FindId() {
   const userNameRef = useRef(null);
@@ -28,41 +32,104 @@ export default function FindId() {
   }
 
   return (
-    <FindIdWrapper>
-      <LogoContainer>
-        <img src="" alt="로고" />
-      </LogoContainer>
+    <div className="RootContainer">
+      <Container component="main" style={{ width:"54rem" }}>
+        <LogoContainer>
+          <img src={SIDEBAR_DETAIL.user.profileImageUrl} alt="로고" style={{ width: "3rem", height: "3rem", borderRadius: "1rem" }}/>
+        </LogoContainer>
 
-      <TitleContainer>
-        <span>Find Id</span>
-      </TitleContainer>
+        <TitleContainer>
+          <TitleTypography variant="h3">아이디 찾기</TitleTypography>
+        </TitleContainer>
 
-      <FormContainer>
-        <div>이름</div>
-        <input type="text" ref={ userNameRef } />
-        <br/>
-
-        <div>전화번호</div>
-        <input type="text" ref={ userPhoneNumberRef } />
-        <br/>
-      </FormContainer>
-        
-      <ButtonContainer>
-        <button onClick={ handleFindId }>아이디 찾기</button>
-      </ButtonContainer>
-    </FindIdWrapper>
+        <FormContainer >
+          <InputTextField label="이름" type="text" fullWidth inputRef={ userNameRef }/>
+          <InputTextField label="전화번호" type="text" fullWidth inputRef={ userPhoneNumberRef } />
+          <FindIdButton variant="contained" fullWidth onClick={ handleFindId }>아이디 찾기</FindIdButton>
+        </FormContainer>
+      </Container>
+    </div>
   );
 }
 
-const FindIdWrapper = styled.main`
-  background-color: green;
-`;
-const LogoContainer = styled.div``;
-const TitleContainer = styled.div``;
-const FormContainer = styled.div`
-  input {
-    border: 1px black solid;
-    outline: black;
-  }
-`;
-const ButtonContainer = styled.div``;
+const LogoContainer = muiStyled(Container) ({
+
+});
+
+const TitleContainer = muiStyled(Container) ({
+  paddingBottom: '2.2rem',
+});
+
+const TitleTypography = muiStyled(Typography) ({
+  fontSize: '4.2rem',
+  fontFamily: [
+    'Spoqa Han Sans Neo',
+  ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
+});
+
+const FormContainer = muiStyled(Container) ({
+
+});
+
+const InputTextField = muiStyled(TextField) ({
+  marginBottom: '2rem',
+  '& input': {
+    height: '1.8rem',
+    fontSize: '1.6rem',
+  },
+  '& label': {
+    fontSize: '1.6rem',
+    color: theme.colors.lightgrey_2, // 기본 label 색상
+  },
+  '& label.Mui-focused': {
+    fontSize: '1.6rem',
+    color: theme.colors.darkgrey_1,
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: theme.colors.lightpurple,
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: theme.colors.lightgrey_2,
+    },
+    '&:hover fieldset': {
+      borderColor: theme.colors.darkgrey_1,
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: theme.colors.lightpurple,
+    },
+  },
+});
+
+const FindIdButton = muiStyled(Button) ({
+  color: theme.colors.white,
+  height: '4.6rem',
+  marginTop: '1rem',
+  marginBottom: '1.8rem',
+  textTransform: 'none',
+  fontSize: '1.8rem',
+  fontFamily: [
+    'Spoqa Han Sans Neo',
+  ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
+  backgroundColor: theme.colors.mainpurple,
+  borderColor: theme.colors.lightgrey_2,
+  '&:hover': {
+    backgroundColor: theme.colors.darkpurple_2
+  },
+  '&:active': {
+    boxShadow: 'none',
+    backgroundColor: theme.colors.lightpurple,
+    borderColor: theme.colors.lightgrey_1,
+  },
+  '&:focus': {
+    boxShadow: '0 0 0 0.04rem #EDEDED',
+    border: 'none',
+    outline: 'none',
+  },
+});
