@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { useRecoilState } from "recoil";
 import { nowUserState } from "../../recoil/nowUserInfo";
 import { TIER } from "../../../core/tierImage";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function CommentForm(props) {
   const { articleSeq, setReload } = props;
@@ -47,10 +48,14 @@ export default function CommentForm(props) {
     setText(e.target.value);
   }
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   return (
     <Wrapper>
       <ProfileContainer>
-        <img src={nowUser?.profileImgUrl} alt="프사" className="profile-img" />
+        <img src={nowUser?.profileImgUrl || profileImg} alt="프사" className="profile-img" onError={onErrorImg} />
         <p className="nickname">{nowUser?.nickname}</p>
         <p className="id">@{nowUser?.userId}</p>
         <img src={TIER[nowUser?.userTier]} alt="티어" className="tier-img" />

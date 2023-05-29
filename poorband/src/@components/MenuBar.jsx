@@ -12,6 +12,7 @@ import { useRecoilState } from "recoil";
 import { getNowUser } from "../../api/getNowUser";
 import { getMyInfo } from "../../api/getMyInfo";
 import { nowUserState } from "../recoil/nowUserInfo";
+import { profileImg } from "../../core/defaultImg";
 
 export default function MenuBar(props) {
   const { centerContent, setCenterContent } = props;
@@ -75,6 +76,10 @@ export default function MenuBar(props) {
     logoutUser();
   };
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   return (
     <Wrapper>
       <HeaderWrapper>
@@ -106,7 +111,12 @@ export default function MenuBar(props) {
           }}>
           <ProfileInfoWrapper>
             <ProfileImgWrapper>
-              <img id="profile-image" src={nowUser?.profileImgUrl} alt="프로필사진" />
+              <img
+                id="profile-image"
+                src={nowUser?.profileImgUrl || profileImg}
+                alt="프로필사진"
+                onError={onErrorImg}
+              />
             </ProfileImgWrapper>
             <ProfileNameWrapper>
               <p>{nowUser?.nickname}</p>

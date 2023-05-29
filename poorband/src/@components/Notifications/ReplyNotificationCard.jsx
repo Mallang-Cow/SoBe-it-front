@@ -4,9 +4,10 @@ import { useMutation } from "react-query";
 import { styled as muiStyled } from "@mui/material/styles";
 import { styled } from "styled-components";
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 import { theme } from "../../style/theme";
 import { deleteOneNotification } from "../../../api/notificationAPI";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function ReplyNotificationCard({
   notificationSeq,
@@ -30,19 +31,19 @@ export default function ReplyNotificationCard({
     setCenterContent("detail");
   }
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   // 사용자 프로필 이미지
-  let avatarImg = null;
-  if (imageUrl) {
-    avatarImg = (
-      <img src={imageUrl} alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%", display: "block", borderRadius: "1rem" }} />
-    );
-  } else {
-    avatarImg = (
-      <CustomAccountBoxIconContainer>
-        <PersonIcon style={{ width: "6rem", height: "6rem", color: "#845EC2" }}/>
-      </CustomAccountBoxIconContainer>
-    );
-  }
+  let avatarImg = (
+    <img
+      src={imageUrl || profileImg}
+      onError={onErrorImg}
+      alt="사용자 프로필 이미지"
+      style={{ width: "100%", height: "100%", borderRadius: "1rem" }}
+    />
+  );
 
   // 알림 시간 구하기
   useEffect(() => {
@@ -97,9 +98,7 @@ export default function ReplyNotificationCard({
             <span className="material-symbols-rounded">close</span>
           </NotificationIconButton>
         }>
-        <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
-          {avatarImg}
-        </ListItemAvatar>
+        <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>{avatarImg}</ListItemAvatar>
         <div style={{ marginLeft: "2rem" }}>
           <div style={{ display: "flex", flexDirection: "row", marginBottom: "0.6rem", alignItems: "center" }}>
             <MainNotificationText primary={content} />
@@ -151,14 +150,14 @@ const NotificationIconButton = muiStyled(IconButton)({
   },
 });
 
-const CustomAccountBoxIconContainer = muiStyled('div')({
-  width: '6rem',
-  height: '6rem',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: '0.4rem solid #845EC2',
-  borderRadius: '1rem',
+const CustomAccountBoxIconContainer = muiStyled("div")({
+  width: "6rem",
+  height: "6rem",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  border: "0.4rem solid #845EC2",
+  borderRadius: "1rem",
 });
 
 const MainNotificationText = muiStyled(ListItemText)({

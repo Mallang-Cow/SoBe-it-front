@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { likeComment } from "../../../api/likeComment";
 import { deleteComment } from "../../../api/deleteComment";
 import { TIER } from "../../../core/tierImage";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function CommentCard(props) {
   const { comment, setReload } = props;
@@ -61,12 +62,21 @@ export default function CommentCard(props) {
     },
   });
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   return (
     <Wrapper>
       <ProfileContainer>
         <NameContainer>
           <LinkContainer>
-            <img src={comment?.profile_image_url} alt="프사" className="profile-img" />
+            <img
+              src={comment?.profile_image_url || profileImg}
+              alt="프사"
+              className="profile-img"
+              onError={onErrorImg}
+            />
             <p className="nickname">{comment?.nickname}</p>
             <p className="id">@{comment?.user_id}</p>
           </LinkContainer>

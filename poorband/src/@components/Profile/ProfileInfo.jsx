@@ -3,6 +3,8 @@ import { TIER } from "../../../core/tierImage";
 import { styled } from "styled-components";
 import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { useMutation } from "react-query";
+import { followUser, unFollowUser } from "../../../api/followAPI";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function ProfileInfo(props) {
   const { setCenterContent, setShowEdit, userId } = props;
@@ -18,28 +20,62 @@ export default function ProfileInfo(props) {
 
   const { mutate: targegtUserId } = useMutation(getProfileInfoData, {
     onSuccess: (response) => {
-      console.log(response);
       setData(response);
     },
     onError: () => {
       console.log("error");
     },
   });
-  console.log(data);
 
   const showFollowing = () => {
-    console.log("팔로잉 목록 보여 주기");
     setCenterContent("following");
   };
 
   const showFollower = () => {
-    console.log("팔로워 목록 보여 주기");
     setCenterContent("follower");
   };
 
+  function clickFollow() {}
+
+  function clickUnFollow() {
+    if (window.confirm("해당 사용자를 언팔로우 하시겠습니까?")) {
+      unFollowUserMutation({ userId: data?.userId });
+    }
+  }
+
+  // 팔로우
+  const { mutate: followUserMutation } = useMutation(followUser, {
+    onSuccess: (response) => {
+      console.log("팔로우 : " + response);
+      targegtUserId({ userId: userId });
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("팔로우 과정에 오류가 발생했습니다.");
+      }
+    },
+  });
+
+  // 언팔로우
+  const { mutate: unFollowUserMutation } = useMutation(unFollowUser, {
+    onSuccess: (response) => {
+      console.log("언팔로우 : " + response);
+      targegtUserId({ userId: userId });
+    },
+    onError: (error) => {
+      if (error.message === "Request failed with status code 500") {
+        alert("언팔로우 과정에 오류가 발생했습니다.");
+      }
+    },
+  });
+
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+  // console.log(data?)
   return (
     <ProfileInfoWrapper>
-      <img id="profile-img" src={data?.profileImg} alt="프로필 사진" />
+      <img id="profile-img" src={data?.profileImg || profileImg} alt="프로필 사진" onError={onErrorImg} />
       <ProfileTextWrapper>
         <ProfileContextWrapper>
           <NameWrapper>
@@ -50,8 +86,24 @@ export default function ProfileInfo(props) {
             </div>
             {/*자신의 프로필인 경우, '프로필 편집' 버튼 보여주기*/}
             {data?.status === 1 && <button onClick={() => setShowEdit(true)}>프로필 편집</button>}
-            {/* {data?.status === 2 && <button onClick={() => setShowEdit(true)}>팔로우</button>} */}
-            {/* {data?.status === 2 && <button onClick={() => setShowEdit(true)}>팔로잉</button>} */}
+            {data?.status === 2 && (
+              <button
+                onClick={() => {
+                  followUserMutation({ userId: data?.userId });
+                }}
+                className="follow">
+                팔로우
+              </button>
+            )}
+            {data?.status === 3 && (
+              <button
+                onClick={() => {
+                  clickUnFollow();
+                }}
+                className="unfollow">
+                팔로잉
+              </button>
+            )}
           </NameWrapper>
           <InformationWrapper>
             <p>{data?.introDetail}</p>
@@ -183,8 +235,20 @@ const NameWrapper = styled.section`
     width: 10rem;
     cursor: pointer;
   }
-  button:active {
+  button:active,
+  button:focus,
+  button:focus-visible {
     outline: none;
+  }
+  button.follow {
+    border: none;
+    background-color: ${({ theme }) => theme.colors.mainpurple};
+
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.white};
+  }
+  button.follow:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
   }
 `;
 
