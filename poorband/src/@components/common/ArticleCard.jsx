@@ -12,6 +12,7 @@ import { userIdState } from "../../recoil/userId";
 import { useRecoilState } from "recoil";
 import { deleteArticle } from "../../../api/deleteArticle";
 import { prevPageState } from "../../recoil/prevPage";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function ArticleCard(props) {
   const { articleSeq, setArticleSeq, setCenterContent, setArticleType, clickactive, setReloadFeed, onPage } = props;
@@ -128,6 +129,10 @@ export default function ArticleCard(props) {
       console.log("error");
     },
   });
+
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
   return (
     <Wrapper>
       <ProfileContainer>
@@ -136,7 +141,12 @@ export default function ArticleCard(props) {
             onClick={() => {
               goToProfile();
             }}>
-            <img id="profile-img" src={article?.user?.profileImageUrl} alt="프로필사진" />
+            <img
+              id="profile-img"
+              src={article?.user?.profileImageUrl || profileImg}
+              alt="프로필사진"
+              onError={onErrorImg}
+            />
 
             <p className="bold" id="nickname">
               {article?.user.nickname}

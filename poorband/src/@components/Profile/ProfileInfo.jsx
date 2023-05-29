@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { useMutation } from "react-query";
 import { followUser, unFollowUser } from "../../../api/followAPI";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function ProfileInfo(props) {
   const { setCenterContent, setShowEdit, userId } = props;
@@ -68,9 +69,13 @@ export default function ProfileInfo(props) {
     },
   });
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+  // console.log(data?)
   return (
     <ProfileInfoWrapper>
-      <img id="profile-img" src={data?.profileImg} alt="프로필 사진" />
+      <img id="profile-img" src={data?.profileImg || profileImg} alt="프로필 사진" onError={onErrorImg} />
       <ProfileTextWrapper>
         <ProfileContextWrapper>
           <NameWrapper>

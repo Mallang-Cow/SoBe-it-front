@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { getProfileInfoData } from "../../../api/getProfileInfoData";
 import { getProfileEditData } from "../../../api/getProfileEditData";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function ProfileEdit(props) {
   const { setShowEdit, userId, setUserId } = props;
@@ -113,14 +114,23 @@ export default function ProfileEdit(props) {
     }
   }, [isSuccess]);
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   return (
     <ProfileEditWrapper>
       <FileInputContainer class="filebox">
         <label for="file">
           {chooseFile && file ? (
-            <img id="profile-img" src={URL.createObjectURL(file)} alt="프로필 사진" />
+            <img
+              id="profile-img"
+              src={URL.createObjectURL(file) || profileImg}
+              alt="프로필 사진"
+              onError={onErrorImg}
+            />
           ) : (
-            <img id="profile-img" src={profileImageUrl} alt="프로필 사진" />
+            <img id="profile-img" src={profileImageUrl || profileImg} alt="프로필 사진" onError={onErrorImg} />
           )}
         </label>
         <input

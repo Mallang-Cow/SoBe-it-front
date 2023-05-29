@@ -10,6 +10,7 @@ import { theme } from "../../style/theme";
 import { TIER } from "../../../core/tierImage";
 import { followUser, unFollowUser } from "../../../api/followAPI";
 import { deleteOneNotification } from "../../../api/notificationAPI";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function FollowNotificationCard({
   notificationSeq,
@@ -36,16 +37,19 @@ export default function FollowNotificationCard({
     setCenterContent("profile");
   }
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   // 사용자 프로필 이미지
-  let avatarImg = null;
-  if (imageUrl) {
-    avatarImg = (
-      <img src={imageUrl} alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />
-    );
-  } else {
-    //    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
-    avatarImg = <MoodBadIcon style={{ width: "6rem", height: "6rem", color: "#845EC2", borderRadius: "1rem" }} />;
-  }
+  let avatarImg = (
+    <img
+      src={imageUrl || profileImg}
+      onError={onErrorImg}
+      alt="사용자 프로필 이미지"
+      style={{ width: "100%", height: "100%", borderRadius: "1rem" }}
+    />
+  );
 
   // 알림 시간 구하기
   useEffect(() => {
@@ -136,11 +140,12 @@ export default function FollowNotificationCard({
     const handleUserId = {
       userId: followingUserId,
     };
-
     if (!isFollowing) {
       followUserMutation(handleUserId);
     } else {
-      unFollowUserMutation(handleUserId);
+      if (window.confirm("해당 사용자를 언팔로우 하시겠습니까?")) {
+        unFollowUserMutation(handleUserId);
+      }
     }
   };
 
@@ -194,9 +199,17 @@ export default function FollowNotificationCard({
               </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <FollowButton onClick={handleFollow}>{isFollowing ? "언팔로우" : "팔로우"}</FollowButton>
-            </div>
+            <FollowContainer style={{ display: "flex", alignItems: "center" }}>
+              {isFollowing ? (
+                <FollowButton className="unfollow" onClick={handleFollow} disabled={status === 1}>
+                  팔로잉
+                </FollowButton>
+              ) : (
+                <FollowButton className="follow" onClick={handleFollow}>
+                  팔로우
+                </FollowButton>
+              )}
+            </FollowContainer>
           </div>
         </div>
       </ListItem>
@@ -280,28 +293,36 @@ const FollowContent = styled.div`
   color: ${({ theme }) => theme.colors.darkgrey_1};
 `;
 
-const FollowButton = muiStyled(Button)({
-  width: "7rem",
-  height: "3rem",
-  borderRadius: "3rem",
-  color: theme.colors.white,
-  backgroundColor: theme.colors.mainpurple,
+const FollowButton = muiStyled(Button)({});
 
-  fontSize: "1.4rem",
-  fontFamily: "Spoqa Han Sans Neo",
-  fontStyle: "normal",
-  fontWeight: 500,
-  "&:hover": {
-    backgroundColor: theme.colors.darkpurple_2,
-  },
-  "&:active": {
-    boxShadow: "none",
-    backgroundColor: theme.colors.lightpurple,
-    borderColor: theme.colors.lightgrey_1,
-  },
-  "&:focus": {
-    boxShadow: "0 0 0 0.04rem #EDEDED",
-    border: "none",
-    outline: "none",
-  },
-});
+const FollowContainer = styled.div`
+  button {
+    border: 1px solid ${({ theme }) => theme.colors.mainpurple};
+    background-color: white;
+
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.mainpurple};
+    appearance: none; // 이 행은 브라우저 기본 스타일을 제거합니다.
+    text-align: center;
+
+    border-radius: 3rem;
+    height: 3rem;
+    width: 10rem;
+    cursor: pointer;
+  }
+  button:active,
+  button:focus,
+  button:focus-visible {
+    outline: none;
+  }
+  button.follow {
+    border: none;
+    background-color: ${({ theme }) => theme.colors.mainpurple};
+
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.colors.white};
+  }
+  .follow:hover {
+    background-color: ${({ theme }) => theme.colors.darkpurple_2};
+  }
+`;

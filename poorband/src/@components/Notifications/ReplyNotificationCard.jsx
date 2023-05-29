@@ -9,6 +9,7 @@ import MoodBadIcon from "@mui/icons-material/MoodBad";
 import { theme } from "../../style/theme";
 // import { SIDEBAR_DETAIL } from "../../../core/sideBarData"; //"../../core/sideBarData";
 import { deleteOneNotification } from "../../../api/notificationAPI";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function ReplyNotificationCard({
   notificationSeq,
@@ -32,16 +33,19 @@ export default function ReplyNotificationCard({
     setCenterContent("detail");
   }
 
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
+
   // 사용자 프로필 이미지
-  let avatarImg = null;
-  if (imageUrl) {
-    avatarImg = (
-      <img src={imageUrl} alt="사용자 프로필 이미지" style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />
-    );
-  } else {
-    //    avatarImg = <img src={ SIDEBAR_DETAIL.user.profileImageUrl } style={{ width: "100%", height: "100%", borderRadius: "1rem" }} />;
-    avatarImg = <MoodBadIcon style={{ width: "6rem", height: "6rem", borderRadius: "1rem" }} />;
-  }
+  let avatarImg = (
+    <img
+      src={imageUrl || profileImg}
+      onError={onErrorImg}
+      alt="사용자 프로필 이미지"
+      style={{ width: "100%", height: "100%", borderRadius: "1rem" }}
+    />
+  );
 
   // 알림 시간 구하기
   useEffect(() => {

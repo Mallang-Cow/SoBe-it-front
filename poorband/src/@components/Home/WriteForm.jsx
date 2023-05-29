@@ -8,6 +8,8 @@ import { useMutation } from "react-query";
 import { articeWrite } from "../../../api/articleWriteApi";
 import { useRecoilState } from "recoil";
 import { nowUserState } from "../../recoil/nowUserInfo";
+import PersonIcon from "@mui/icons-material/Person";
+import { profileImg } from "../../../core/defaultImg";
 
 export default function WriteForm(props) {
   const { setReloadFeed } = props;
@@ -213,6 +215,9 @@ export default function WriteForm(props) {
       alert("게시글 업로드에 실패했습니다.");
     },
   });
+  const onErrorImg = (e) => {
+    e.target.src = profileImg;
+  };
 
   return (
     <>
@@ -242,7 +247,7 @@ export default function WriteForm(props) {
             <ConsumeFormWrapper>
               <TopWrapper>
                 <ImageAndCategorySelect>
-                  <Image src={nowUser.profileImgUrl} alt="" />
+                  <Image src={nowUser.profileImgUrl || profileImg} alt="" onError={onErrorImg} />
                   <StyledSelect1 value={category} onChange={handleCategoryChange}>
                     <option value="">카테고리 ⬇️</option>
                     <option value="1">식비😋</option>
@@ -295,7 +300,7 @@ export default function WriteForm(props) {
           {isConsumeWrite === 2 && (
             <PermissionFormWrapper>
               <TopWrapper>
-                <Image src={nowUser.profileImgUrl} alt="" />
+                <Image src={nowUser.profileImgUrl || profileImg} alt="" onError={onErrorImg} />
               </TopWrapper>
 
               <InputText
