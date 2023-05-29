@@ -63,7 +63,7 @@ const HeaderWrapper = styled.header`
   font-size: 2.4rem;
 `;
 const Title = styled.p`
-  padding: 4rem 3rem 0;
+  padding: 4rem 3rem 0rem;
 `;
 const ActiveMenu = styled.div`
   width: 100%;
@@ -89,7 +89,5 @@ const MenuWrapper = styled.menu`
   width: 100%;
   justify-content: space-evenly;
   margin-top: 1.5rem;
-  :hover {
-    background-color: ${({ theme }) => theme.colors.lightpurple};
-  }
+  cursor: pointer;
 `;

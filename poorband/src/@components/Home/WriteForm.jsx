@@ -158,18 +158,6 @@ export default function WriteForm(props) {
 
       writeArticle(formData);
     } else {
-      const newData = {
-        articleDTO: {
-          status: status,
-          expenditureCategory: category,
-          amount: Number(amount),
-          financialText: financialText,
-          articleText: consumeText,
-          articleType: isConsumeWrite,
-          isAllowed: "false",
-        },
-      };
-
       if (consumeText === "") {
         alert("글을 입력해주세요.");
         return;
@@ -180,12 +168,27 @@ export default function WriteForm(props) {
         return;
       }
 
+      const newData = {
+        articleDTO: {
+          status: status,
+          expenditureCategory: category,
+          amount: Number(amount),
+          financialText: financialText,
+          articleText: consumeText,
+          articleType: isConsumeWrite,
+          consumptionDate: formatDate(consumeDate),
+          isAllowed: "false",
+        },
+      };
+
       const formData = new FormData();
       const json1 = JSON.stringify(newData.articleDTO);
       const blob = new Blob([json1], { type: "application/json" });
       formData.append("file", file);
       formData.append("articleDTO", blob);
-
+      console.log(json1);
+      console.log(blob);
+      console.log(file);
       writeArticle(formData);
     }
   }
@@ -423,7 +426,7 @@ const Button1 = styled.button`
     left: 0;
     width: 0;
     height: 3px;
-    background: ${({ theme }) => theme.colors.darkpurple_2};
+    background: ${({ theme }) => theme.colors.mainpurple};
     transition: width 0.3s;
 
     ${(props) =>
@@ -440,7 +443,7 @@ const Button2 = styled.button`
   font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   line-height: 1.25rem;
   /* identical to box height */
 
@@ -463,7 +466,7 @@ const Button2 = styled.button`
     left: 0;
     width: 0;
     height: 3px;
-    background: ${({ theme }) => theme.colors.darkpurple_2};
+    background: ${({ theme }) => theme.colors.mainpurple};
     transition: width 0.3s;
 
     ${(props) =>

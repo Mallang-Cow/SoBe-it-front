@@ -148,7 +148,6 @@ export default function HotPostCard(props) {
 }
 
 const Wrapper = styled.div`
-  cursor: pointer;
   ${({ theme }) => theme.fonts.regular};
   background-color: ${({ theme }) => theme.colors.white};
   font-size: 1.2rem;
@@ -159,6 +158,7 @@ const ProfileWrapper = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
+  cursor: pointer;
 
   p {
     ${({ theme }) => theme.fonts.bold};
@@ -184,7 +184,9 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-const ReceiptContainer = styled.div``;
+const ReceiptContainer = styled.div`
+  cursor: pointer;
+`;
 const TextContainer = styled.div`
   margin-bottom: 1rem;
   padding: 1rem 0;
@@ -223,6 +225,7 @@ const CountInfoWrapper = styled.div`
 const Like = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
   span.material-symbols-rounded:hover {
     font-size: 2rem;
     color: ${({ theme }) => theme.colors.red};
