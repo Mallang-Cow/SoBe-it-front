@@ -27,7 +27,7 @@ export default function Register() {
     onSuccess: (response) => {
       // 회원 가입 성공 시 처리할 로직 작성
       // 회원 가입 후 로그인 페이지로 이동
-      navigate("/"); // 추후 경로 /login으로 수정
+      navigate("/login"); // 추후 경로 /login으로 수정
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {

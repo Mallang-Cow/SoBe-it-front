@@ -17,7 +17,7 @@ export default function Login() {
     onSuccess: (response) => {
       if (response.token) {
         sessionStorage.setItem("ACCESS_TOKEN", response.token);
-        navigate("/home");
+        navigate("/");
       }
     },
     onError: (error) => {
