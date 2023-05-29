@@ -7,7 +7,7 @@ import { useMutation } from "react-query";
 import { addNewChallnge } from "../../../api/addChallenge";
 
 export default function ChallengeCardMake(props) {
-  const { setShowChallengeMake } = props;
+  const { setShowChallengeMake, setReloadChallenges } = props;
 
   const [cTitle, setCTitle] = useState("");
   const [cStartDate, setCStartDate] = useState(new Date());
@@ -70,7 +70,8 @@ export default function ChallengeCardMake(props) {
   const { mutate: addChallenge } = useMutation(addNewChallnge, {
     onSuccess: (response) => {
       console.log(response);
-      
+      setReloadChallenges(true);
+
     },
     onError: (error) => {
       console.log(error);

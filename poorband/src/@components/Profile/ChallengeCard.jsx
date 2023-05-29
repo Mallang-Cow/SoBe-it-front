@@ -3,12 +3,14 @@ import { ARTICLE_DETAIL } from "../../../core/articleData";
 import { styled } from "styled-components";
 import { TIER } from "../../../core/tierImage";
 import ProgressBar from "../common/ProgressBar";
+import { useMutation } from "react-query";
+import { deleteChallenge } from "../../../api/deleteChallenge";
 
 export default function ChallengeCard(props) {
 
   const { profileImg, nickName, userId, title, 
     goalAmount, userTier, isSuccess,
-    startDate, endDate, consumption} = props
+    startDate, endDate, consumption, goalAmountSeq, setReloadChallenges} = props
 
     let status;
 
@@ -27,13 +29,28 @@ export default function ChallengeCard(props) {
 
     let convertedStartDate = new Date(startDate);
     let convertedEndDate = new Date(endDate);
-
     let period = (convertedEndDate.getTime()- convertedStartDate.getTime()) / (1000 * 3600 * 24);
     let current = new Date();
     let differenceInTime = current.getTime() - convertedStartDate.getTime(); 
     let differenceInDays = differenceInTime / (1000 * 3600 * 24); 
-
     let remainingPercent = (consumption / goalAmount) * 100;
+
+    const { mutate : deleteChallengeReq } = useMutation( deleteChallenge, {
+      onSuccess: (response) => {
+        alert("삭제가 완료되었습니다.");
+        console.log(response);
+        setReloadChallenges(true);
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+      
+    });
+
+    const handleDeleteButton = (event) => {
+      console.log("도전과제 삭제 요청");
+      deleteChallengeReq({goalAmountSeq:goalAmountSeq});
+    };
 
   return (
     <ChallengeCardWrapper>
@@ -47,7 +64,7 @@ export default function ChallengeCard(props) {
 
         <OptionWrapper>
           <p className="bold">{status}</p>
-          <button>
+          <button onClick={handleDeleteButton}>
             <span class="material-symbols-rounded">close</span>
           </button>
         </OptionWrapper>

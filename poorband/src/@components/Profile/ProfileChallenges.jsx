@@ -17,7 +17,8 @@ export default function ProfileChallenges(props) {
   const[showChallengeMake, setShowChallengeMake] = useState(false);
   const[cntData, setCntData] = useState();
   // const[data, setData] = useState();
-  const[challenges, setChallenges] = useState()
+  const[challenges, setChallenges] = useState();
+  const[ReloadChallenges, setReloadChallenges] = useState(false);
 
   useEffect(() => {
     console.log(userId);
@@ -50,6 +51,13 @@ export default function ProfileChallenges(props) {
     },
   });
 
+  useEffect(() => {
+    if(ReloadChallenges) {
+      challengeData({userId:userId});
+      setReloadChallenges(false);
+    }
+  }, [ReloadChallenges])
+
   return (
     <ProfileChallengesWrapper>
       {/* 자기 페이지인 경우 도전과제 추가 버튼 & 도전과제 현황 보여주기 */}
@@ -57,7 +65,7 @@ export default function ProfileChallenges(props) {
         <ChallengeMineWrapper>
           {!showChallengeMake?
             <ChallengeCardMakeBtn showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>
-            :<ChallengeCardMake showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake}/>
+              :<ChallengeCardMake showChallengeMake={showChallengeMake} setShowChallengeMake={setShowChallengeMake} setReloadChallenges={setReloadChallenges}/>
           }
           
           <ChallengeCnt>
@@ -101,6 +109,8 @@ export default function ProfileChallenges(props) {
                       startDate={challenge.startDate}
                       endDate={challenge.endDate}
                       consumption={challenge.consumption}
+                      goalAmountSeq={challenge.goalAmountSeq}
+                      setReloadChallenges={setReloadChallenges}
                   />
               </ChallegeWrapper>
           </React.Fragment>
