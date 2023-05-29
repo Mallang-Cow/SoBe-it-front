@@ -88,7 +88,7 @@ export default function ArticleLikeNotificationCard({
       <ListItem
         secondaryAction={
           <NotificationIconButton edge="end" aria-label="delete" onClick={deleteNotification} disableRipple>
-            <span class="material-symbols-rounded">close</span>
+            <span className="material-symbols-rounded">close</span>
           </NotificationIconButton>
         }>
         <ListItemAvatar style={{ width: "6rem", height: "6rem" }}>
