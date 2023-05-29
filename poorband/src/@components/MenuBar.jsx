@@ -62,7 +62,7 @@ export default function MenuBar(props) {
     onSuccess: (response) => {
       console.log(response);
       sessionStorage.setItem(ACCESS_TOKEN, null);
-      navigate("/"); // 추후 경로 /login으로 수정
+      navigate("/login"); // 추후 경로 /login으로 수정
     },
     onError: (error) => {
       if (error.message === "Request failed with status code 500") {
@@ -205,7 +205,7 @@ const sidebarNavItems = [
   {
     display: "Home",
     icon: <span className="material-symbols-rounded">home</span>,
-    to: "/home",
+    to: "/",
     section: "home",
   },
   {

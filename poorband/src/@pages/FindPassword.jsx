@@ -38,7 +38,7 @@ export default function FindPassword() {
   };
 
   const navigateToLogin = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   const navigateToFindId = () => {
