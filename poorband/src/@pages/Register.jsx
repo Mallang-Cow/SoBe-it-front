@@ -179,11 +179,7 @@ export default function Register() {
     <div className="RootContainer">
       <Container component="main" style={{ width: "54rem" }}>
         <LogoContainer>
-          <img
-            src={SIDEBAR_DETAIL.user.profileImageUrl}
-            alt="로고"
-            style={{ width: "3rem", height: "3rem", borderRadius: "1rem" }}
-          />
+          <img src="https://i.ibb.co/J742sC7/1-5.png" alt="로고" style={{ width: "6rem", marginBottom: "2rem" }} />
         </LogoContainer>
 
         <TitleContainer>

@@ -84,10 +84,7 @@ export default function MenuBar(props) {
     <Wrapper>
       <HeaderWrapper>
         <LogoWrapper>
-          <img
-            src="https://ih1.redbubble.net/image.1819983922.6790/st,small,845x845-pad,1000x1000,f8f8f8.jpg"
-            alt="logo"
-            width="50rem"></img>
+          <img src="https://i.ibb.co/7NWgqFr/1-4.png" alt="logo" width="150rem"></img>
         </LogoWrapper>
         <MenuWrapper>
           {sidebarNavItems.map((item, index) => (
