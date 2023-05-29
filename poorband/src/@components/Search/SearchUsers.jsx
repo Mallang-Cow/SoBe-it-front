@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
+import { styled } from "styled-components";
 import { searchUser } from "../../../api/searchAPI";
 import UserCard from "../common/UserCard";
 
@@ -15,8 +16,6 @@ export default function SearchUsers(props) {
       setIsError(false);
     },
     onError: (error) => {
-      console.log(error);
-
       if (error.message === "Request failed with status code 500") {
         setIsError(true);
         setSearchUserResult([]);
@@ -36,7 +35,7 @@ export default function SearchUsers(props) {
     <>
       {/* 로딩 중인 경우 로딩 표시 */}
       { isLoading && 
-        <div>Loading...</div> }
+        <TextDiv>Loading...</TextDiv> }
 
       {/* 사용자 검색 결과 쭉 불러오기 */}
       { searchUserResult.map((resultUser) => (
@@ -55,7 +54,20 @@ export default function SearchUsers(props) {
 
       {/* 500 에러가 발생한 경우 에러 메시지 표시 */}
       { isError && 
-        <div>Error: Failed to search users.</div> }
+        <TextDiv>검색 결과가 없습니다.</TextDiv> }
     </>
   );
 }
+
+const TextDiv = styled.nav`
+  display: flex;
+  justify-content: center;
+  height: 80%;
+  align-items: center;
+  flex: auto;
+  color: #828282;
+  font-size: 1.6rem;
+  font-family: Spoqa Han Sans Neo;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+`;
