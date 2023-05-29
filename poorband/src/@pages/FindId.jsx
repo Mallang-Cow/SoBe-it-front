@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { findId } from "../../api/userAPI";
-import { Button, Container, TextField, Typography } from '@mui/material';
-import { styled as muiStyled } from '@mui/material/styles';
+import { Button, ButtonGroup, Container, TextField, Typography } from '@mui/material';
+import { createTheme, styled as muiStyled, ThemeProvider } from '@mui/material/styles';
 import { theme } from '../style/theme';
 import '../style/RootContainer.css';
 import { SIDEBAR_DETAIL } from "../../core/sideBarData";
@@ -10,6 +11,7 @@ import { SIDEBAR_DETAIL } from "../../core/sideBarData";
 export default function FindId() {
   const userNameRef = useRef(null);
   const userPhoneNumberRef = useRef(null);
+  const navigate = useNavigate();
 
   const { mutate: findUserId } = useMutation(findId, {
     onSuccess: (data) => {
@@ -31,6 +33,18 @@ export default function FindId() {
     findUserId(findIdDTO);
   }
 
+  const navigateToRegister = () => {
+    navigate("/register");
+  };
+
+  const navigateToLogin = () => {
+    navigate("/");
+  };
+
+  const navigateToFindPassword = () => {
+    navigate("/find-password");
+  };
+
   return (
     <div className="RootContainer">
       <Container component="main" style={{ width:"54rem" }}>
@@ -46,6 +60,14 @@ export default function FindId() {
           <InputTextField label="이름" type="text" fullWidth inputRef={ userNameRef }/>
           <InputTextField label="전화번호" type="text" fullWidth inputRef={ userPhoneNumberRef } />
           <FindIdButton variant="contained" fullWidth onClick={ handleFindId }>아이디 찾기</FindIdButton>
+
+          <ThemeProvider theme={ ButtonGroupTheme } >
+            <ButtonGroup variant="text" aria-label="text button group" color="primary" fullWidth>
+              <GroupButton onClick={ navigateToRegister }>회원가입</GroupButton>
+              <GroupButton onClick={ navigateToLogin }>로그인</GroupButton>
+              <GroupButton onClick={ navigateToFindPassword }>비밀번호 찾기</GroupButton>
+            </ButtonGroup>
+          </ThemeProvider>
         </FormContainer>
       </Container>
     </div>
@@ -127,6 +149,31 @@ const FindIdButton = muiStyled(Button) ({
     backgroundColor: theme.colors.lightpurple,
     borderColor: theme.colors.lightgrey_1,
   },
+  '&:focus': {
+    boxShadow: '0 0 0 0.04rem #EDEDED',
+    border: 'none',
+    outline: 'none',
+  },
+});
+
+const ButtonGroupTheme = createTheme ({
+  palette: {
+    primary: {
+      main: theme.colors.mainpurple,
+    },
+  },
+});
+
+const GroupButton = muiStyled(Button) ({
+  color: theme.colors.mainpurple,
+  fontSize: '1.6rem',
+  fontFamily: [
+    'Spoqa Han Sans Neo',
+  ].join(','),
+  fontStyle: 'normal',
+  fontWeight: 400,
+  letterSpacing: '0.03em',  
+  textTransform: 'none',
   '&:focus': {
     boxShadow: '0 0 0 0.04rem #EDEDED',
     border: 'none',
