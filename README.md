@@ -12,12 +12,12 @@
 <br/>
 
 ## Members
-| 프로필 | <a href="https://github.com/1wooo"><img src="https://avatars.githubusercontent.com/1wooo" width="100px;" alt="1wooo"/></a> | <a href="https://github.com/rninji"><img src="https://avatars.githubusercontent.com/rninji" width="100px;" alt="rninji"/></a> | <a href="https://github.com/C0012S"><img src="https://avatars.githubusercontent.com/C0012S" width="100px;" alt="C0012S"/></a> | <a href="https://github.com/parfait2"><img src="https://avatars.githubusercontent.com/parfait2" width="100px;" alt="parfait2"/></a> | <a href="https://github.com/chanuk97"><img src="https://avatars.githubusercontent.com/chanuk97" width="100px;" alt="chanuk97"/></a> |
+|  | <a href="https://github.com/1wooo"><img src="https://avatars.githubusercontent.com/1wooo" width="100px;" alt="1wooo"/></a> | <a href="https://github.com/rninji"><img src="https://avatars.githubusercontent.com/rninji" width="100px;" alt="rninji"/></a> | <a href="https://github.com/C0012S"><img src="https://avatars.githubusercontent.com/C0012S" width="100px;" alt="C0012S"/></a> | <a href="https://github.com/parfait2"><img src="https://avatars.githubusercontent.com/parfait2" width="100px;" alt="parfait2"/></a> | <a href="https://github.com/chanuk97"><img src="https://avatars.githubusercontent.com/chanuk97" width="100px;" alt="chanuk97"/></a> |
 | --- | --- | --- | --- | --- | --- |
 | 이름 | [김원우](https://github.com/1wooo) | [길민지](https://github.com/rninji) | [박상희](https://github.com/C0012S) | [박예린](https://github.com/parfait2) | [박찬욱](https://github.com/chanuk97) |
 | 역할 | 팀장, 풀 스택 | 풀 스택 | 서기, 풀 스택 | 풀 스택 | 풀 스택 |
-| 세부 역할 (Back-End) | · DB 설계 <br/> · SMS <br/> · 알림 <br/> · 무한 스크롤 페이지네이션 | · 게시글 <br/> · 통계 | · DB 설계 <br/> · 사용자 인증 및 인가 <br/> · 댓글 | · 프로필 <br/> · 팔로잉/팔로워 <br/> · 도전 과제 <br/> · 인기 게시글 | · 검색 <br/> · 도전 과제 |
-| 세부 역할 (Front-End) | · 피드 글 작성 폼 <br/> · 피드 무한 스크롤 <br/> · 게시글 검색 | · 게시글 <br/> · 상세 게시글 <br/> · 통계 <br/> · 도전 과제 | · 사용자 인증 및인가 <br/> · 알림 <br/> · 팔로잉/팔로워 <br/> · 사용자 검색  | · 메뉴 바 <br/> · 사이드 바 | · 프로필 <br/> · 도전 과제 |
+| 세부 역할 <br/> (Back-End) | · DB 설계 <br/> · SMS <br/> · 알림 <br/> · 무한 스크롤 페이지네이션 | · 게시글 <br/> · 통계 | · DB 설계 <br/> · 사용자 인증 및 인가 <br/> · 댓글 | · 프로필 <br/> · 팔로잉/팔로워 <br/> · 도전 과제 <br/> · 인기 게시글 | · 검색 <br/> · 도전 과제 |
+| 세부 역할 <br/> (Front-End) | · 피드 글 작성 폼 <br/> · 피드 무한 스크롤 <br/> · 게시글 검색 | · 게시글 <br/> · 상세 게시글 <br/> · 통계 <br/> · 도전 과제 | · 사용자 인증 및인가 <br/> · 알림 <br/> · 팔로잉/팔로워 <br/> · 사용자 검색  | · 메뉴 바 <br/> · 사이드 바 | · 프로필 <br/> · 도전 과제 |
 
 <br/>
 <br/>
